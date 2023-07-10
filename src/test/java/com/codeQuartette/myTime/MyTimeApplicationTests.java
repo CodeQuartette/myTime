@@ -1,4 +1,4 @@
-package com.beautifulGilan.myTime;
+package com.codeQuartette.myTime;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.beautifulGilan.myTime;
+package com.codeQuartette.myTime;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

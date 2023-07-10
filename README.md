@@ -1,2 +1,1 @@
-# jpa
-맵이거의 JPA 레포
+# myTime 레포

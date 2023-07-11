@@ -1,11 +1,13 @@
 package com.codeQuartette.myTime.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class User {
 
@@ -15,7 +17,7 @@ public class User {
 
     private String name;
 
-    private String nickName;
+    private String nickname;
 
     private String password;
 

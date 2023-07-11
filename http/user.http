@@ -1,0 +1,3 @@
+### 1. 유저 테스트
+GET {{localhost}}/user
+

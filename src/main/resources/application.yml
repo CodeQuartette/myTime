@@ -1,4 +1,8 @@
 spring:
+  sql:
+    init:
+      mode: always
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/my_time
@@ -17,3 +21,4 @@ spring:
       dialect: org.hibernate.dialect.MySQL8Dialect
 
     open-in-view: false
+    defer-datasource-initialization: true

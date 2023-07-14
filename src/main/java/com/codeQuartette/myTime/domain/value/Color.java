@@ -2,6 +2,8 @@ package com.codeQuartette.myTime.domain.value;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+
 @AllArgsConstructor
 public enum Color {
 
@@ -13,4 +15,11 @@ public enum Color {
     ADC4FF, // 남색
     BDB2FF, // 보라
     FFC6FF; // 핑크
+
+    public static Color convertor(String color) {
+        return Arrays.stream(Color.values())
+                .filter(e -> e.name().equals(color))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("해당 컬러는 없습니다"));
+    }
 }

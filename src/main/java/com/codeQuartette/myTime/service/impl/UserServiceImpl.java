@@ -20,9 +20,6 @@ public class UserServiceImpl implements UserService {
         if (verifyUser(userDTO.getEmail())) {
             throw new DuplicateUserException();
         }
-
-        System.out.println(userDTO.getPassword());
-
         userRepository.save(User.create(userDTO));
     }
 

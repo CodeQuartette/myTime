@@ -3,9 +3,7 @@ package com.codeQuartette.myTime.controller;
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
 import com.codeQuartette.myTime.service.HabitService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +15,11 @@ public class HabitController {
     public void create(@RequestBody HabitDTO.Request habitRequestDTO) {
         habitService.create(habitRequestDTO);
     }
+
+    @PatchMapping("/habit")
+    public void update(@RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
+        habitService.update(id, habitRequestDTO);
+    }
+
 
 }

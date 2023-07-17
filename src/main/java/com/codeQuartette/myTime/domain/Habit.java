@@ -37,4 +37,12 @@ public class Habit {
                 .isBlind(habitRequestDTO.isBlind())
                 .build();
     }
+
+    public void update(HabitDTO.Request habitRequestDTO) {
+        this.startDate = habitRequestDTO.getStartDate();
+        this.repeatDay = Arrays.toString(habitRequestDTO.getRepeatDay());
+        this.category = habitRequestDTO.getCategory();
+        this.categoryContent = habitRequestDTO.getCategoryContent();
+        this.isBlind = habitRequestDTO.isBlind();
+    }
 }

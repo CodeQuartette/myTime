@@ -27,4 +27,11 @@ public class HabitServiceImpl implements HabitService {
         habit.update(habitRequestDTO);
         habitRepository.save(habit);
     }
+
+    @Override
+    public void delete(Long id) {
+        Habit habit = habitRepository.findById(id)
+                .orElseThrow(() -> new HabitNotFoundException("삭제하려는 습관을 조회할 수 없습니다."));
+        habitRepository.delete(habit);
+    }
 }

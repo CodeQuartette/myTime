@@ -21,5 +21,10 @@ public class HabitController {
         habitService.update(id, habitRequestDTO);
     }
 
+    @DeleteMapping("/habit")
+    public void delete(@RequestParam Long id) {
+        habitService.delete(id);
+    }
+
 
 }

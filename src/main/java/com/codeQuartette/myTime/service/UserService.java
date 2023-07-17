@@ -1,5 +1,8 @@
 package com.codeQuartette.myTime.service;
 
+import com.codeQuartette.myTime.controller.dto.UserDTO;
+
 public interface UserService {
-    void testUser();
+
+    void signup(UserDTO.Request userInfoRequestDTO);
 }

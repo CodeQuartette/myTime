@@ -10,7 +10,15 @@ Content-Type: application/json
   "email" : "enolj@gmail.com",
   "birthday" : "1991-11-09",
   "password" : "1234",
-  "profileImage" : "https://www.challansdeparis.co.kr/web/product/big/202204/4bb42db09fd829954ac4d443cb1e3d6c.jpg",
+  "profileImage" : "https://29954ac4d443cb1e3d6c.jpg",
   "gender" : 0
 }
 
+### 2. 일반 로그인 API
+POST {{localhost}}/login
+Content-Type: application/json
+
+{
+  "email" : "enolj@gmail.com",
+  "password" : "1234"
+}

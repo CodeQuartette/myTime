@@ -12,8 +12,8 @@ public class HabitController {
     private final HabitService habitService;
 
     @PostMapping("/habit")
-    public void create(@RequestBody HabitDTO.Request habitRequestDTO) {
-        habitService.create(habitRequestDTO);
+    public void create(@RequestParam Long userId, @RequestBody HabitDTO.Request habitRequestDTO) {
+        habitService.create(userId, habitRequestDTO);
     }
 
     @PatchMapping("/habit")
@@ -25,6 +25,5 @@ public class HabitController {
     public void delete(@RequestParam Long id) {
         habitService.delete(id);
     }
-
 
 }

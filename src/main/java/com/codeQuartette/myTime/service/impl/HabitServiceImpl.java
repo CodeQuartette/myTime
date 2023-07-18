@@ -2,20 +2,31 @@ package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
 import com.codeQuartette.myTime.domain.Habit;
+import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.exception.HabitNotFoundException;
 import com.codeQuartette.myTime.repository.HabitRepository;
 import com.codeQuartette.myTime.service.HabitService;
+import com.codeQuartette.myTime.service.MyDateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class HabitServiceImpl implements HabitService {
 
     private final HabitRepository habitRepository;
+    private final MyDateService myDateService;
 
     @Override
-    public void create(HabitDTO.Request habitRequestDTO) {
+    public void create(Long userId, HabitDTO.Request habitRequestDTO) {
+        Habit habit = Habit.create(habitRequestDTO);
+        List<LocalDate> allHabitDates =
+                myDateService.checkAllDateByStartDateAndEndDate(habit.getStartDate(), habit.getEndDate(), habitRequestDTO.getRepeatDay());
+        List<MyDate> newMyDates = myDateService.validateDates(userId, allHabitDates);
+        myDateService.saveAll(newMyDates);
         habitRepository.save(Habit.create(habitRequestDTO));
     }
 

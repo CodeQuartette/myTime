@@ -6,6 +6,7 @@ import com.codeQuartette.myTime.domain.value.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 
 @Entity
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Habit {
@@ -21,6 +23,7 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate startDate;
+    private LocalDate endDate;
     private String repeatDay;
     private String categoryContent;
     private Boolean isBlind;
@@ -28,9 +31,18 @@ public class Habit {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    public static LocalDate checkEndDate(LocalDate startDate, LocalDate endDate) {
+        if(endDate == null) {
+            return startDate.plusYears(3L);
+        }
+        return endDate;
+    }
+
     public static Habit create(HabitDTO.Request habitRequestDTO) {
+
         return Habit.builder()
                 .startDate(habitRequestDTO.getStartDate())
+                .endDate(checkEndDate(habitRequestDTO.getStartDate(), habitRequestDTO.getEndDate()))
                 .repeatDay(Arrays.toString(habitRequestDTO.getRepeatDay()))
                 .category(habitRequestDTO.getCategory())
                 .categoryContent(habitRequestDTO.getCategoryContent())

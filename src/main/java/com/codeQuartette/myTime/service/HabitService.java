@@ -4,7 +4,7 @@ import com.codeQuartette.myTime.controller.dto.HabitDTO;
 
 public interface HabitService {
 
-    void create(HabitDTO.Request habitRequestDTO);
+    void create(Long userId, HabitDTO.Request habitRequestDTO);
 
     void update(Long id, HabitDTO.Request habitRequestDTO);
 

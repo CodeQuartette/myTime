@@ -17,4 +17,9 @@ public class UserController {
     public void signup(@RequestBody UserDTO.Request userDTO) {
         userService.signup(userDTO);
     }
+
+    @PostMapping("/login")
+    public UserDTO.Response login(@RequestBody UserDTO.Request userDTO) {
+        return userService.login(userDTO);
+    }
 }

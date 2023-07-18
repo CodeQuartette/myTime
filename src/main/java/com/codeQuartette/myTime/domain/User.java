@@ -2,10 +2,7 @@ package com.codeQuartette.myTime.domain;
 
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -47,6 +44,10 @@ public class User {
                 .profileImage(userDTO.getProfileImage())
                 .gender(userDTO.isGender())
                 .build();
+    }
+
+    public void updateToken(String token) {
+        this.token = token;
     }
 }
 

@@ -22,3 +22,7 @@ Content-Type: application/json
   "email" : "enolj@gmail.com",
   "password" : "1234"
 }
+
+### 3. 회원 조회 API
+GET {{localhost}}/user
+Content-Type: application/json

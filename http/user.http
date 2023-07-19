@@ -37,3 +37,11 @@ Content-Type: application/json
   "nickname" : "enolj",
   "name" : "이노"
 }
+
+### 5. 회원 삭제 API
+DELETE {{localhost}}/user
+Content-Type: application/json
+
+{
+  "password" : "password"
+}

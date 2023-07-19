@@ -26,3 +26,14 @@ Content-Type: application/json
 ### 3. 회원 조회 API
 GET {{localhost}}/user
 Content-Type: application/json
+
+### 4. 회원 정보 수정 API
+PATCH {{localhost}}/user
+Content-Type: application/json
+
+{
+  "password" : "password",
+  "newPassword" : "newPassword",
+  "nickname" : "enolj",
+  "name" : "이노"
+}

@@ -36,11 +36,21 @@ public class UserServiceImpl implements UserService {
         return UserDTO.Response.of(user);
     }
 
+    @Override
+    public UserDTO.Response getUser() {
+        User user = findUserById(1L); // 토큰의 id를 통해 유저 조회
+        return UserDTO.Response.of(user);
+    }
+
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     private boolean verifyUser(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 }

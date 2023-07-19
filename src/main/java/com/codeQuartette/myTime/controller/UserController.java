@@ -3,9 +3,7 @@ package com.codeQuartette.myTime.controller;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +19,10 @@ public class UserController {
     @PostMapping("/login")
     public UserDTO.Response login(@RequestBody UserDTO.Request userDTO) {
         return userService.login(userDTO);
+    }
+
+    @GetMapping("/user")
+    public UserDTO.Response getUser() {
+        return userService.getUser();
     }
 }

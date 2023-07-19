@@ -7,4 +7,6 @@ public interface UserService {
     void signup(UserDTO.Request userInfoRequestDTO);
 
     UserDTO.Response login(UserDTO.Request userDTO);
+
+    UserDTO.Response getUser();
 }

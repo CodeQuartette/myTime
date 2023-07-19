@@ -2,7 +2,9 @@ package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
+import com.codeQuartette.myTime.exception.DuplicateNicknameException;
 import com.codeQuartette.myTime.exception.DuplicateUserException;
+import com.codeQuartette.myTime.exception.PasswordNotMatchException;
 import com.codeQuartette.myTime.exception.UserNotFoundException;
 import com.codeQuartette.myTime.repository.UserRepository;
 import com.codeQuartette.myTime.service.UserService;
@@ -20,6 +22,12 @@ public class UserServiceImpl implements UserService {
         if (verifyUser(userDTO.getEmail())) {
             throw new DuplicateUserException();
         }
+
+        if (userDTO.nicknameNonNull() && verifyNickname(userDTO.getNickname())) {
+            throw new DuplicateNicknameException();
+        }
+
+        // 패스워드 암호화
         userRepository.save(User.create(userDTO));
     }
 
@@ -30,7 +38,8 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException();
         }
 
-        String token = "new token"; // 토큰을 만드는 로직 구현
+        // 토큰을 만드는 로직 구현
+        String token = "new token";
         user.updateToken(token);
         userRepository.save(user);
         return UserDTO.Response.of(user);
@@ -38,7 +47,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO.Response getUser() {
-        User user = findUserById(1L); // 토큰의 id를 통해 유저 조회
+        // 토큰의 id를 통해 유저 조회
+        User user = findUserById(1L);
+        return UserDTO.Response.of(user);
+    }
+
+    @Override
+    public UserDTO.Response updateUser(UserDTO.Request userDTO) {
+        // id와 토큰 비교 확인
+        User user = findUserById(1L);
+
+        if (userDTO.nicknameNonNull() && verifyNickname(userDTO.getNickname())) {
+            throw new DuplicateNicknameException();
+        }
+
+        if (!user.matchPassword(userDTO.getPassword())) {
+            throw new PasswordNotMatchException();
+        }
+
+        user.updateIngo(userDTO);
+        userRepository.save(user);
         return UserDTO.Response.of(user);
     }
 
@@ -52,5 +80,9 @@ public class UserServiceImpl implements UserService {
 
     private User findUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    private boolean verifyNickname(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();
     }
 }

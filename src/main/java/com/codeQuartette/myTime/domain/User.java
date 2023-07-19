@@ -42,12 +42,25 @@ public class User {
                 .password(userDTO.getPassword())
                 .birthday(userDTO.getBirthday())
                 .profileImage(userDTO.getProfileImage())
-                .gender(userDTO.isGender())
+                .gender(userDTO.getGender())
                 .build();
+    }
+
+    public void updateIngo(UserDTO.Request userDTO) {
+        this.name = userDTO.getName() == null ? this.name : userDTO.getName();
+        this.nickname = userDTO.getNickname() == null ? this.nickname : userDTO.getNickname();
+        this.password = userDTO.getNewPassword() == null ? this.password : userDTO.getNewPassword();
+        this.birthday = userDTO.getBirthday() == null ? this.birthday : userDTO.getBirthday();
+        this.profileImage = userDTO.getProfileImage() == null ? this.profileImage : userDTO.getProfileImage();
+        this.gender = userDTO.getGender() == null ? this.gender : userDTO.getGender();
     }
 
     public void updateToken(String token) {
         this.token = token;
+    }
+
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
     }
 }
 

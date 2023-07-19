@@ -18,8 +18,13 @@ public class UserDTO {
         private String email;
         private LocalDate birthday;
         private String password;
+        private String newPassword;
         private String profileImage;
-        private boolean gender;
+        private Boolean gender;
+
+        public boolean nicknameNonNull() {
+            return this.nickname != null;
+        }
     }
 
     @Getter
@@ -33,7 +38,7 @@ public class UserDTO {
         private String email;
         private LocalDate birthday;
         private String profileImage;
-        private boolean gender;
+        private Boolean gender;
         private String token;
 
         public static UserDTO.Response of(User user) {

@@ -9,4 +9,6 @@ public interface UserService {
     UserDTO.Response login(UserDTO.Request userDTO);
 
     UserDTO.Response getUser();
+
+    UserDTO.Response updateUser(UserDTO.Request userDTO);
 }

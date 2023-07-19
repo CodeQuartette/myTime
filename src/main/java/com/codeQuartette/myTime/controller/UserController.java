@@ -25,4 +25,9 @@ public class UserController {
     public UserDTO.Response getUser() {
         return userService.getUser();
     }
+
+    @PatchMapping("/user")
+    public UserDTO.Response updateUser(@RequestBody UserDTO.Request userDTO) {
+        return userService.updateUser(userDTO);
+    }
 }

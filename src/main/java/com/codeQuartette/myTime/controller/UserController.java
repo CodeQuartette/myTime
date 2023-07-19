@@ -30,4 +30,9 @@ public class UserController {
     public UserDTO.Response updateUser(@RequestBody UserDTO.Request userDTO) {
         return userService.updateUser(userDTO);
     }
+
+    @DeleteMapping("/user")
+    public void deleteUser(@RequestBody UserDTO.Request userDTO) {
+        userService.deleteUser(userDTO);
+    }
 }

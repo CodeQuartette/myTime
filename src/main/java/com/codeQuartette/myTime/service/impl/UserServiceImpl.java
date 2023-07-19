@@ -23,9 +23,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserException();
         }
 
-        if (userDTO.nicknameNonNull() && verifyNickname(userDTO.getNickname())) {
-            throw new DuplicateNicknameException();
-        }
+        doubleCheckNickname(userDTO);
 
         // 패스워드 암호화
         userRepository.save(User.create(userDTO));
@@ -34,9 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO.Response login(UserDTO.Request userDTO) {
         User user = findUserByEmail(userDTO.getEmail());
-        if (!user.getPassword().equals(userDTO.getPassword())) {
-            throw new UserNotFoundException();
-        }
+        checkPassword(user, userDTO);
 
         // 토큰을 만드는 로직 구현
         String token = "new token";
@@ -47,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO.Response getUser() {
+        // id와 토큰 비교 확인
         // 토큰의 id를 통해 유저 조회
         User user = findUserById(1L);
         return UserDTO.Response.of(user);
@@ -55,19 +52,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO.Response updateUser(UserDTO.Request userDTO) {
         // id와 토큰 비교 확인
+        // 토큰의 id를 통해 유저 조회
         User user = findUserById(1L);
-
-        if (userDTO.nicknameNonNull() && verifyNickname(userDTO.getNickname())) {
-            throw new DuplicateNicknameException();
-        }
-
-        if (!user.matchPassword(userDTO.getPassword())) {
-            throw new PasswordNotMatchException();
-        }
-
+        doubleCheckNickname(userDTO);
+        checkPassword(user, userDTO);
         user.updateInfo(userDTO);
         userRepository.save(user);
         return UserDTO.Response.of(user);
+    }
+
+    @Override
+    public void deleteUser(UserDTO.Request userDTO) {
+        // id와 토큰 비교 확인
+        // 토큰의 id를 통해 유저 조회
+        User user = findUserById(1L);
+        checkPassword(user, userDTO);
+        userRepository.delete(user);
     }
 
     private User findUserByEmail(String email) {
@@ -82,7 +82,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    private void doubleCheckNickname(UserDTO.Request userDTO) {
+        if (userDTO.nicknameNonNull() && verifyNickname(userDTO.getNickname())) {
+            throw new DuplicateNicknameException();
+        }
+    }
+
     private boolean verifyNickname(String nickname) {
         return userRepository.findByNickname(nickname).isPresent();
+    }
+
+    private void checkPassword(User user, UserDTO.Request userDTO) {
+        if (!user.matchPassword(userDTO.getPassword())) {
+            throw new PasswordNotMatchException();
+        }
     }
 }

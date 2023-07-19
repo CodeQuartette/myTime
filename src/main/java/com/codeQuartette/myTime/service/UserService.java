@@ -11,4 +11,6 @@ public interface UserService {
     UserDTO.Response getUser();
 
     UserDTO.Response updateUser(UserDTO.Request userDTO);
+
+    void deleteUser(UserDTO.Request userDTO);
 }

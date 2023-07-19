@@ -15,13 +15,13 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     /*
-    * TODO: AOP로 USER PRAMETER 넘기기
-    * 일단 REQUEST PARAM으로 USER 정보 받기
-    * */
+     * TODO: AOP로 USER PRAMETER 넘기기
+     * 일단 REQUEST PARAM으로 USER 정보 받기
+     * */
 
     @PostMapping
     public ResponseEntity<String> create(@RequestParam(name = "userId") Long userId,
-                                 @RequestBody ScheduleDTO.create request
+                                         @RequestBody ScheduleDTO.create request
     ) {
         scheduleService.create(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body("OK");

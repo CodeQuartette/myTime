@@ -3,6 +3,7 @@ package com.codeQuartette.myTime.service.impl;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.MyDateBulkRepository;
+
 import com.codeQuartette.myTime.repository.MyDateRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.UserService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,5 +68,18 @@ public class MyDateServiceImpl implements MyDateService {
         return myDateRepository.findAllByDateInAndUser(myDates.stream().map(myDate -> myDate.getDate()).toList(), myDates.get(0).getUser());
     }
 
+    @Override
+    public MyDate save(MyDate myDate) {
+        return myDateRepository.save(myDate);
+    }
 
+    @Override
+    public MyDate find(User user, LocalDate date) {
+        return myDateRepository.findByUserAndAndDate(user, date).orElseThrow(() -> new RuntimeException("해당하는 MyDate가 없습니다"));
+    }
+
+    @Override
+    public boolean existMyDate(User user, LocalDate date) {
+        return myDateRepository.findByUserAndAndDate(user, date).isPresent();
+    }
 }

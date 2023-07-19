@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.domain.value;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ public enum Color {
     BDB2FF, // 보라
     FFC6FF; // 핑크
 
+    @JsonCreator
     public static Color convertor(String color) {
         return Arrays.stream(Color.values())
                 .filter(e -> e.name().equals(color))

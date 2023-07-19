@@ -46,7 +46,7 @@ public class User {
                 .build();
     }
 
-    public void updateIngo(UserDTO.Request userDTO) {
+    public void updateInfo(UserDTO.Request userDTO) {
         this.name = userDTO.getName() == null ? this.name : userDTO.getName();
         this.nickname = userDTO.getNickname() == null ? this.nickname : userDTO.getNickname();
         this.password = userDTO.getNewPassword() == null ? this.password : userDTO.getNewPassword();

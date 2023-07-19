@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
             throw new PasswordNotMatchException();
         }
 
-        user.updateIngo(userDTO);
+        user.updateInfo(userDTO);
         userRepository.save(user);
         return UserDTO.Response.of(user);
     }

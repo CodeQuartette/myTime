@@ -1,16 +1,21 @@
 package com.codeQuartette.myTime.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
+@Builder
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class HabitHasDate {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -21,5 +26,6 @@ public class HabitHasDate {
     @JoinColumn(name = "my_date_id")
     private MyDate myDate;
 
-    private Boolean isDone;
+    @ColumnDefault("false")
+    private Boolean isDone = false;
 }

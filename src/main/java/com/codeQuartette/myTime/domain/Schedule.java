@@ -2,12 +2,18 @@ package com.codeQuartette.myTime.domain;
 
 import com.codeQuartette.myTime.domain.value.Color;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Schedule {
 
     @Id
@@ -23,7 +29,7 @@ public class Schedule {
     //startDateTime에 시간이 붙었는지 아닌지를 확인하기 위해서
     private Boolean isSpecificTime;
 
-    //@Column
-    //@Enumerated(EnumType.STRING)
+    @Column
+    @Enumerated(EnumType.STRING)
     private Color color;
 }

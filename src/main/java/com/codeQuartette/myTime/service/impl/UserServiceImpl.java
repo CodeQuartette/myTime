@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
 
         System.out.println("tree.getNickname() = " + tree.getNickname());
     }
+
+    @Override
+    public User findUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 아이디가 없습니다"));
+    }
 }

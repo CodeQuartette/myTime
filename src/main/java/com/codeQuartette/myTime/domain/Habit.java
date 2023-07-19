@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Builder
@@ -30,6 +32,10 @@ public class Habit {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HabitHasDate> habitHasDates = new ArrayList<>();
 
     public static LocalDate checkEndDate(LocalDate startDate, LocalDate endDate) {
         if(endDate == null) {
@@ -57,4 +63,14 @@ public class Habit {
         this.categoryContent = habitRequestDTO.getCategoryContent();
         this.isBlind = habitRequestDTO.isBlind();
     }
+
+//    public void createHabitHasDate(MyDate myDate) {
+//        HabitHasDate habitHasDate = HabitHasDate.builder()
+//                .habit(this)
+//                .myDate(myDate)
+//                .isDone(false)
+//                .build();
+//
+//        this.habitHasDates.add(habitHasDate);
+//    }
 }

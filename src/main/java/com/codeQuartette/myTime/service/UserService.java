@@ -1,6 +1,7 @@
 package com.codeQuartette.myTime.service;
 
 import com.codeQuartette.myTime.controller.dto.UserDTO;
+import com.codeQuartette.myTime.domain.User;
 
 public interface UserService {
 

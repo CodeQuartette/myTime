@@ -3,7 +3,6 @@ package com.codeQuartette.myTime.domain;
 import com.codeQuartette.myTime.controller.dto.ToDoDTO;
 import com.codeQuartette.myTime.domain.value.Color;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Fetch;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

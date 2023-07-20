@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
 
         System.out.println("tree.getNickname() = " + tree.getNickname());
     }
+
+    public User findById(Long userId) {
+      return userRepository.findById(userId)
+              .orElseThrow(() -> new NoSuchElementException("조회하는 유저가 존재하지 않습니다"));
+    }
 }

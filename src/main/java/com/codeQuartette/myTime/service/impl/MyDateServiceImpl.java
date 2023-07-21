@@ -3,7 +3,6 @@ package com.codeQuartette.myTime.service.impl;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.MyDateBulkRepository;
-
 import com.codeQuartette.myTime.repository.MyDateRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.UserService;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +22,15 @@ public class MyDateServiceImpl implements MyDateService {
     private final MyDateBulkRepository myDateBulkRepository;
     private final UserService userService;
 
+    @Override
+    public MyDate findMyDate(User user, LocalDate date) {
+        return myDateRepository.findByUserAndDate(user, date)
+                .orElseGet(() -> MyDate.builder()
+                        .user(user)
+                        .date(date)
+                        .build());
+    }
+  
     public List<MyDate> findAllByUserId(Long userId) {
         User user = userService.findById(userId);
         return myDateRepository.findAllByUser(user);

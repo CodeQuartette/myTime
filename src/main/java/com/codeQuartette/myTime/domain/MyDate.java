@@ -27,6 +27,11 @@ public class MyDate {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @JoinColumn(name = "my_date_id", nullable = false)
+    private List<ToDo> toDos = new ArrayList<>();
+
     @OneToMany(mappedBy = "myDate", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<HabitHasDate> habitHasDates = new ArrayList<>();
 
@@ -34,7 +39,11 @@ public class MyDate {
         this.date = date;
         this.user = user;
     }
-
+  
+    public void addToDo(ToDo toDo) {
+        this.toDos.add(toDo);
+    }
+  
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

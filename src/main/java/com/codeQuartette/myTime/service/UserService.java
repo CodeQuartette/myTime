@@ -1,11 +1,13 @@
 package com.codeQuartette.myTime.service;
 
 import com.codeQuartette.myTime.domain.User;
+
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 
 public interface UserService {
+    void testUser();
 
-    public User findById(Long userId);
+    User findById(Long userId);
 
     void signup(UserDTO.Request userInfoRequestDTO);
 

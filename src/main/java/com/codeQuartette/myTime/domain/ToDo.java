@@ -1,6 +1,6 @@
 package com.codeQuartette.myTime.domain;
 
-import com.codeQuartette.myTime.controller.dto.request.ToDoInfoRequestDTO;
+import com.codeQuartette.myTime.controller.dto.ToDoDTO;
 import com.codeQuartette.myTime.domain.value.Color;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,17 +31,14 @@ public class ToDo {
 
     private Boolean isBlind;
 
-    @ManyToOne
-    @JoinColumn(name = "my_date_id")
-    private MyDate myDate;
 
-    public static ToDo create(ToDoInfoRequestDTO toDoInfoRequestDTO) {
-        return ToDo.builder()
-                .title(toDoInfoRequestDTO.getTitle())
-                .color(Color.convertor(toDoInfoRequestDTO.getColor()))
-                .date(toDoInfoRequestDTO.getDay())
+    public static ToDo create(ToDoDTO.Request toDoRequestDTO) {
+        return com.codeQuartette.myTime.domain.ToDo.builder()
+                .title(toDoRequestDTO.getTitle())
+                .color(toDoRequestDTO.getColor())
+                .date(toDoRequestDTO.getDate())
                 .isDone(Boolean.FALSE)
-                .isBlind(toDoInfoRequestDTO.getIsBlind())
+                .isBlind(toDoRequestDTO.getIsBlind())
                 .build();
     }
 }

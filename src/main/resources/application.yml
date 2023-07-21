@@ -5,7 +5,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/my_time
+    url: jdbc:mysql://localhost:3306/my_time?rewriteBatchedStatements=true
     username: user
     password: user123
 
@@ -18,6 +18,11 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        order_inserts: true
+        order_updates: true
+        batch_versioned_date: true
+        jdbc:
+          batch_size: 500
       dialect: org.hibernate.dialect.MySQL8Dialect
 
     open-in-view: false

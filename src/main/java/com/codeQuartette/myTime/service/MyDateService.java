@@ -24,4 +24,6 @@ public interface MyDateService {
     MyDate find(User user, LocalDate date);
 
     boolean existMyDate(User user, LocalDate date);
+
+    List<MyDate> saveAllMyDate(List<MyDate> myDates);
 }

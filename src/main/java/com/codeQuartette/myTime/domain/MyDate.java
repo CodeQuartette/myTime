@@ -14,6 +14,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Builder
+@Table(uniqueConstraints = @UniqueConstraint(name = "unique_date_user_id", columnNames = {"date", "user_id"}))
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyDate {
@@ -21,6 +22,7 @@ public class MyDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDate date;
 
     @ManyToOne
@@ -28,22 +30,26 @@ public class MyDate {
     private User user;
 
     @Builder.Default
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "my_date_id", nullable = false)
     private List<ToDo> toDos = new ArrayList<>();
 
     @OneToMany(mappedBy = "myDate", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<HabitHasDate> habitHasDates = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "myDate", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<ScheduleHasMyDate> scheduleHasMyDates = new ArrayList<>();
+
     public MyDate(LocalDate date, User user) {
         this.date = date;
         this.user = user;
     }
-  
+
     public void addToDo(ToDo toDo) {
         this.toDos.add(toDo);
     }
-  
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

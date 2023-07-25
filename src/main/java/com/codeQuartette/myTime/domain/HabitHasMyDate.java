@@ -1,10 +1,7 @@
 package com.codeQuartette.myTime.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -14,16 +11,18 @@ import org.hibernate.annotations.ColumnDefault;
 @AllArgsConstructor
 public class HabitHasMyDate {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "habit_id")
+    @EmbeddedId
+    private HabitHasMyDateId habitHasMyDateId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "habitId")
+    @MapsId("habitId")
     private Habit habit;
 
-    @ManyToOne
-    @JoinColumn(name = "my_date_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "myDateId")
+    @MapsId("myDateId")
     private MyDate myDate;
 
     @ColumnDefault("false")

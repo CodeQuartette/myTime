@@ -28,7 +28,7 @@ public class MyDate {
     private User user;
 
     @OneToMany(mappedBy = "myDate", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<HabitHasDate> habitHasDates = new ArrayList<>();
+    private List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
 
     public MyDate(LocalDate date, User user) {
         this.date = date;

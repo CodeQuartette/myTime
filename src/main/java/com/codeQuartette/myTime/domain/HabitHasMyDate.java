@@ -12,7 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HabitHasDate {
+public class HabitHasMyDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

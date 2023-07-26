@@ -11,6 +11,8 @@ import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {

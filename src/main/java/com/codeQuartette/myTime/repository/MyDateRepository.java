@@ -13,10 +13,11 @@ import java.util.Optional;
 @Repository
 public interface MyDateRepository extends JpaRepository<MyDate, Long> {
 
+    Optional<MyDate> findByUserAndDate(User user, LocalDate date);
+
+    List<MyDate> findAllByUser(User user);
+
     Optional<MyDate> findByUserAndAndDate(User user, LocalDate date);
     
-    public List<MyDate> findAllByUser(User user);
-
-    public List<MyDate> findAllByDateInAndUser(List<LocalDate> dates, User user);
-
+    List<MyDate> findAllByDateInAndUser(List<LocalDate> dates, User user);
 }

@@ -5,7 +5,6 @@ import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 
 public interface UserService {
-    void testUser();
 
     User findById(Long userId);
 

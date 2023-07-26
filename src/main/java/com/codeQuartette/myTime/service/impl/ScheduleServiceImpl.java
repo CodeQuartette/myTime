@@ -14,7 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,20 +39,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .build());
     }
 
-    private ScheduleHasMyDate saveScheduleHasMyDate(Schedule schedule, MyDate myDate) {
-        return scheduleHasMyDateService.save(ScheduleHasMyDate.builder()
-                .myDate(myDate)
-                .schedule(schedule)
-                .build());
-    }
-
-    private MyDate saveMyDate(User user, LocalDate date) {
-        return myDateService.save(MyDate.builder()
-                .date(date)
-                .user(user)
-                .build());
-    }
-
 
     @Override
     @Transactional
@@ -59,27 +46,28 @@ public class ScheduleServiceImpl implements ScheduleService {
         // 1. user 찾기
         User user = userService.findUser(userId);
 
-        // 2. schedule 저장
+        // 2. myDateList 만들기
+        List<MyDate> myDates = myDateService.saveAllMyDate(
+                request.getStartDate().toLocalDate()
+                        .datesUntil(request.getEndDate().toLocalDate().plusDays(1))
+                        .map(date -> MyDate.builder()
+                                .user(user)
+                                .date(date)
+                                .build())
+                        .collect(Collectors.toList()));
+
+        // 3. Schedule 만들기
         Schedule schedule = saveSchedule(request);
 
-        // 3. startDate -> endDate 까지 MyDate 정보 만들기 및 schedule has date 같이 만들기
-        LocalDate startDate = schedule.getStartDateTime().toLocalDate();
-        LocalDate endDate = schedule.getEndDateTime().plusDays(1).toLocalDate();
+        // 4. ScheduleHasMyDate List 만들기
+        List<ScheduleHasMyDate> scheduleHasMyDates = myDates.stream()
+                .map(myDate -> ScheduleHasMyDate.builder()
+                        .schedule(schedule)
+                        .myDate(myDate)
+                .build())
+                .collect(Collectors.toList());
 
-        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
-
-            // MyDate 에 해당하는 날짜가 있는지 확인.
-            if (myDateService.existMyDate(user, date)) {
-                // myDate 날짜가 있으면
-                MyDate myDate = myDateService.find(user, date);
-                saveScheduleHasMyDate(schedule, myDate);
-
-            } else {
-                // myDate 날짜가 없으면 myDate 생성
-                MyDate myDate = saveMyDate(user, date);
-                saveScheduleHasMyDate(schedule, myDate);
-            }
-        }
+        scheduleHasMyDateService.saveAll(scheduleHasMyDates);
 
         return schedule;
     }

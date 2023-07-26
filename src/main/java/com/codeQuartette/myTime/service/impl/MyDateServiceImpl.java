@@ -30,7 +30,7 @@ public class MyDateServiceImpl implements MyDateService {
                         .date(date)
                         .build());
     }
-  
+
     public List<MyDate> findAllByUserId(Long userId) {
         User user = userService.findById(userId);
         return myDateRepository.findAllByUser(user);
@@ -74,6 +74,12 @@ public class MyDateServiceImpl implements MyDateService {
 
         return myDateRepository.findAllByDateInAndUser(myDates.stream().map(myDate -> myDate.getDate()).toList(), myDates.get(0).getUser());
     }
+
+    public List<MyDate> saveAllMyDate(List<MyDate> myDates) {
+        myDateBulkRepository.saveAllIgnore(myDates);
+        return myDateRepository.findAllByDateInAndUser(myDates.stream().map(myDate -> myDate.getDate()).toList(), myDates.get(0).getUser());
+    }
+
 
     @Override
     public MyDate save(MyDate myDate) {

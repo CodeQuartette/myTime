@@ -35,7 +35,7 @@ public class Habit {
 
     @Builder.Default
     @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HabitHasDate> habitHasDates = new ArrayList<>();
+    private List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
 
     public static LocalDate checkEndDate(LocalDate startDate, LocalDate endDate) {
         if(endDate == null) {

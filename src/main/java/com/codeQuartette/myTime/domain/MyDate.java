@@ -35,7 +35,7 @@ public class MyDate {
     private List<ToDo> toDos = new ArrayList<>();
 
     @OneToMany(mappedBy = "myDate", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<HabitHasDate> habitHasDates = new ArrayList<>();
+    private List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "myDate", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)

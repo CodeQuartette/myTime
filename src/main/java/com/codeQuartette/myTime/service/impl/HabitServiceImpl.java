@@ -2,11 +2,11 @@ package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
 import com.codeQuartette.myTime.domain.Habit;
-import com.codeQuartette.myTime.domain.HabitHasDate;
+import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.exception.HabitNotFoundException;
 import com.codeQuartette.myTime.repository.HabitRepository;
-import com.codeQuartette.myTime.service.HabitHasDateService;
+import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import com.codeQuartette.myTime.service.HabitService;
 import com.codeQuartette.myTime.service.MyDateService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class HabitServiceImpl implements HabitService {
 
     private final HabitRepository habitRepository;
     private final MyDateService myDateService;
-    private final HabitHasDateService habitHasDateService;
+    private final HabitHasMyDateService habitHasMyDateService;
 
     @Override
     @Transactional
@@ -36,11 +36,11 @@ public class HabitServiceImpl implements HabitService {
 
         habit = habitRepository.save(habit);
 
-        List<HabitHasDate> habitHasDates = new ArrayList<>();
+        List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
         for(MyDate saveMyDate : saveMyDates) {
-            habitHasDates.add(HabitHasDate.builder().myDate(saveMyDate).habit(habit).build());
+            habitHasMyDates.add(HabitHasMyDate.builder().myDate(saveMyDate).habit(habit).build());
         }
-        habitHasDateService.saveAll(habitHasDates);
+        habitHasMyDateService.saveAll(habitHasMyDates);
     }
 
     @Override

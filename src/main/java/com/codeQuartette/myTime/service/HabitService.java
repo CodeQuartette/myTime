@@ -9,4 +9,6 @@ public interface HabitService {
     void update(Long id, HabitDTO.Request habitRequestDTO);
 
     void delete(Long id);
+
+    HabitDTO.Response getHabitById(Long id);
 }

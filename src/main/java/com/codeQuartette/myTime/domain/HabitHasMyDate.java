@@ -11,7 +11,6 @@ import org.hibernate.annotations.ColumnDefault;
 @AllArgsConstructor
 public class HabitHasMyDate {
 
-
     @EmbeddedId
     private HabitHasMyDateId habitHasMyDateId;
 

@@ -26,4 +26,9 @@ public class HabitController {
         habitService.delete(id);
     }
 
+    @GetMapping("/habit")
+    public HabitDTO.Response getHabitById(@RequestParam Long id) {
+        return habitService.getHabitById(id);
+    }
+
 }

@@ -58,4 +58,12 @@ public class HabitServiceImpl implements HabitService {
                 .orElseThrow(() -> new HabitNotFoundException("삭제하려는 습관을 조회할 수 없습니다."));
         habitRepository.delete(habit);
     }
+
+    @Override
+    public HabitDTO.Response getHabitById(Long id) {
+        Habit habit = habitRepository.findById(id)
+                .orElseThrow(() -> new HabitNotFoundException("해당 습관을 조회할 수 없습니다."));
+
+        return HabitDTO.Response.of(habit);
+    }
 }

@@ -5,6 +5,9 @@ import com.codeQuartette.myTime.service.HabitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class HabitController {
@@ -29,6 +32,11 @@ public class HabitController {
     @GetMapping("/habit")
     public HabitDTO.Response getHabitById(@RequestParam Long id) {
         return habitService.getHabitById(id);
+    }
+
+    @GetMapping("/habits")
+    public List<HabitDTO.Response> getHabitByDate(@RequestParam LocalDate date) {
+        return habitService.getHabitByDate(date);
     }
 
 }

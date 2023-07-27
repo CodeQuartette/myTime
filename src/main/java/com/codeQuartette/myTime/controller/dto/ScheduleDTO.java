@@ -14,7 +14,7 @@ public class ScheduleDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class create {
+    public static class Request {
         private String title;
         private Color color;
         private LocalDateTime startDate;

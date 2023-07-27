@@ -5,5 +5,7 @@ import com.codeQuartette.myTime.domain.Schedule;
 
 public interface ScheduleService {
 
-    Schedule create(Long userId, ScheduleDTO.create request);
+    Schedule create(Long userId, ScheduleDTO.Request request);
+
+    void delete(Long userId, Long scheduleId);
 }

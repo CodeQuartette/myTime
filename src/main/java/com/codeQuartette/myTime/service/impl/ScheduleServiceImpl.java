@@ -27,22 +27,25 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final MyDateService myDateService;
     private final ScheduleHasMyDateService scheduleHasMyDateService;
 
+    private Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new RuntimeException(" 해당하는 스케쥴이 없습니다"));
+    }
 
-    private Schedule saveSchedule(ScheduleDTO.create createDTO) {
+    private Schedule saveSchedule(ScheduleDTO.Request requestDTO) {
         return scheduleRepository.save(Schedule.builder()
-                .title(createDTO.getTitle())
-                .color(createDTO.getColor())
-                .startDateTime(createDTO.getStartDate())
-                .endDateTime(createDTO.getEndDate())
-                .isSpecificTime(createDTO.getIsSpecificTime())
-                .alert(createDTO.getAlert())
+                .title(requestDTO.getTitle())
+                .color(requestDTO.getColor())
+                .startDateTime(requestDTO.getStartDate())
+                .endDateTime(requestDTO.getEndDate())
+                .isSpecificTime(requestDTO.getIsSpecificTime())
+                .alert(requestDTO.getAlert())
                 .build());
     }
 
 
     @Override
     @Transactional
-    public Schedule create(Long userId, ScheduleDTO.create request) {
+    public Schedule create(Long userId, ScheduleDTO.Request request) {
         // 1. user 찾기
         User user = userService.findUser(userId);
 
@@ -64,11 +67,21 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .map(myDate -> ScheduleHasMyDate.builder()
                         .schedule(schedule)
                         .myDate(myDate)
-                .build())
+                        .build())
                 .collect(Collectors.toList());
 
         scheduleHasMyDateService.saveAll(scheduleHasMyDates);
 
         return schedule;
     }
+
+    @Override
+    @Transactional
+    public void delete(Long userId, Long scheduleId) {
+        User user = userService.findUser(userId);
+
+        Schedule schedule = findSchedule(scheduleId);
+        scheduleRepository.delete(schedule);
+    }
+
 }

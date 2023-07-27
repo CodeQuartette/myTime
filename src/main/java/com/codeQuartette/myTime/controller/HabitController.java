@@ -1,6 +1,7 @@
 package com.codeQuartette.myTime.controller;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
+import com.codeQuartette.myTime.domain.value.Category;
 import com.codeQuartette.myTime.service.HabitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,11 @@ public class HabitController {
     @GetMapping("/habits")
     public List<HabitDTO.Response> getHabitByDate(@RequestParam LocalDate date) {
         return habitService.getHabitByDate(date);
+    }
+
+    @GetMapping("/category")
+    public List<String> getCategory() {
+        return habitService.getCategory();
     }
 
 }

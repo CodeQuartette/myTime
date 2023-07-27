@@ -5,6 +5,7 @@ import com.codeQuartette.myTime.domain.Habit;
 import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
+import com.codeQuartette.myTime.domain.value.Category;
 import com.codeQuartette.myTime.exception.HabitNotFoundException;
 import com.codeQuartette.myTime.repository.HabitRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -75,5 +77,10 @@ public class HabitServiceImpl implements HabitService {
     public List<HabitDTO.Response> getHabitByDate(LocalDate date) {
         List<Habit> habits = habitRepository.findAllHabitByDate(date);
         return habits.stream().map(habit -> HabitDTO.Response.of(habit)).toList();
+    }
+
+    @Override
+    public List<String> getCategory() {
+        return Arrays.stream(Category.values()).map(c -> c.toString()).toList();
     }
 }

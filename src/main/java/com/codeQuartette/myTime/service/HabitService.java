@@ -16,4 +16,6 @@ public interface HabitService {
     HabitDTO.Response getHabitById(Long id);
 
     List<HabitDTO.Response> getHabitByDate(LocalDate date);
+
+    List<String> getCategory();
 }

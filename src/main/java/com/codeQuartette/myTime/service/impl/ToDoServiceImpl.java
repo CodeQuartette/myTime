@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class ToDoServiceImpl implements ToDoService {
@@ -33,7 +34,6 @@ public class ToDoServiceImpl implements ToDoService {
         myDate.addToDo(toDo);
         myDateService.save(myDate);
     }
-
     @Override
     @Transactional
     public void update(Long id, ToDoDTO.Request toDoRequestDTO) {
@@ -42,5 +42,12 @@ public class ToDoServiceImpl implements ToDoService {
 
         toDo.update(toDoRequestDTO);
         toDoRepository.save(toDo);
+    }
+
+    @Override
+    public void delete(Long id) {
+        ToDo toDo = toDoRepository.findById(id)
+                .orElseThrow(ToDoNotFoundException::new);
+        toDoRepository.delete(toDo);
     }
 }

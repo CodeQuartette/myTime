@@ -21,5 +21,8 @@ public class ToDoController {
         toDoService.update(id, toDoRequestDTO);
     }
 
-
+    @DeleteMapping("/todo")
+    public void delete(@RequestParam Long id) {
+        toDoService.delete(id);
+    }
 }

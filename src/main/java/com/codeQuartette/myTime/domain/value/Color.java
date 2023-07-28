@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 
 import java.util.Arrays;
+import java.util.List;
 
 @AllArgsConstructor
 public enum Color {
@@ -23,5 +24,9 @@ public enum Color {
                 .filter(e -> e.name().equals(color))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("해당 컬러는 없습니다"));
+    }
+
+    public static List<String> getColors() {
+        return Arrays.stream(Color.values()).map(color -> color.toString()).toList();
     }
 }

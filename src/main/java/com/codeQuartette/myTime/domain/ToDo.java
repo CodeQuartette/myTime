@@ -41,4 +41,11 @@ public class ToDo {
                 .isBlind(toDoRequestDTO.getIsBlind())
                 .build();
     }
+
+    public void update(ToDoDTO.Request toDoRequestDTO) {
+        this.title = toDoRequestDTO.getTitle();
+        this.color = toDoRequestDTO.getColor();
+        this.date = toDoRequestDTO.getDate();
+        this.isBlind = toDoRequestDTO.getIsBlind();
+    }
 }

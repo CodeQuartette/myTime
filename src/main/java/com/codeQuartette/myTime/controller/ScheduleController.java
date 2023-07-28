@@ -21,9 +21,16 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<String> create(@RequestParam(name = "userId") Long userId,
-                                         @RequestBody ScheduleDTO.create request) {
+                                         @RequestBody ScheduleDTO.Request request) {
         scheduleService.create(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body("OK");
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestParam(name = "userId") Long userId,
+                                         @RequestParam(name = "id") Long scheduleId) {
+        scheduleService.delete(userId, scheduleId);
+        return ResponseEntity.ok("OK");
     }
 
 }

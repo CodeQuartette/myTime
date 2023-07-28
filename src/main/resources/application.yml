@@ -34,3 +34,6 @@ logging:
       springframework:
         jdbc:
           core: TRACE
+
+jwt:
+  secret: bXlUaW1lUHJvamVjdFNlY3JldEtleU9mQ29kZVF1YXJ0ZXR0ZTEyMzQ1Njc4OQ==

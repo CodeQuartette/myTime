@@ -3,6 +3,7 @@ package com.codeQuartette.myTime.controller;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,17 +23,17 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public UserDTO.Response getUser() {
-        return userService.getUser();
+    public UserDTO.Response getUser(Authentication authentication) {
+        return userService.getUser(authentication);
     }
 
     @PatchMapping("/user")
-    public UserDTO.Response updateUser(@RequestBody UserDTO.Request userDTO) {
-        return userService.updateUser(userDTO);
+    public UserDTO.Response updateUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
+        return userService.updateUser(authentication, userDTO);
     }
 
     @DeleteMapping("/user")
-    public void deleteUser(@RequestBody UserDTO.Request userDTO) {
-        userService.deleteUser(userDTO);
+    public void deleteUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
+        userService.deleteUser(authentication, userDTO);
     }
 }

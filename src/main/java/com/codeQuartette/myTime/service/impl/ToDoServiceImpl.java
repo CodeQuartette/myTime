@@ -4,6 +4,7 @@ import com.codeQuartette.myTime.controller.dto.ToDoDTO;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.ToDo;
 import com.codeQuartette.myTime.domain.User;
+import com.codeQuartette.myTime.exception.ToDoNotFoundException;
 import com.codeQuartette.myTime.repository.ToDoRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.ToDoService;
@@ -11,8 +12,6 @@ import com.codeQuartette.myTime.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +23,6 @@ public class ToDoServiceImpl implements ToDoService {
 
     private final MyDateService myDateService;
 
-    private ToDo saveToDo(ToDoDTO.Request toDoRequestDTO) {
-        return toDoRepository.save(ToDo.builder()
-                .title(toDoRequestDTO.getTitle())
-                .color(toDoRequestDTO.getColor())
-                .date(toDoRequestDTO.getDate())
-                .isDone(Boolean.FALSE)
-                .isBlind(toDoRequestDTO.getIsBlind())
-                .build());
-    }
 
     @Override
     @Transactional
@@ -44,8 +34,13 @@ public class ToDoServiceImpl implements ToDoService {
         myDateService.save(myDate);
     }
 
-    public ToDo findById(Long id) {
-        return toDoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("할 일이 없어요"));
+    @Override
+    @Transactional
+    public void update(Long id, ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = toDoRepository.findById(id)
+                .orElseThrow(ToDoNotFoundException::new);
+
+        toDo.update(toDoRequestDTO);
+        toDoRepository.save(toDo);
     }
 }

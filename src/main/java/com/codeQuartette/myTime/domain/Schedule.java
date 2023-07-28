@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,4 +34,9 @@ public class Schedule {
     @Column
     @Enumerated(EnumType.STRING)
     private Color color;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ScheduleHasMyDate> scheduleHasMyDates = new ArrayList<>();
+
 }

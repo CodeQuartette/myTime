@@ -1,10 +1,14 @@
 package com.codeQuartette.myTime.service;
 
+import com.codeQuartette.myTime.domain.User;
+
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
+
+    User findById(Long userId);
 
     void signup(UserDTO.Request userInfoRequestDTO);
 

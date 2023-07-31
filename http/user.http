@@ -6,10 +6,10 @@ Content-Type: application/json
 
 {
   "name" : "정인호",
-  "nickname" : "이노",
+  "nickname" : "이노2",
   "email" : "enolj@gmail.com",
   "birthday" : "1996-02-27",
-  "password" : "1234",
+  "password" : "password",
   "profileImage" : "https://29954ac4d443cb1e3d6c.jpg",
   "gender" : 0
 }
@@ -20,30 +20,30 @@ Content-Type: application/json
 
 {
   "email" : "enolj@gmail.com",
-  "password" : "1234"
+  "password" : "password"
 }
 
 ### 3. 회원 조회 API
 GET {{localhost}}/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGpAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIiLCJleHAiOjE2OTA1MjM3OTV9.fVrBt-qGhGWVbf1_LEj5Kk-BgxgTJXcjxvM_MkbJDAw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
 
 ### 4. 회원 정보 수정 API
 PATCH {{localhost}}/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGpAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIiLCJleHAiOjE2OTA1MzQ1NTB9.kEf48_OZha_muRLPLXKoWIlUfQ57vK1TotW34A-MODc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
 
 {
   "password" : "1234",
   "newPassword" : "5678",
-  "nickname" : "enolj",
-  "name" : "이노"
+  "nickname" : "변경 이노",
+  "name" : "정호인"
 }
 
 ### 5. 회원 삭제 API
-DELETE {{localhost}}/user?id=1
+DELETE {{localhost}}/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGpAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIiLCJleHAiOjE2OTA1MzUzODN9.ujGPf1IjaHee3GRcLCsRRURyx4PBVLqX7wgwZ8KENwk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
 
 {
   "password" : "1234"

@@ -26,7 +26,7 @@ public class JwtProvider {
 
     private final String ISSURE = "codeQuartette";
     private final String ROLES = "roles";
-    private final int TOKEN_VALID_TIME = 10 * 60 * 1000;
+    private final int TOKEN_VALID_TIME = 24 * 60 * 60 * 1000; // 24시간
     private final Key SECRET_KEY;
 
     public JwtProvider(@Value("${jwt.secret}") String secretKey) {
@@ -84,7 +84,6 @@ public class JwtProvider {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
-            System.out.println(e.getMessage());
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {

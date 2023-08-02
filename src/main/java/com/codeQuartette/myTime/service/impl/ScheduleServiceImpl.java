@@ -42,6 +42,11 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .build());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Schedule> find(Long scheduleId) {
+        return List.of(findSchedule(scheduleId));
+    }
 
     @Override
     @Transactional

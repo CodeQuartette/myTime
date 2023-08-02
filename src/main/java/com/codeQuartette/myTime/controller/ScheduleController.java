@@ -1,11 +1,15 @@
 package com.codeQuartette.myTime.controller;
 
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
+import com.codeQuartette.myTime.domain.Schedule;
 import com.codeQuartette.myTime.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/schedule")
@@ -18,6 +22,25 @@ public class ScheduleController {
      * TODO: AOP로 USER PARAMETER 넘기기
      * 일단 REQUEST PARAM으로 USER 정보 받기
      * */
+
+    @GetMapping
+    public ResponseEntity<ScheduleDTO.ResponseList> find(@RequestParam(name = "scheduleId", required = false) Long scheduleId) {
+        List<Schedule> schedules = scheduleService.find(scheduleId);
+
+        return ResponseEntity.ok(ScheduleDTO.ResponseList.builder()
+                .schedules(schedules.stream()
+                        .map(schedule -> ScheduleDTO.Response.builder()
+                                .id(schedule.getId())
+                                .title(schedule.getTitle())
+                                .color(schedule.getColor())
+                                .startDate(schedule.getStartDateTime())
+                                .endDate(schedule.getEndDateTime())
+                                .isSpecificTime(schedule.getIsSpecificTime())
+                                .alert(schedule.getAlert())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build());
+    }
 
     @PostMapping
     public ResponseEntity<String> create(@RequestParam(name = "userId") Long userId,

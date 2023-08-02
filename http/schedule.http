@@ -1,3 +1,6 @@
+### 스케줄 단건 조회
+GET {{localhost}}/schedule?scheduleId=1
+
 ### 스케줄생성
 POST {{localhost}}/schedule?userId=1
 Content-Type: application/json

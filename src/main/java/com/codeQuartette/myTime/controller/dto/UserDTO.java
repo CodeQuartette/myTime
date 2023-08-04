@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class UserDTO {
 
     @Getter
+    @Builder
     public static class Request {
 
         private String name;

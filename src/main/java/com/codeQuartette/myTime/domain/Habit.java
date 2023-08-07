@@ -38,6 +38,13 @@ public class Habit {
     @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
 
+    public static LocalDate checkStartDate(LocalDate startDate) {
+        if(startDate.isBefore(LocalDate.now())) {
+            throw new CannotCreateHabitException("시작 날짜가 오늘 날짜보다 이전일 수 없습니다.");
+        }
+        return startDate;
+    }
+
     public static LocalDate checkEndDate(LocalDate startDate, LocalDate endDate) {
         if(endDate == null) {
             return startDate.plusYears(3L);
@@ -52,7 +59,7 @@ public class Habit {
     public static Habit create(HabitDTO.Request habitRequestDTO) {
 
         return Habit.builder()
-                .startDate(habitRequestDTO.getStartDate())
+                .startDate(checkStartDate(habitRequestDTO.getStartDate()))
                 .endDate(checkEndDate(habitRequestDTO.getStartDate(), habitRequestDTO.getEndDate()))
                 .repeatDay(Arrays.toString(habitRequestDTO.getRepeatDay()))
                 .category(habitRequestDTO.getCategory())

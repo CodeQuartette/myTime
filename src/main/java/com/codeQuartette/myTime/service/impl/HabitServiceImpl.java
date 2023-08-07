@@ -1,12 +1,14 @@
 package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
+import com.codeQuartette.myTime.controller.dto.HabitHasMyDateDTO;
 import com.codeQuartette.myTime.domain.Habit;
 import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.domain.value.Category;
 import com.codeQuartette.myTime.exception.HabitNotFoundException;
+import com.codeQuartette.myTime.repository.HabitHasMyDateRepository;
 import com.codeQuartette.myTime.repository.HabitRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import com.codeQuartette.myTime.service.HabitService;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
 public class HabitServiceImpl implements HabitService {
 
     private final HabitRepository habitRepository;
+    private final HabitHasMyDateRepository habitHasMyDateRepository;
     private final UserService userService;
     private final MyDateService myDateService;
     private final HabitHasMyDateService habitHasMyDateService;
@@ -74,9 +78,9 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public List<HabitDTO.Response> getHabitByDate(LocalDate date) {
-        List<Habit> habits = habitRepository.findAllHabitByDate(date);
-        return habits.stream().map(habit -> HabitDTO.Response.of(habit)).toList();
+    public List<HabitHasMyDateDTO.Response> getHabitByDate(LocalDate date) {
+        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateRepository.findAllByMyDate_DateIs(date);
+        return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
     }
 
     @Override

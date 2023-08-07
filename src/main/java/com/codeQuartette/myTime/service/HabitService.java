@@ -17,6 +17,8 @@ public interface HabitService {
 
     HabitDTO.Response getHabitById(Long id);
 
+    List<HabitHasMyDateDTO.Response> getHabitByDate(LocalDate date);
+
     List<HabitHasMyDateDTO.Response> getHabitByMonth(YearMonth yearMonth);
 
     List<String> getCategory();

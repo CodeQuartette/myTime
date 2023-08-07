@@ -68,10 +68,10 @@ public class User implements UserDetails { // spring security 자체적으로 Us
                 .build();
     }
 
-    public void updateInfo(UserDTO.Request userDTO) {
+    public void updateInfo(UserDTO.Request userDTO, PasswordEncoder passwordEncoder) {
         this.name = userDTO.getName() == null ? this.name : userDTO.getName();
         this.nickname = userDTO.getNickname() == null ? this.nickname : userDTO.getNickname();
-        this.password = userDTO.getNewPassword() == null ? this.password : userDTO.getNewPassword();
+        this.password = userDTO.getNewPassword() == null ? this.password : passwordEncoder.encode(userDTO.getNewPassword());
         this.birthday = userDTO.getBirthday() == null ? this.birthday : userDTO.getBirthday();
         this.profileImage = userDTO.getProfileImage() == null ? this.profileImage : userDTO.getProfileImage();
         this.gender = userDTO.getGender() == null ? this.gender : userDTO.getGender();

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<Schedule> find(Long userId, LocalDate date) {
         return scheduleRepository.findByDate(userId, date);
+    }
+
+    @Override
+    public List<Schedule> find(Long userId, YearMonth yearMonth){
+        return scheduleRepository.findByYearMonth(userId, yearMonth);
     }
 
     @Override

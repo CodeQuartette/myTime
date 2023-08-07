@@ -4,15 +4,19 @@ GET {{localhost}}/schedule?scheduleId=1
 ### 스케줄 일자별 조회
 GET {{localhost}}/schedule?userId=1&date=2023-09-23
 
+### 스케줄 월 별 조회
+GET {{localhost}}/schedule?userId=1&yearMonth=2023-09
+
+
 ### 스케줄생성
 POST {{localhost}}/schedule?userId=1
 Content-Type: application/json
 
 {
-  "title" : "트리 결혼식",
+  "title" : "과일 가게",
   "color" : "FFADAD",
-  "startDate" : "2023-09-23T15:00:00",
-  "endDate" : "2023-09-27T12:00:00",
+  "startDate" : "2023-09-24T15:00:00",
+  "endDate" : "2023-09-24T12:00:00",
   "isSpecificTime" : true,
   "alert" : true
 }

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(readOnly = true)
     public List<Schedule> find(Long scheduleId) {
         return List.of(findSchedule(scheduleId));
+    }
+
+    @Override
+    public List<Schedule> find(Long userId, LocalDate date) {
+        return scheduleRepository.findByDate(userId, date);
     }
 
     @Override

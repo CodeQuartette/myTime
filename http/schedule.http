@@ -1,12 +1,15 @@
 ### 스케줄 단건 조회
 GET {{localhost}}/schedule?scheduleId=1
 
+### 스케줄 일자별 조회
+GET {{localhost}}/schedule?userId=1&date=2023-09-23
+
 ### 스케줄생성
 POST {{localhost}}/schedule?userId=1
 Content-Type: application/json
 
 {
-  "title" : "결혼식 참석",
+  "title" : "트리 결혼식",
   "color" : "FFADAD",
   "startDate" : "2023-09-23T15:00:00",
   "endDate" : "2023-09-27T12:00:00",

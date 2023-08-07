@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +26,16 @@ public class ScheduleController {
      * */
 
     @GetMapping
-    public ResponseEntity<ScheduleDTO.ResponseList> find(@RequestParam(name = "scheduleId", required = false) Long scheduleId) {
-        List<Schedule> schedules = scheduleService.find(scheduleId);
+    public ResponseEntity<ScheduleDTO.ResponseList> find(@RequestParam(name = "scheduleId", required = false) Long scheduleId,
+                                                         @RequestParam(name = "userId", required = false) Long userId,
+                                                         @RequestParam(name = "date", required = false) LocalDate date) {
+        List<Schedule> schedules = new ArrayList<>();
+
+        if (scheduleId != null) {
+            schedules = scheduleService.find(scheduleId);
+        } else if (userId != null && date != null) {
+            schedules = scheduleService.find(userId, date);
+        }
 
         return ResponseEntity.ok(ScheduleDTO.ResponseList.builder()
                 .schedules(schedules.stream()

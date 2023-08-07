@@ -1,8 +1,10 @@
 package com.codeQuartette.myTime.service;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
+import com.codeQuartette.myTime.controller.dto.HabitHasMyDateDTO;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 public interface HabitService {
@@ -15,7 +17,7 @@ public interface HabitService {
 
     HabitDTO.Response getHabitById(Long id);
 
-    List<HabitDTO.Response> getHabitByDate(LocalDate date);
+    List<HabitHasMyDateDTO.Response> getHabitByMonth(YearMonth yearMonth);
 
     List<String> getCategory();
 }

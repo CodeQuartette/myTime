@@ -80,6 +80,14 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
+    public List<HabitHasMyDateDTO.Response> getHabitByMonth(YearMonth yearMonth) {
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
+        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateRepository.findAllByMyDate_DateBetween(startDate, endDate);
+        return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
+    }
+
+    @Override
     public List<String> getCategory() {
         return Arrays.stream(Category.values()).map(c -> c.toString()).toList();
     }

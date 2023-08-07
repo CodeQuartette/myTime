@@ -1,12 +1,13 @@
 package com.codeQuartette.myTime.controller;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
-import com.codeQuartette.myTime.domain.value.Category;
+import com.codeQuartette.myTime.controller.dto.HabitHasMyDateDTO;
 import com.codeQuartette.myTime.service.HabitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -30,14 +31,19 @@ public class HabitController {
         habitService.delete(id);
     }
 
-    @GetMapping("/habit")
-    public HabitDTO.Response getHabitById(@RequestParam Long id) {
+    @GetMapping(value = "/habit", params = "id")
+    public HabitDTO.Response getHabitById(@RequestParam(name = "id") Long id) {
         return habitService.getHabitById(id);
     }
 
     @GetMapping("/habits")
     public List<HabitDTO.Response> getHabitByDate(@RequestParam LocalDate date) {
         return habitService.getHabitByDate(date);
+    }
+
+    @GetMapping(value = "/habit", params = "month")
+    public List<HabitHasMyDateDTO.Response> getHabitByMonth(@RequestParam YearMonth yearMonth) {
+        return habitService.getHabitByMonth(yearMonth);
     }
 
     @GetMapping("/category")

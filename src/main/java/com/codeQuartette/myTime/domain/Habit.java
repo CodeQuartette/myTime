@@ -3,6 +3,7 @@ package com.codeQuartette.myTime.domain;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
 import com.codeQuartette.myTime.domain.value.Category;
+import com.codeQuartette.myTime.exception.CannotCreateHabitException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,10 @@ public class Habit {
     public static LocalDate checkEndDate(LocalDate startDate, LocalDate endDate) {
         if(endDate == null) {
             return startDate.plusYears(3L);
+        } else {
+            if(startDate.plusYears(3L).isBefore(endDate)) {
+                throw new CannotCreateHabitException("습관은 3년 이상으로 생성할 수 없습니다. 3년 뒤 갱신해주세요.");
+            }
         }
         return endDate;
     }
@@ -64,13 +69,17 @@ public class Habit {
         this.isBlind = habitRequestDTO.isBlind();
     }
 
-//    public void createHabitHasDate(MyDate myDate) {
-//        HabitHasDate habitHasDate = HabitHasDate.builder()
-//                .habit(this)
-//                .myDate(myDate)
-//                .isDone(false)
-//                .build();
-//
-//        this.habitHasDates.add(habitHasDate);
-//    }
+    public void createHabitHasDate(MyDate myDate) {
+        HabitHasMyDate habitHasDate = HabitHasMyDate.builder()
+                .habit(this)
+                .myDate(myDate)
+                .isDone(false)
+                .build();
+
+        this.habitHasMyDates.add(habitHasDate);
+    }
+
+    public void updateAllHabitHasMyDates(List<HabitHasMyDate> habitHasMyDates) {
+        this.habitHasMyDates.addAll(habitHasMyDates);
+    }
 }

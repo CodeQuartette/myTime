@@ -3,26 +3,20 @@ package com.codeQuartette.myTime.controller;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -34,15 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SoftAssertionsExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
 
     @Autowired
     private WebApplicationContext context;
-
-    @InjectSoftAssertions
-    private SoftAssertions softly;
 
     @LocalServerPort
     private int port;
@@ -59,6 +49,7 @@ class UserControllerTest {
 
     @Test
     @Transactional
+    @DisplayName("회원가입 API 테스트, 상태코드가 200이여야 한다.")
     void signup() throws Exception {
         String url = "http://localhost:" + port + "/signup";
         UserDTO.Request userDTO = UserDTO.Request.builder()
@@ -84,6 +75,7 @@ class UserControllerTest {
 
     @Test
     @Transactional
+    @DisplayName("로그인 API 테스트, 로그인 된 유저 정보와 토큰을 가져와야한다.")
     void login() throws Exception {
         String url = "http://localhost:" + port + "/login";
         UserDTO.Request userDTO = UserDTO.Request.builder()
@@ -102,40 +94,37 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.email").value("enolj76@gmail.com"))
                 .andExpect(jsonPath("$.birthday").value("1996-02-27"))
                 .andExpect(jsonPath("$.profileImage").value("/image/eno.jpg"))
-                .andExpect(jsonPath("$.gender").value("false"))
+                .andExpect(jsonPath("$.gender").value(false))
                 .andExpect(jsonPath("$.token", notNullValue()));
     }
 
     @Test
     @Transactional
+    @DisplayName("회원정보 조회 API 테스트, 토큰에 해당하는 유저 정보를 가져와야 한다.")
     void getUser() throws Exception {
         String url = "http://localhost:" + port + "/user";
+        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
 
-        MockHttpServletResponse response = mvc
+        mvc
                 .perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION,"Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE"))
+                        .header(HttpHeaders.AUTHORIZATION,token))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-
-        ObjectMapper mapper = new ObjectMapper();
-        Map responseMap = mapper.readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-
-        // SoftAssertions를 사용하면 통과되지 못한 테스트를 모두 보여준다.
-        softly.assertThat(responseMap.get("name")).isEqualTo("정인호");
-        softly.assertThat(responseMap.get("nickname")).isEqualTo("이노");
-        softly.assertThat(responseMap.get("email")).isEqualTo("enolj76@gmail.com");
-        softly.assertThat(responseMap.get("birthday")).isEqualTo("1996-02-27");
-        softly.assertThat(responseMap.get("profileImage")).isEqualTo("/image/eno.jpg");
-        softly.assertThat(responseMap.get("gender")).isEqualTo(false);
+                .andExpect(jsonPath("$.name").value("정인호"))
+                .andExpect(jsonPath("$.nickname").value("이노"))
+                .andExpect(jsonPath("$.email").value("enolj76@gmail.com"))
+                .andExpect(jsonPath("$.birthday").value("1996-02-27"))
+                .andExpect(jsonPath("$.profileImage").value("/image/eno.jpg"))
+                .andExpect(jsonPath("$.gender").value(false));
     }
 
     @Test
     @Transactional
+    @DisplayName("회원정보 수정 API 테스트, 변경 된 유저 정보가 일치해야 한다.")
     void updateUser() throws Exception {
         String url = "http://localhost:" + port + "/user";
+        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
         UserDTO.Request userDTO = UserDTO.Request.builder()
                 .password("1234")
                 .newPassword("5678")
@@ -146,7 +135,7 @@ class UserControllerTest {
         mvc
                 .perform(patch(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION,"Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE")
+                        .header(HttpHeaders.AUTHORIZATION,token)
                         .content(new ObjectMapper().writeValueAsString(userDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -157,8 +146,10 @@ class UserControllerTest {
 
     @Test
     @Transactional
+    @DisplayName("회원탈퇴 API 테스트, 해당 유저가 삭제되어야 한다.")
     void deleteUser() throws Exception {
         String url = "http://localhost:" + port + "/user";
+        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
         UserDTO.Request userDTO = UserDTO.Request.builder()
                 .email("enolj76@gmail.com")
                 .password("1234")
@@ -167,7 +158,7 @@ class UserControllerTest {
          mvc
                 .perform(delete(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION,"Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE")
+                        .header(HttpHeaders.AUTHORIZATION,token)
                         .content(new ObjectMapper().writeValueAsString(userDTO)))
                 .andDo(print())
                 .andExpect(status().isOk());

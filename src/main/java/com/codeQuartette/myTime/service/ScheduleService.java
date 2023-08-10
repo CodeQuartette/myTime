@@ -5,7 +5,6 @@ import com.codeQuartette.myTime.domain.Schedule;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.List;
 
 public interface ScheduleService {
 
@@ -13,9 +12,9 @@ public interface ScheduleService {
 
     void delete(Long userId, Long scheduleId);
 
-    List<Schedule> find(Long scheduleId);
+    ScheduleDTO.ResponseList find(Long scheduleId);
 
-    List<Schedule> find(Long userId, LocalDate date);
+    ScheduleDTO.ResponseList find(Long userId, LocalDate date);
 
-    List<Schedule> find(Long userId, YearMonth yearMonth);
+    ScheduleDTO.ResponseList find(Long userId, YearMonth yearMonth);
 }

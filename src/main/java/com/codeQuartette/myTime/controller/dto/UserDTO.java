@@ -1,7 +1,6 @@
 package com.codeQuartette.myTime.controller.dto;
 
 import com.codeQuartette.myTime.domain.User;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -30,7 +29,6 @@ public class UserDTO {
 
     @Getter
     @Builder
-    @AllArgsConstructor
     public static class Response {
 
         private Long id;

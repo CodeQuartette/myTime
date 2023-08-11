@@ -112,5 +112,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("조회하는 유저가 존재하지 않습니다."));
     }
-
 }

@@ -26,7 +26,8 @@ public class JwtProvider {
 
     private final String ISSURE = "codeQuartette";
     private final String ROLES = "roles";
-    private final int TOKEN_VALID_TIME = 24 * 60 * 60 * 1000; // 24시간
+    private final int ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000; // 30분
+    private final int REFRESH_TOKEN_VALID_TIME = 14 * 24 * 60 * 60 * 1000; // 14일
     private final Key SECRET_KEY;
 
     public JwtProvider(@Value("${jwt.secret}") String secretKey) {
@@ -34,18 +35,26 @@ public class JwtProvider {
         this.SECRET_KEY = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Authentication authentication) {
+    public TokenInfo createToken(Authentication authentication) {
         String roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        return Jwts.builder()
+        String accessToken = Jwts.builder()
                 .setIssuer(ISSURE)
                 .setSubject(authentication.getName())
                 .claim(ROLES, roles)
-                .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_TIME))
+                .setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_TIME))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .setIssuer(ISSURE)
+                .setExpiration(new Date(new Date().getTime() + REFRESH_TOKEN_VALID_TIME))
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+                .compact();
+
+        return TokenInfo.create("Bearer", accessToken, refreshToken);
     }
 
     // 토큰에 저장되어 있는 정보를 통해 인증되지 않은 Authentication 객체를 생성

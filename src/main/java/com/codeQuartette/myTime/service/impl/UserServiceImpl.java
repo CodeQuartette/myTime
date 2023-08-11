@@ -1,6 +1,7 @@
 package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.auth.JwtProvider;
+import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.exception.DuplicateNicknameException;
@@ -41,10 +42,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO.Response login(UserDTO.Request userDTO) {
         Authentication authentication = getAuthentication(userDTO.getEmail(), userDTO.getPassword());
+        TokenInfo tokenInfo = jwtProvider.createToken(authentication);
         User user = (User) authentication.getPrincipal();
-        user.updateToken(jwtProvider.createToken(authentication));
+        user.updateToken(tokenInfo.getRefreshToken());
         userRepository.save(user);
-        return UserDTO.Response.of(user);
+        UserDTO.Response responseUserDTO = UserDTO.Response.of(user);
+        responseUserDTO.setTokenInfo(tokenInfo);
+        return responseUserDTO;
     }
 
     @Override

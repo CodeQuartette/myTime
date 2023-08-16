@@ -21,4 +21,9 @@ public class ScheduleHasMyDate {
     @ManyToOne
     @JoinColumn(name = "my_date_id")
     private MyDate myDate;
+
+    public ScheduleHasMyDate update(MyDate myDate) {
+        this.myDate = myDate;
+        return this;
+    }
 }

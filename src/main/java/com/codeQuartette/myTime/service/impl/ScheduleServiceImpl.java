@@ -133,4 +133,50 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.delete(schedule);
     }
 
+
+    @Override
+    public ScheduleDTO.Response update(Long userId, Long scheduleId, ScheduleDTO.Request request) {
+        User user = userService.findUser(userId);
+
+        Schedule schedule = findSchedule(scheduleId);
+
+        if (request.getStartDate() != null || request.getEndDate() != null) {
+
+            List<MyDate> myDates = myDateService.saveAllMyDate(
+                    request.getStartDate().toLocalDate()
+                            .datesUntil(request.getEndDate().toLocalDate().plusDays(1))
+                            .map(date -> MyDate.builder()
+                                    .user(user)
+                                    .date(date)
+                                    .build())
+                            .collect(Collectors.toList()));
+
+
+            List<ScheduleHasMyDate> oldScheduleHasMyDates = scheduleHasMyDateService.findScheduleHasMyDate(schedule);
+            scheduleHasMyDateService.deleteAll(oldScheduleHasMyDates);
+
+
+            // 4. ScheduleHasMyDate List 만들기
+            List<ScheduleHasMyDate> newScheduleHasMyDates = myDates.stream()
+                    .map(myDate -> ScheduleHasMyDate.builder()
+                            .schedule(schedule)
+                            .myDate(myDate)
+                            .build())
+                    .collect(Collectors.toList());
+
+            scheduleHasMyDateService.saveAll(newScheduleHasMyDates);
+        }
+        schedule.update(request);
+        scheduleRepository.save(schedule);
+
+        return ScheduleDTO.Response.builder()
+                .id(schedule.getId())
+                .title(schedule.getTitle())
+                .color(schedule.getColor())
+                .startDate(schedule.getStartDateTime())
+                .endDate(schedule.getEndDateTime())
+                .alert(schedule.getAlert())
+                .isSpecificTime(schedule.getIsSpecificTime())
+                .build();
+    }
 }

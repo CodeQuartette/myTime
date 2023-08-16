@@ -17,4 +17,6 @@ public interface ScheduleService {
     ScheduleDTO.ResponseList find(Long userId, LocalDate date);
 
     ScheduleDTO.ResponseList find(Long userId, YearMonth yearMonth);
+
+    ScheduleDTO.Response update(Long userId, Long scheduleId, ScheduleDTO.Request request);
 }

@@ -2,7 +2,7 @@
 GET {{localhost}}/schedule?scheduleId=1
 
 ### 스케줄 일자별 조회
-GET {{localhost}}/schedule?userId=1&date=2023-09-23
+GET {{localhost}}/schedule?userId=1&date=2023-09-24
 
 ### 스케줄 월 별 조회
 GET {{localhost}}/schedule?userId=1&yearMonth=2023-09
@@ -15,11 +15,24 @@ Content-Type: application/json
 {
   "title" : "과일 가게",
   "color" : "FFADAD",
-  "startDate" : "2023-09-24T15:00:00",
+  "startDate" : "2023-09-21T15:00:00",
   "endDate" : "2023-09-24T12:00:00",
   "isSpecificTime" : true,
   "alert" : true
 }
 
+
+### 스케줄수정
+PUT {{localhost}}/schedule?userId=1&id=1
+Content-Type: application/json
+
+{
+  "title" : "과일 가게",
+  "color" : "FFADAD",
+  "startDate" : "2023-09-15T15:00:00",
+  "endDate" : "2023-09-20T12:00:00",
+  "isSpecificTime" : true,
+  "alert" : true
+}
 ### 스케줄 삭제
 DELETE {{localhost}}/schedule?userId=1&id=1

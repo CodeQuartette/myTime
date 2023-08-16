@@ -48,6 +48,14 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body("OK");
     }
 
+    @PutMapping
+    public ResponseEntity<ScheduleDTO.Response> update(@RequestParam(name = "userId") Long userId,
+                                                       @RequestParam(name = "id") Long scheduleId,
+                                                       @RequestBody ScheduleDTO.Request request) {
+
+        return ResponseEntity.ok(scheduleService.update(userId, scheduleId, request));
+    }
+
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestParam(name = "userId") Long userId,
                                          @RequestParam(name = "id") Long scheduleId) {

@@ -5,6 +5,9 @@ import com.codeQuartette.myTime.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class ToDoController {
@@ -24,5 +27,18 @@ public class ToDoController {
     @DeleteMapping("/todo")
     public void delete(@RequestParam Long id) {
         toDoService.delete(id);
+    }
+
+    //한건 조회
+    @GetMapping("/todo")
+    public ToDoDTO.Response getToDoById(@RequestParam Long id) {
+        return toDoService.getToDoById(id);
+    }
+
+    //날짜별 조회
+    @GetMapping("/toDos")
+    public List<ToDoDTO.Response> getToDoByDate(@RequestParam(name = "userId", required = false) Long userId,
+                                                @RequestParam(name = "date", required = false) LocalDate date) {
+        return toDoService.getToDoByDate(userId, date);
     }
 }

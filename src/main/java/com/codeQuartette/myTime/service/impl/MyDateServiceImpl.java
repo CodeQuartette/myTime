@@ -89,4 +89,8 @@ public class MyDateServiceImpl implements MyDateService {
     public boolean existMyDate(User user, LocalDate date) {
         return myDateRepository.findByUserAndAndDate(user, date).isPresent();
     }
+
+    public List<MyDate> find(LocalDate date) {
+        return myDateRepository.findAllByDate(date);
+    }
 }

@@ -11,6 +11,8 @@ import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -106,10 +108,5 @@ public class UserServiceImpl implements UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("조회하는 유저가 존재하지 않습니다."));
-    }
-
-    public User findById(Long userId) {
-      return userRepository.findById(userId)
-              .orElseThrow(() -> new NoSuchElementException("조회하는 유저가 존재하지 않습니다"));
     }
 }

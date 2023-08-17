@@ -15,23 +15,32 @@ public class ToDoController {
     private final ToDoService toDoService;
 
     @PostMapping("/todo")
-    public void create(@RequestParam Long userId, @RequestBody ToDoDTO.Request toDoRequestDTO){
+    public void create(@RequestParam(name = "userId", required = false) Long userId,
+                       @RequestBody ToDoDTO.Request toDoRequestDTO) {
         toDoService.create(userId, toDoRequestDTO);
     }
 
     @PatchMapping("/todo")
-    public void update(@RequestParam Long id, @RequestBody ToDoDTO.Request toDoRequestDTO) {
+    public void update(@RequestParam(name = "id", required = false) Long id,
+                       @RequestBody ToDoDTO.Request toDoRequestDTO) {
         toDoService.update(id, toDoRequestDTO);
     }
 
+    //할 일 완료 체크
+    @PatchMapping("/todo/isDone")
+    public void updateDone(@RequestParam(name = "id", required = false) Long id,
+                           @RequestBody ToDoDTO.Request toDoRequestDTO) {
+        toDoService.updateDone(id, toDoRequestDTO);
+    }
+
     @DeleteMapping("/todo")
-    public void delete(@RequestParam Long id) {
+    public void delete(@RequestParam(name = "id", required = false) Long id) {
         toDoService.delete(id);
     }
 
     //한건 조회
     @GetMapping("/todo")
-    public ToDoDTO.Response getToDoById(@RequestParam Long id) {
+    public ToDoDTO.Response getToDoById(@RequestParam(name = "id", required = false) Long id) {
         return toDoService.getToDoById(id);
     }
 

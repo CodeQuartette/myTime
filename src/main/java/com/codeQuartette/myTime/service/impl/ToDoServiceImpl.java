@@ -9,10 +9,11 @@ import com.codeQuartette.myTime.repository.ToDoRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.ToDoService;
 import com.codeQuartette.myTime.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +25,12 @@ public class ToDoServiceImpl implements ToDoService {
 
     private final MyDateService myDateService;
 
+    private ToDo handler(Long id) {
+        return toDoRepository.findById(id)
+                .orElseThrow(ToDoNotFoundException::new);
+    }
 
     @Override
-    @Transactional
     public void create(Long userId, ToDoDTO.Request toDoRequestDTO) {
         User user = userService.findById(userId);
         MyDate myDate = myDateService.findMyDate(user, toDoRequestDTO.getDate());
@@ -34,20 +38,40 @@ public class ToDoServiceImpl implements ToDoService {
         myDate.addToDo(toDo);
         myDateService.save(myDate);
     }
-    @Override
-    @Transactional
-    public void update(Long id, ToDoDTO.Request toDoRequestDTO) {
-        ToDo toDo = toDoRepository.findById(id)
-                .orElseThrow(ToDoNotFoundException::new);
 
-        toDo.update(toDoRequestDTO);
-        toDoRepository.save(toDo);
+    @Override
+    public void update(Long id, ToDoDTO.Request toDoRequestDTO) {
+        handler(id).update(toDoRequestDTO);
+        toDoRepository.save(handler(id));
+    }
+
+    //할 일 완료체크 - 수정
+    public void updateDone(Long id, ToDoDTO.Request toDoRequestDTO) {
+        handler(id).updateDone(toDoRequestDTO);
+        toDoRepository.save(handler(id));
     }
 
     @Override
     public void delete(Long id) {
-        ToDo toDo = toDoRepository.findById(id)
+        toDoRepository.delete(handler(id));
+    }
+
+    //한건 조회
+    @Override
+    public ToDoDTO.Response getToDoById(Long id) {
+        return ToDoDTO.Response.of(handler(id));
+    }
+
+    //날짜별 조회
+    @Override
+    public List<ToDoDTO.Response> getToDoByDate(Long userId, LocalDate date) {
+        MyDate myDate = myDateService.find(date).stream()
+                .filter(urDate -> urDate.getUser().getId().equals(userId))
+                .findFirst()
                 .orElseThrow(ToDoNotFoundException::new);
-        toDoRepository.delete(toDo);
+
+        return myDate.getToDos().stream()
+                .map(ToDoDTO.Response::of)
+                .toList();
     }
 }

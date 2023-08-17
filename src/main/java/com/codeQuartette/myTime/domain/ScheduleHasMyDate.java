@@ -1,10 +1,7 @@
 package com.codeQuartette.myTime.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -24,4 +21,9 @@ public class ScheduleHasMyDate {
     @ManyToOne
     @JoinColumn(name = "my_date_id")
     private MyDate myDate;
+
+    public ScheduleHasMyDate update(MyDate myDate) {
+        this.myDate = myDate;
+        return this;
+    }
 }

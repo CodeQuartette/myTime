@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,22 +29,73 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final MyDateService myDateService;
     private final ScheduleHasMyDateService scheduleHasMyDateService;
 
+    private Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new RuntimeException(" 해당하는 스케쥴이 없습니다"));
+    }
 
-    private Schedule saveSchedule(ScheduleDTO.create createDTO) {
+    private Schedule saveSchedule(ScheduleDTO.Request requestDTO) {
         return scheduleRepository.save(Schedule.builder()
-                .title(createDTO.getTitle())
-                .color(createDTO.getColor())
-                .startDateTime(createDTO.getStartDate())
-                .endDateTime(createDTO.getEndDate())
-                .isSpecificTime(createDTO.getIsSpecificTime())
-                .alert(createDTO.getAlert())
+                .title(requestDTO.getTitle())
+                .color(requestDTO.getColor())
+                .startDateTime(requestDTO.getStartDate())
+                .endDateTime(requestDTO.getEndDate())
+                .isSpecificTime(requestDTO.getIsSpecificTime())
+                .alert(requestDTO.getAlert())
                 .build());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ScheduleDTO.ResponseList find(Long scheduleId) {
+        return ScheduleDTO.ResponseList.builder()
+                .schedules(List.of(findSchedule(scheduleId)).stream()
+                        .map(schedule -> ScheduleDTO.Response.builder()
+                                .id(schedule.getId())
+                                .title(schedule.getTitle())
+                                .color(schedule.getColor())
+                                .startDate(schedule.getStartDateTime())
+                                .endDate(schedule.getEndDateTime())
+                                .isSpecificTime(schedule.getIsSpecificTime())
+                                .alert(schedule.getAlert()).build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    @Override
+    public ScheduleDTO.ResponseList find(Long userId, LocalDate date) {
+        return ScheduleDTO.ResponseList.builder()
+                .schedules(scheduleRepository.findByDate(userId, date).stream()
+                        .map(schedule -> ScheduleDTO.Response.builder()
+                                .id(schedule.getId())
+                                .title(schedule.getTitle())
+                                .color(schedule.getColor())
+                                .startDate(schedule.getStartDateTime())
+                                .endDate(schedule.getEndDateTime())
+                                .isSpecificTime(schedule.getIsSpecificTime())
+                                .alert(schedule.getAlert()).build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    @Override
+    public ScheduleDTO.ResponseList find(Long userId, YearMonth yearMonth) {
+        return ScheduleDTO.ResponseList.builder()
+                .schedules(scheduleRepository.findByYearMonth(userId, yearMonth).stream()
+                        .map(schedule -> ScheduleDTO.Response.builder()
+                                .id(schedule.getId())
+                                .title(schedule.getTitle())
+                                .color(schedule.getColor())
+                                .startDate(schedule.getStartDateTime())
+                                .endDate(schedule.getEndDateTime())
+                                .isSpecificTime(schedule.getIsSpecificTime())
+                                .alert(schedule.getAlert()).build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
 
     @Override
     @Transactional
-    public Schedule create(Long userId, ScheduleDTO.create request) {
+    public Schedule create(Long userId, ScheduleDTO.Request request) {
         // 1. user 찾기
         User user = userService.findUser(userId);
 
@@ -64,11 +117,66 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .map(myDate -> ScheduleHasMyDate.builder()
                         .schedule(schedule)
                         .myDate(myDate)
-                .build())
+                        .build())
                 .collect(Collectors.toList());
 
         scheduleHasMyDateService.saveAll(scheduleHasMyDates);
 
         return schedule;
+    }
+
+    @Override
+    public void delete(Long userId, Long scheduleId) {
+        User user = userService.findUser(userId);
+
+        Schedule schedule = findSchedule(scheduleId);
+        scheduleRepository.delete(schedule);
+    }
+
+
+    @Override
+    public ScheduleDTO.Response update(Long userId, Long scheduleId, ScheduleDTO.Request request) {
+        User user = userService.findUser(userId);
+
+        Schedule schedule = findSchedule(scheduleId);
+
+        if (request.getStartDate() != null || request.getEndDate() != null) {
+
+            List<MyDate> myDates = myDateService.saveAllMyDate(
+                    request.getStartDate().toLocalDate()
+                            .datesUntil(request.getEndDate().toLocalDate().plusDays(1))
+                            .map(date -> MyDate.builder()
+                                    .user(user)
+                                    .date(date)
+                                    .build())
+                            .collect(Collectors.toList()));
+
+
+            List<ScheduleHasMyDate> oldScheduleHasMyDates = scheduleHasMyDateService.findScheduleHasMyDate(schedule);
+            scheduleHasMyDateService.deleteAll(oldScheduleHasMyDates);
+
+
+            // 4. ScheduleHasMyDate List 만들기
+            List<ScheduleHasMyDate> newScheduleHasMyDates = myDates.stream()
+                    .map(myDate -> ScheduleHasMyDate.builder()
+                            .schedule(schedule)
+                            .myDate(myDate)
+                            .build())
+                    .collect(Collectors.toList());
+
+            scheduleHasMyDateService.saveAll(newScheduleHasMyDates);
+        }
+        schedule.update(request);
+        scheduleRepository.save(schedule);
+
+        return ScheduleDTO.Response.builder()
+                .id(schedule.getId())
+                .title(schedule.getTitle())
+                .color(schedule.getColor())
+                .startDate(schedule.getStartDateTime())
+                .endDate(schedule.getEndDateTime())
+                .alert(schedule.getAlert())
+                .isSpecificTime(schedule.getIsSpecificTime())
+                .build();
     }
 }

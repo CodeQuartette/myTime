@@ -8,7 +8,6 @@ import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.domain.value.Category;
 import com.codeQuartette.myTime.exception.HabitNotFoundException;
-import com.codeQuartette.myTime.repository.HabitHasMyDateRepository;
 import com.codeQuartette.myTime.repository.HabitRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import com.codeQuartette.myTime.service.HabitService;
@@ -54,12 +53,25 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public void update(Long id, HabitDTO.Request habitRequestDTO) {
+    public void update(Long userId, Long id, HabitDTO.Request habitRequestDTO) {
+        User user = userService.findById(userId);
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("수정하려는 습관을 조회할 수 없습니다."));
 
         habit.update(habitRequestDTO);
         habitRepository.save(habit);
+        habitHasMyDateService.deleteAllNotDone(habit.getId());
+
+        List<LocalDate> allHabitDates =
+                myDateService.checkAllDateByStartDateAndEndDate(habit.getStartDate(), habit.getEndDate(), habitRequestDTO.getRepeatDay());
+        List<MyDate> newMyDates = allHabitDates.stream().map(date -> new MyDate(date, user)).toList();
+        List<MyDate> saveMyDates = myDateService.saveAllMyDate(newMyDates);
+
+        List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
+        for(MyDate saveMyDate : saveMyDates) {
+            habitHasMyDates.add(HabitHasMyDate.builder().myDate(saveMyDate).habit(habit).build());
+        }
+        habitHasMyDateService.saveAll(habitHasMyDates);
     }
 
     @Override

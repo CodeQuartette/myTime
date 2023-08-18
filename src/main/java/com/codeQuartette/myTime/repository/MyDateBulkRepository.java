@@ -16,20 +16,6 @@ public class MyDateBulkRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional
-    public void saveAll(List<MyDate> myDates) {
-        String sql = "INSERT INTO my_date (date, user_id)" +
-                "VALUES (?, ?)";
-
-        jdbcTemplate.batchUpdate(sql,
-                myDates,
-                myDates.size(),
-                (PreparedStatement ps, MyDate myDate) -> {
-                    ps.setString(1, myDate.getDate().toString());
-                    ps.setString(2, myDate.getUser().getId().toString());
-                });
-    }
-
-    @Transactional
     public void saveAllIgnore(List<MyDate> myDates){
         String insertSql = "INSERT IGNORE INTO my_date (date, user_id)" +
                 "VALUES (?, ?)";

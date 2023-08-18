@@ -70,7 +70,7 @@ public class MyDateServiceImpl implements MyDateService {
     }
 
     public List<MyDate> saveAll(List<MyDate> myDates) {
-        myDateBulkRepository.saveAll(myDates);
+        myDateBulkRepository.saveAllIgnore(myDates);
 
         return myDateRepository.findAllByDateInAndUser(myDates.stream().map(myDate -> myDate.getDate()).toList(), myDates.get(0).getUser());
     }

@@ -22,8 +22,8 @@ public class HabitController {
     }
 
     @PatchMapping("/habit")
-    public void update(@RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
-        habitService.update(id, habitRequestDTO);
+    public void update(@RequestParam Long userId, @RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
+        habitService.update(userId, id, habitRequestDTO);
     }
 
     @DeleteMapping("/habit")

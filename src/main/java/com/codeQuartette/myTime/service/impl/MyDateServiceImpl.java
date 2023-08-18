@@ -1,9 +1,10 @@
 package com.codeQuartette.myTime.service.impl;
 
+
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
-import com.codeQuartette.myTime.repository.MyDateBulkRepository;
 import com.codeQuartette.myTime.repository.MyDateRepository;
+import com.codeQuartette.myTime.repository.impl.MyDateBulkRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -86,10 +87,6 @@ public class MyDateServiceImpl implements MyDateService {
         return myDateRepository.save(myDate);
     }
 
-    @Override
-    public MyDate findMyDate(User user, LocalDate date) {
-        return myDateRepository.findByUserAndAndDate(user, date).orElseThrow(() -> new RuntimeException("해당하는 MyDate가 없습니다"));
-    }
 
     @Override
     public boolean existMyDate(User user, LocalDate date) {

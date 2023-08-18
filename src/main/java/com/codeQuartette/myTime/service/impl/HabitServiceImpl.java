@@ -90,8 +90,9 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public List<HabitHasMyDateDTO.Response> getHabitByDate(LocalDate date) {
-        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateRepository.findAllByMyDate_DateIs(date);
+    public List<HabitHasMyDateDTO.Response> getHabitByDate(Long userId, LocalDate date) {
+        User user = userService.findById(userId);
+        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllByMyDateAndUser(user, date);
         return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
     }
 

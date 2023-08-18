@@ -1,7 +1,7 @@
 package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.domain.HabitHasMyDate;
-import com.codeQuartette.myTime.repository.HabitHasMyDateBulkRepository;
+import com.codeQuartette.myTime.repository.impl.HabitHasMyDateBulkRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

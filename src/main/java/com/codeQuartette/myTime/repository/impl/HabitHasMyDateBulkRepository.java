@@ -1,4 +1,4 @@
-package com.codeQuartette.myTime.repository;
+package com.codeQuartette.myTime.repository.impl;
 
 import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import lombok.RequiredArgsConstructor;

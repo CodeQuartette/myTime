@@ -13,6 +13,7 @@ import java.util.List;
 public class HabitHasMyMyDateServiceImpl implements HabitHasMyDateService {
 
     private final HabitHasMyDateBulkRepository habitHasDateBulkRepository;
+    private final HabitHasMyDateRepository habitHasMyDateRepository;
 
     public void saveAll(List<HabitHasMyDate> habitHasMyDates) {
         habitHasDateBulkRepository.saveAll(habitHasMyDates);

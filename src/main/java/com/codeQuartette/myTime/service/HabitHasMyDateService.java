@@ -1,18 +1,18 @@
 package com.codeQuartette.myTime.service;
 
 import com.codeQuartette.myTime.domain.HabitHasMyDate;
-import com.codeQuartette.myTime.domain.User;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 public interface HabitHasMyDateService {
 
-    public void saveAll(List<HabitHasMyDate> habitHasMyDates);
+    void saveAll(List<HabitHasMyDate> habitHasMyDates);
 
-    public void deleteAllNotDone(Long habitId);
+    void deleteAllNotDone(Long habitId);
 
-    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate date);
+    List<HabitHasMyDate> findAllHabitHasMyDate(Long userId, LocalDate date);
 
-    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate startDate, LocalDate endDate);
+    List<HabitHasMyDate> findAllHabitHasMyDate(Long userId, YearMonth yearMonth);
 }

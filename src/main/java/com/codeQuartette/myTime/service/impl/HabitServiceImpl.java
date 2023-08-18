@@ -81,27 +81,9 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public HabitDTO.Response findHabit(Long id) {
-        Habit habit = habitRepository.findById(id)
+    public Habit findHabit(Long id) {
+        return habitRepository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("해당 습관을 조회할 수 없습니다."));
-
-        return HabitDTO.Response.of(habit);
-    }
-
-    @Override
-    public List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, LocalDate date) {
-        User user = userService.findUser(userId);
-        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(user, date);
-        return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
-    }
-
-    @Override
-    public List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, YearMonth yearMonth) {
-        User user = userService.findUser(userId);
-        LocalDate startDate = yearMonth.atDay(1);
-        LocalDate endDate = yearMonth.atEndOfMonth();
-        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(user, startDate, endDate);
-        return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
     }
 
     @Override

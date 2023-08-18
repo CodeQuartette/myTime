@@ -46,51 +46,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true)
-    public ScheduleDTO.ResponseList find(Long scheduleId) {
-        return ScheduleDTO.ResponseList.builder()
-                .schedules(List.of(findSchedule(scheduleId)).stream()
-                        .map(schedule -> ScheduleDTO.Response.builder()
-                                .id(schedule.getId())
-                                .title(schedule.getTitle())
-                                .color(schedule.getColor())
-                                .startDate(schedule.getStartDateTime())
-                                .endDate(schedule.getEndDateTime())
-                                .isSpecificTime(schedule.getIsSpecificTime())
-                                .alert(schedule.getAlert()).build())
-                        .collect(Collectors.toList()))
-                .build();
+    public List<Schedule> find(Long scheduleId) {
+        return List.of(findSchedule(scheduleId));
     }
 
     @Override
-    public ScheduleDTO.ResponseList find(Long userId, LocalDate date) {
-        return ScheduleDTO.ResponseList.builder()
-                .schedules(scheduleRepository.findByDate(userId, date).stream()
-                        .map(schedule -> ScheduleDTO.Response.builder()
-                                .id(schedule.getId())
-                                .title(schedule.getTitle())
-                                .color(schedule.getColor())
-                                .startDate(schedule.getStartDateTime())
-                                .endDate(schedule.getEndDateTime())
-                                .isSpecificTime(schedule.getIsSpecificTime())
-                                .alert(schedule.getAlert()).build())
-                        .collect(Collectors.toList()))
-                .build();
+    public List<Schedule> find(Long userId, LocalDate date) {
+        return scheduleRepository.findByDate(userId, date);
     }
 
     @Override
-    public ScheduleDTO.ResponseList find(Long userId, YearMonth yearMonth) {
-        return ScheduleDTO.ResponseList.builder()
-                .schedules(scheduleRepository.findByYearMonth(userId, yearMonth).stream()
-                        .map(schedule -> ScheduleDTO.Response.builder()
-                                .id(schedule.getId())
-                                .title(schedule.getTitle())
-                                .color(schedule.getColor())
-                                .startDate(schedule.getStartDateTime())
-                                .endDate(schedule.getEndDateTime())
-                                .isSpecificTime(schedule.getIsSpecificTime())
-                                .alert(schedule.getAlert()).build())
-                        .collect(Collectors.toList()))
-                .build();
+    public List<Schedule> find(Long userId, YearMonth yearMonth) {
+        return scheduleRepository.findByYearMonth(userId, yearMonth);
     }
 
     @Override
@@ -135,7 +102,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     @Override
-    public ScheduleDTO.Response update(Long userId, Long scheduleId, ScheduleDTO.Request request) {
+    public Schedule update(Long userId, Long scheduleId, ScheduleDTO.Request request) {
         User user = userService.findUser(userId);
 
         Schedule schedule = findSchedule(scheduleId);
@@ -167,16 +134,8 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleHasMyDateService.saveAll(newScheduleHasMyDates);
         }
         schedule.update(request);
-        scheduleRepository.save(schedule);
 
-        return ScheduleDTO.Response.builder()
-                .id(schedule.getId())
-                .title(schedule.getTitle())
-                .color(schedule.getColor())
-                .startDate(schedule.getStartDateTime())
-                .endDate(schedule.getEndDateTime())
-                .alert(schedule.getAlert())
-                .isSpecificTime(schedule.getIsSpecificTime())
-                .build();
+        return scheduleRepository.save(schedule);
+
     }
 }

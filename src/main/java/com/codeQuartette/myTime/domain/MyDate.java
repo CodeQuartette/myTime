@@ -34,6 +34,7 @@ public class MyDate {
     @JoinColumn(name = "my_date_id", nullable = false)
     private List<ToDo> toDos = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "myDate", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
 

@@ -5,10 +5,12 @@ import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.HabitHasMyDateBulkRepository;
 import com.codeQuartette.myTime.repository.HabitHasMyDateRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
+import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -17,6 +19,7 @@ public class HabitHasMyMyDateServiceImpl implements HabitHasMyDateService {
 
     private final HabitHasMyDateBulkRepository habitHasDateBulkRepository;
     private final HabitHasMyDateRepository habitHasMyDateRepository;
+    private final UserService userService;
 
     public void saveAll(List<HabitHasMyDate> habitHasMyDates) {
         habitHasDateBulkRepository.saveAll(habitHasMyDates);
@@ -26,11 +29,17 @@ public class HabitHasMyMyDateServiceImpl implements HabitHasMyDateService {
         habitHasDateBulkRepository.deleteAllNotDone(habitId);
     }
 
-    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate date) {
+    @Override
+    public List<HabitHasMyDate> findAllHabitHasMyDate(Long userId, LocalDate date) {
+        User user = userService.findUser(userId);
         return habitHasMyDateRepository.findAllByMyDate_UserAndMyDate_DateIs(user, date);
     }
 
-    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate startDate, LocalDate endDate) {
+    @Override
+    public List<HabitHasMyDate> findAllHabitHasMyDate(Long userId, YearMonth yearMonth) {
+        User user = userService.findUser(userId);
+        LocalDate startDate = yearMonth.atDay(1);
+        LocalDate endDate = yearMonth.atEndOfMonth();
         return habitHasMyDateRepository.findAllByMyDate_UserAndMyDate_DateBetween(user, startDate, endDate);
     }
 }

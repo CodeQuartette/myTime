@@ -1,10 +1,8 @@
 package com.codeQuartette.myTime.service;
 
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
-import com.codeQuartette.myTime.controller.dto.HabitHasMyDateDTO;
+import com.codeQuartette.myTime.domain.Habit;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 
 public interface HabitService {
@@ -15,11 +13,7 @@ public interface HabitService {
 
     void delete(Long id);
 
-    HabitDTO.Response findHabit(Long id);
-
-    List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, LocalDate date);
-
-    List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, YearMonth yearMonth);
+    Habit findHabit(Long id);
 
     List<String> getCategory();
 }

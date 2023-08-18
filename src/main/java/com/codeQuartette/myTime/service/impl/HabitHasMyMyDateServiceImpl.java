@@ -26,11 +26,11 @@ public class HabitHasMyMyDateServiceImpl implements HabitHasMyDateService {
         habitHasDateBulkRepository.deleteAllNotDone(habitId);
     }
 
-    public List<HabitHasMyDate> findAllByMyDateAndUser(User user, LocalDate date) {
+    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate date) {
         return habitHasMyDateRepository.findAllByMyDate_UserAndMyDate_DateIs(user, date);
     }
 
-    public List<HabitHasMyDate> findAllByUserAndStartDateAndEndDate(User user, LocalDate startDate, LocalDate endDate) {
+    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate startDate, LocalDate endDate) {
         return habitHasMyDateRepository.findAllByMyDate_UserAndMyDate_DateBetween(user, startDate, endDate);
     }
 }

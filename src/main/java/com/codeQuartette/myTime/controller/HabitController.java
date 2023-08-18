@@ -41,9 +41,9 @@ public class HabitController {
         return habitService.getHabitByDate(date);
     }
 
-    @GetMapping(value = "/habit", params = "month")
-    public List<HabitHasMyDateDTO.Response> getHabitByMonth(@RequestParam YearMonth yearMonth) {
-        return habitService.getHabitByMonth(yearMonth);
+    @GetMapping(value = "/habit", params = {"userId", "yearMonth"})
+    public List<HabitHasMyDateDTO.Response> getHabitByMonth(@RequestParam(name = "userId") Long userId, @RequestParam YearMonth yearMonth) {
+        return habitService.getHabitByMonth(userId, yearMonth);
     }
 
     @GetMapping("/category")

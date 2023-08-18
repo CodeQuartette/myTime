@@ -19,7 +19,7 @@ public interface HabitService {
 
     List<HabitHasMyDateDTO.Response> getHabitByDate(LocalDate date);
 
-    List<HabitHasMyDateDTO.Response> getHabitByMonth(YearMonth yearMonth);
+    List<HabitHasMyDateDTO.Response> getHabitByMonth(Long userId, YearMonth yearMonth);
 
     List<String> getCategory();
 }

@@ -12,7 +12,7 @@ public interface HabitHasMyDateService {
 
     public void deleteAllNotDone(Long habitId);
 
-    public List<HabitHasMyDate> findAllByMyDateAndUser(User user, LocalDate date);
+    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate date);
 
-    public List<HabitHasMyDate> findAllByUserAndStartDateAndEndDate(User user, LocalDate startDate, LocalDate endDate);
+    public List<HabitHasMyDate> findAllHabitHasMyDate(User user, LocalDate startDate, LocalDate endDate);
 }

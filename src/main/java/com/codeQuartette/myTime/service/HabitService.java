@@ -15,11 +15,11 @@ public interface HabitService {
 
     void delete(Long id);
 
-    HabitDTO.Response getHabitById(Long id);
+    HabitDTO.Response findHabit(Long id);
 
-    List<HabitHasMyDateDTO.Response> getHabitByDate(Long userId, LocalDate date);
+    List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, LocalDate date);
 
-    List<HabitHasMyDateDTO.Response> getHabitByMonth(YearMonth yearMonth);
+    List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, YearMonth yearMonth);
 
     List<String> getCategory();
 }

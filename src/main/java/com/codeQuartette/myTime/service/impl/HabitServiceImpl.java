@@ -35,7 +35,7 @@ public class HabitServiceImpl implements HabitService {
     @Override
     @Transactional
     public void create(Long userId, HabitDTO.Request habitRequestDTO) {
-        User user = userService.findById(userId);
+        User user = userService.findUser(userId);
         Habit habit = Habit.create(habitRequestDTO);
         List<LocalDate> allHabitDates =
                 myDateService.checkAllDateByStartDateAndEndDate(habit.getStartDate(), habit.getEndDate(), habitRequestDTO.getRepeatDay());
@@ -53,7 +53,7 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public void update(Long userId, Long id, HabitDTO.Request habitRequestDTO) {
-        User user = userService.findById(userId);
+        User user = userService.findUser(userId);
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("수정하려는 습관을 조회할 수 없습니다."));
 
@@ -81,7 +81,7 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public HabitDTO.Response getHabitById(Long id) {
+    public HabitDTO.Response findHabit(Long id) {
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("해당 습관을 조회할 수 없습니다."));
 
@@ -89,17 +89,18 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public List<HabitHasMyDateDTO.Response> getHabitByDate(Long userId, LocalDate date) {
-        User user = userService.findById(userId);
-        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllByMyDateAndUser(user, date);
+    public List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, LocalDate date) {
+        User user = userService.findUser(userId);
+        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(user, date);
         return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
     }
 
     @Override
-    public List<HabitHasMyDateDTO.Response> getHabitByMonth(YearMonth yearMonth) {
+    public List<HabitHasMyDateDTO.Response> findAllHabit(Long userId, YearMonth yearMonth) {
+        User user = userService.findUser(userId);
         LocalDate startDate = yearMonth.atDay(1);
         LocalDate endDate = yearMonth.atEndOfMonth();
-        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateRepository.findAllByMyDate_DateBetween(startDate, endDate);
+        List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(user, startDate, endDate);
         return habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
     }
 

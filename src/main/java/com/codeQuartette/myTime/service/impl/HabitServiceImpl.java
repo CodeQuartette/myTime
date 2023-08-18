@@ -28,7 +28,6 @@ import java.util.List;
 public class HabitServiceImpl implements HabitService {
 
     private final HabitRepository habitRepository;
-    private final HabitHasMyDateRepository habitHasMyDateRepository;
     private final UserService userService;
     private final MyDateService myDateService;
     private final HabitHasMyDateService habitHasMyDateService;

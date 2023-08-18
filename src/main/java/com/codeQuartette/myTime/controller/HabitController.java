@@ -36,9 +36,9 @@ public class HabitController {
         return habitService.getHabitById(id);
     }
 
-    @GetMapping(value = "/habit", params = "date")
-    public List<HabitHasMyDateDTO.Response> getHabitByDate(@RequestParam(name = "date") LocalDate date) {
-        return habitService.getHabitByDate(date);
+    @GetMapping(value = "/habit", params = {"userId", "date"})
+    public List<HabitHasMyDateDTO.Response> getHabitByDate(@RequestParam(name = "userId") Long userId, @RequestParam(name = "date") LocalDate date) {
+        return habitService.getHabitByDate(userId, date);
     }
 
     @GetMapping(value = "/habit", params = {"userId", "yearMonth"})

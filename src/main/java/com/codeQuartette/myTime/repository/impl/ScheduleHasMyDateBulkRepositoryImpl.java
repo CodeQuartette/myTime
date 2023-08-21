@@ -1,6 +1,7 @@
-package com.codeQuartette.myTime.repository;
+package com.codeQuartette.myTime.repository.impl;
 
 import com.codeQuartette.myTime.domain.ScheduleHasMyDate;
+import com.codeQuartette.myTime.repository.ScheduleHasMyDateBulkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;

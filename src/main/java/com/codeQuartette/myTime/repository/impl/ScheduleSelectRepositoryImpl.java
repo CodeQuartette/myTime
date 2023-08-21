@@ -1,6 +1,7 @@
-package com.codeQuartette.myTime.repository;
+package com.codeQuartette.myTime.repository.impl;
 
 import com.codeQuartette.myTime.domain.Schedule;
+import com.codeQuartette.myTime.repository.ScheduleSelectRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

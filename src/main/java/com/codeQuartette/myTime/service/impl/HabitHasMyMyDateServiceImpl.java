@@ -2,8 +2,8 @@ package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import com.codeQuartette.myTime.domain.User;
-import com.codeQuartette.myTime.repository.HabitHasMyDateBulkRepository;
 import com.codeQuartette.myTime.repository.HabitHasMyDateRepository;
+import com.codeQuartette.myTime.repository.impl.HabitHasMyDateBulkRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;

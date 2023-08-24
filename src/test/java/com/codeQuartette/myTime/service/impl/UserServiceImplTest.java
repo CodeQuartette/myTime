@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.service.impl;
 
+import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.UserRepository;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+
+import static com.codeQuartette.myTime.auth.JwtProvider.BEARER;
 
 @ExtendWith(SoftAssertionsExtension.class)
 @SpringBootTest
@@ -71,7 +74,24 @@ class UserServiceImplTest {
         UserDTO.Response responseUserDTO = userServiceImpl.login(userDTO);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
 
-        softly.assertThat(user.getToken()).isEqualTo(responseUserDTO.getToken());
+        softly.assertThat(user.getToken()).isEqualTo(responseUserDTO.getTokenInfo().getRefreshToken());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("토큰 재발급 서비스 로직 테스트, refreshToken을 확인하여 accessToken을 재발급 해야 한다.")
+    void reissueToken() {
+        String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIn0.ysfQimdEO_LZwRgZEEPDI0dxQKlvnIXSWQgpZHnJqRg";
+        UserDTO.Request userDTO = UserDTO.Request.builder()
+                .email("enolj76@gmail.com")
+                .password("1234")
+                .build();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+        TokenInfo tokenInfo = userServiceImpl.reissueToken(refreshToken, authentication);
+
+        softly.assertThat(tokenInfo.getGrantType()).isEqualTo(BEARER);
+        softly.assertThat(tokenInfo.getRefreshToken()).isEqualTo(refreshToken);
+        softly.assertThat(tokenInfo.getAccessToken()).isNotNull();
     }
 
     @Test

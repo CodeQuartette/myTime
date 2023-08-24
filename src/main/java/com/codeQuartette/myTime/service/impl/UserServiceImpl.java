@@ -6,6 +6,7 @@ import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.exception.DuplicateNicknameException;
 import com.codeQuartette.myTime.exception.DuplicateUserException;
+import com.codeQuartette.myTime.exception.TokenNotMatchException;
 import com.codeQuartette.myTime.exception.UserNotFoundException;
 import com.codeQuartette.myTime.repository.UserRepository;
 import com.codeQuartette.myTime.service.UserService;
@@ -20,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+
+import static com.codeQuartette.myTime.auth.JwtProvider.BEARER;
 
 @Service
 @RequiredArgsConstructor
@@ -42,13 +45,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO.Response login(UserDTO.Request userDTO) {
         Authentication authentication = getAuthentication(userDTO.getEmail(), userDTO.getPassword());
-        TokenInfo tokenInfo = jwtProvider.createToken(authentication);
+        String refreshToken = jwtProvider.createRefreshToken();
+        String accessToken = jwtProvider.createAccessToken(authentication);
         User user = (User) authentication.getPrincipal();
-        user.updateToken(tokenInfo.getRefreshToken());
+        user.updateToken(refreshToken);
         userRepository.save(user);
         UserDTO.Response responseUserDTO = UserDTO.Response.of(user);
+        TokenInfo tokenInfo = TokenInfo.create(BEARER, refreshToken, accessToken);
         responseUserDTO.setTokenInfo(tokenInfo);
         return responseUserDTO;
+    }
+
+    @Override
+    public TokenInfo reissueToken(String refreshToken, Authentication authentication) {
+        User user = findUser(authentication.getName());
+        if (!user.matchToken(refreshToken)) {
+            throw new TokenNotMatchException();
+        }
+        String accessToken = jwtProvider.createAccessToken(authentication);
+        return TokenInfo.create(BEARER, user.getToken(), accessToken);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.service;
 
+import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.domain.User;
 
 import com.codeQuartette.myTime.controller.dto.UserDTO;
@@ -20,4 +21,6 @@ public interface UserService {
     void deleteUser(Authentication authentication, UserDTO.Request userDTO);
 
     User findUser(Long userId);
+
+    TokenInfo reissueToken(String refreshToken, Authentication authentication);
 }

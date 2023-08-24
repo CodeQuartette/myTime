@@ -81,6 +81,10 @@ public class User implements UserDetails { // spring security 자체적으로 Us
         this.token = token;
     }
 
+    public boolean matchToken(String token) {
+        return this.token.equals(token);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()

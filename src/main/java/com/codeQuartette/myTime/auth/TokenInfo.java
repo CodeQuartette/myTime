@@ -8,14 +8,14 @@ import lombok.Getter;
 public class TokenInfo {
 
     private String grantType;
-    private String accessToken;
     private String refreshToken;
+    private String accessToken;
 
-    public static TokenInfo create(String grantType, String accessToken, String refreshToken) {
+    public static TokenInfo create(String grantType, String refreshToken, String accessToken) {
         return TokenInfo.builder()
                 .grantType(grantType)
-                .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .accessToken(accessToken)
                 .build();
     }
 }

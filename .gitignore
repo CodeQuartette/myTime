@@ -229,4 +229,9 @@ gradle-app.setting
 .idea
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java,gradle,intellij
+
+#Docker Mount File
 /docker/
+
+# Spring Resr Docs HTML File
+/src/main/resources/static/docs/

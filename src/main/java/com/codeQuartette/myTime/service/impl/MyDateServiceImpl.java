@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.service.impl;
 
+
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.MyDateRepository;
@@ -32,7 +33,7 @@ public class MyDateServiceImpl implements MyDateService {
     }
 
     public List<MyDate> findAllByUserId(Long userId) {
-        User user = userService.findUser(userId);
+        User user = userService.findById(userId);
         return myDateRepository.findAllByUser(user);
     }
 
@@ -52,7 +53,7 @@ public class MyDateServiceImpl implements MyDateService {
         없는 날은 List에 담고, 있는 날은 id 값 가지고 List에 담아 리턴
      */
     public List<MyDate> validateDates(Long userId, List<LocalDate> habitDates) {
-        User user = userService.findUser(userId);
+        User user = userService.findById(userId);
         List<MyDate> myDates = this.findAllByUserId(userId);
         List<MyDate> allHabitDates = habitDates.stream().map(date -> new MyDate(date, user)).toList(); //습관에 해당하는 모든 날짜
 
@@ -70,7 +71,7 @@ public class MyDateServiceImpl implements MyDateService {
     }
 
     public List<MyDate> saveAll(List<MyDate> myDates) {
-        myDateBulkRepository.saveAllIgnore(myDates);
+        myDateBulkRepository.saveAll(myDates);
 
         return myDateRepository.findAllByDateInAndUser(myDates.stream().map(myDate -> myDate.getDate()).toList(), myDates.get(0).getUser());
     }
@@ -86,10 +87,6 @@ public class MyDateServiceImpl implements MyDateService {
         return myDateRepository.save(myDate);
     }
 
-    @Override
-    public MyDate find(User user, LocalDate date) {
-        return myDateRepository.findByUserAndAndDate(user, date).orElseThrow(() -> new RuntimeException("해당하는 MyDate가 없습니다"));
-    }
 
     @Override
     public boolean existMyDate(User user, LocalDate date) {

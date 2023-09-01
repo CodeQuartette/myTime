@@ -18,7 +18,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
+import static com.codeQuartette.myTime.auth.JwtProvider.BEARER;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -95,7 +97,44 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.birthday").value("1996-02-27"))
                 .andExpect(jsonPath("$.profileImage").value("/image/eno.jpg"))
                 .andExpect(jsonPath("$.gender").value(false))
-                .andExpect(jsonPath("$.token", notNullValue()));
+                .andExpect(jsonPath("$.tokenInfo.grantType").value(BEARER))
+                .andExpect(jsonPath("$.tokenInfo.refreshToken", notNullValue()))
+                .andExpect(jsonPath("$.tokenInfo.accessToken", notNullValue()));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("로그아웃 API 테스트, 상태코드가 200이여야 한다.")
+    void logout() throws Exception {
+        String url = "http://localhost:" + port + "/logout";
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
+
+        mvc
+                .perform(get(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION,accessToken))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("토큰 재발급 API 테스트, 토큰의 정보들이 일치해야 한다.")
+    void reissueToken() throws Exception {
+        String url = "http://localhost:" + port + "/reissueToken";
+        String refreshToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIn0.ysfQimdEO_LZwRgZEEPDI0dxQKlvnIXSWQgpZHnJqRg";
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
+
+        mvc
+                .perform(get(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Refresh_Token", refreshToken)
+                        .header(HttpHeaders.AUTHORIZATION,accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grantType").value(BEARER))
+                .andExpect(jsonPath("$.refreshToken", notNullValue()))
+                .andExpect(jsonPath("$.accessToken", notNullValue()));
     }
 
     @Test
@@ -103,12 +142,12 @@ class UserControllerTest {
     @DisplayName("회원정보 조회 API 테스트, 토큰에 해당하는 유저 정보를 가져와야 한다.")
     void getUser() throws Exception {
         String url = "http://localhost:" + port + "/user";
-        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
 
         mvc
                 .perform(get(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION,token))
+                        .header(HttpHeaders.AUTHORIZATION,accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("정인호"))
@@ -124,7 +163,7 @@ class UserControllerTest {
     @DisplayName("회원정보 수정 API 테스트, 변경 된 유저 정보가 일치해야 한다.")
     void updateUser() throws Exception {
         String url = "http://localhost:" + port + "/user";
-        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
         UserDTO.Request userDTO = UserDTO.Request.builder()
                 .password("1234")
                 .newPassword("5678")
@@ -135,13 +174,13 @@ class UserControllerTest {
         mvc
                 .perform(patch(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION,token)
+                        .header(HttpHeaders.AUTHORIZATION,accessToken)
                         .content(new ObjectMapper().writeValueAsString(userDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("정호인"))
                 .andExpect(jsonPath("$.nickname").value("eno"))
-                .andExpect(jsonPath("$.token", notNullValue()));
+                .andExpect(jsonPath("$.tokenInfo", nullValue()));
     }
 
     @Test
@@ -149,7 +188,7 @@ class UserControllerTest {
     @DisplayName("회원탈퇴 API 테스트, 해당 유저가 삭제되어야 한다.")
     void deleteUser() throws Exception {
         String url = "http://localhost:" + port + "/user";
-        String token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
         UserDTO.Request userDTO = UserDTO.Request.builder()
                 .email("enolj76@gmail.com")
                 .password("1234")
@@ -158,7 +197,7 @@ class UserControllerTest {
          mvc
                 .perform(delete(url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.AUTHORIZATION,token)
+                        .header(HttpHeaders.AUTHORIZATION,accessToken)
                         .content(new ObjectMapper().writeValueAsString(userDTO)))
                 .andDo(print())
                 .andExpect(status().isOk());

@@ -103,15 +103,15 @@ class UserServiceImplTest {
                 .password("1234")
                 .build();
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        UserDTO.Response responseUserDTO = userServiceImpl.getUser(authentication);
-        User user = userRepository.findByEmail(authentication.getName()).get();
+        User user = userServiceImpl.getUser(authentication);
+        User targetUser = userRepository.findByEmail(authentication.getName()).get();
 
-        softly.assertThat(responseUserDTO.getName()).isEqualTo(user.getName());
-        softly.assertThat(responseUserDTO.getNickname()).isEqualTo(user.getNickname());
-        softly.assertThat(responseUserDTO.getEmail()).isEqualTo(user.getEmail());
-        softly.assertThat(responseUserDTO.getBirthday()).isEqualTo(user.getBirthday());
-        softly.assertThat(responseUserDTO.getProfileImage()).isEqualTo(user.getProfileImage());
-        softly.assertThat(responseUserDTO.getGender()).isEqualTo(user.getGender());
+        softly.assertThat(user.getName()).isEqualTo(targetUser.getName());
+        softly.assertThat(user.getNickname()).isEqualTo(targetUser.getNickname());
+        softly.assertThat(user.getEmail()).isEqualTo(targetUser.getEmail());
+        softly.assertThat(user.getBirthday()).isEqualTo(targetUser.getBirthday());
+        softly.assertThat(user.getProfileImage()).isEqualTo(targetUser.getProfileImage());
+        softly.assertThat(user.getGender()).isEqualTo(targetUser.getGender());
     }
 
     @Test

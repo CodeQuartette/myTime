@@ -67,19 +67,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDTO.Response getUser(Authentication authentication) {
-        User user = findUser(authentication.getName());
-        return UserDTO.Response.of(user);
+    public User getUser(Authentication authentication) {
+        return findUser(authentication.getName());
     }
 
     @Override
-    public UserDTO.Response updateUser(Authentication authentication, UserDTO.Request userDTO) {
+    public User updateUser(Authentication authentication, UserDTO.Request userDTO) {
         Authentication targetUserAuthentication = getAuthentication(authentication.getName(), userDTO.getPassword());
         User user = (User) targetUserAuthentication.getPrincipal();
         doubleCheckNickname(userDTO);
         user.updateInfo(userDTO, bCryptPasswordEncoder);
-        userRepository.save(user);
-        return UserDTO.Response.of(user);
+        return userRepository.save(user);
     }
 
     @Override

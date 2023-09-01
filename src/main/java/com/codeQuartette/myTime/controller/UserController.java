@@ -2,6 +2,7 @@ package com.codeQuartette.myTime.controller;
 
 import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
+import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.service.UserService;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,12 +37,14 @@ public class UserController {
 
     @GetMapping("/user")
     public UserDTO.Response getUser(Authentication authentication) {
-        return userService.getUser(authentication);
+        User user = userService.getUser(authentication);
+        return UserDTO.Response.of(user);
     }
 
     @PatchMapping("/user")
     public UserDTO.Response updateUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
-        return userService.updateUser(authentication, userDTO);
+        User user = userService.updateUser(authentication, userDTO);
+        return UserDTO.Response.of(user);
     }
 
     @DeleteMapping("/user")

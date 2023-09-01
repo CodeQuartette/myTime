@@ -14,13 +14,13 @@ public interface UserService {
 
     UserDTO.Response login(UserDTO.Request userDTO);
 
-    UserDTO.Response getUser(Authentication authentication);
+    TokenInfo reissueToken(String refreshToken, Authentication authentication);
 
-    UserDTO.Response updateUser(Authentication authentication, UserDTO.Request userDTO);
+    User getUser(Authentication authentication);
+
+    User updateUser(Authentication authentication, UserDTO.Request userDTO);
 
     void deleteUser(Authentication authentication, UserDTO.Request userDTO);
 
     User findUser(Long userId);
-
-    TokenInfo reissueToken(String refreshToken, Authentication authentication);
 }

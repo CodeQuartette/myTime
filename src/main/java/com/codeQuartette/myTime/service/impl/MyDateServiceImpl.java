@@ -86,10 +86,6 @@ public class MyDateServiceImpl implements MyDateService {
         return myDateRepository.save(myDate);
     }
 
-    @Override
-    public MyDate find(User user, LocalDate date) {
-        return myDateRepository.findByUserAndAndDate(user, date).orElseThrow(() -> new RuntimeException("해당하는 MyDate가 없습니다"));
-    }
 
     @Override
     public boolean existMyDate(User user, LocalDate date) {

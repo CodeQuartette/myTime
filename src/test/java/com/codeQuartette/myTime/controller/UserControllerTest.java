@@ -104,6 +104,21 @@ class UserControllerTest {
 
     @Test
     @Transactional
+    @DisplayName("로그아웃 API 테스트, 상태코드가 200이여야 한다.")
+    void logout() throws Exception {
+        String url = "http://localhost:" + port + "/logout";
+        String accessToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE";
+
+        mvc
+                .perform(get(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION,accessToken))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
     @DisplayName("토큰 재발급 API 테스트, 토큰의 정보들이 일치해야 한다.")
     void reissueToken() throws Exception {
         String url = "http://localhost:" + port + "/reissueToken";

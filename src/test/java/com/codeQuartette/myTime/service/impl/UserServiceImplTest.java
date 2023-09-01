@@ -79,6 +79,21 @@ class UserServiceImplTest {
 
     @Test
     @Transactional
+    @DisplayName("로그아웃 서비스 로직 테스트, 토큰의 해당하는 유저의 토큰을 DB에서 삭제해야 한다.")
+    void logout() {
+        UserDTO.Request userDTO = UserDTO.Request.builder()
+                .email("enolj76@gmail.com")
+                .password("1234")
+                .build();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+        userServiceImpl.logout(authentication);
+        User user = userRepository.findByEmail(userDTO.getEmail()).get();
+
+        softly.assertThat(user.getToken()).isNull();
+    }
+
+    @Test
+    @Transactional
     @DisplayName("토큰 재발급 서비스 로직 테스트, refreshToken을 확인하여 accessToken을 재발급 해야 한다.")
     void reissueToken() {
         String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIn0.ysfQimdEO_LZwRgZEEPDI0dxQKlvnIXSWQgpZHnJqRg";

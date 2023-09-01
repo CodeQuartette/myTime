@@ -23,6 +23,11 @@ Content-Type: application/json
   "password" : "1234"
 }
 
+### 3. 로그아웃 API
+GET {{localhost}}/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
+
 ### 4. 토큰 재발급 API
 GET {{localhost}}/reissueToken
 Content-Type: application/json

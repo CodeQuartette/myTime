@@ -57,6 +57,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public void logout(Authentication authentication) {
+        User user = findUser(authentication.getName());
+        user.updateToken(null);
+        userRepository.save(user);
+    }
+
+    @Override
     public TokenInfo reissueToken(String refreshToken, Authentication authentication) {
         User user = findUser(authentication.getName());
         if (!user.matchToken(refreshToken)) {

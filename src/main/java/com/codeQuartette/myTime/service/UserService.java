@@ -14,6 +14,8 @@ public interface UserService {
 
     UserDTO.Response login(UserDTO.Request userDTO);
 
+    void logout(Authentication authentication);
+
     TokenInfo reissueToken(String refreshToken, Authentication authentication);
 
     User getUser(Authentication authentication);

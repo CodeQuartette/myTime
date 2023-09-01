@@ -28,6 +28,11 @@ public class UserController {
         return userService.login(userDTO);
     }
 
+    @GetMapping("/logout")
+    public void logout(Authentication authentication) {
+        userService.logout(authentication);
+    }
+
     @GetMapping("/reissueToken")
     public TokenInfo reissueToken(ServletRequest request, Authentication authentication) {
         String bearerToken = ((HttpServletRequest) request).getHeader(REFRESH_TOKEN);

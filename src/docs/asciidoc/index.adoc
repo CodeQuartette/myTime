@@ -43,31 +43,6 @@
 | 서버 에러
 
 |===
-[[Color-API]]
-== Color API
+include::color.adoc[]
 
-operation::search-color[snippets='curl-request,http-request,request-headers,request-parameters,http-response,response-body,response-fields,response-headers']
-
-
-[[Schdule-API]]
-== Schedule API
-
-[[Schdule-API-FIND]]
-=== 스케줄 조회
-
-operation::search-schedule[snippets='curl-request,http-request,request-headers,request-parameters,http-response,response-body,response-fields,response-headers']
-
-[[Schdule-API-ADD]]
-=== 스케줄 등록
-
-operation::add-schedule[snippets='curl-request,http-request,request-headers,request-fields,http-response,response-body,response-fields,response-headers']
-
-[[Schdule-API-UPDATE]]
-=== 스케줄 수정
-
-operation::update-schedule[snippets='curl-request,http-request,request-headers,path-parameters,request-fields,http-response,response-body,response-fields,response-headers']
-
-[[Schdule-API-DELETE]]
-=== 스케줄 삭제
-
-operation::delete-schedule[snippets='curl-request,http-request,request-headers,path-parameters,http-response,response-body,response-fields,response-headers']
+include::schedule.adoc[]

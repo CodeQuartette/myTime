@@ -1,11 +1,14 @@
 package com.codeQuartette.myTime.controller;
 
 import com.codeQuartette.myTime.controller.dto.ToDoDTO;
+import com.codeQuartette.myTime.domain.ToDo;
 import com.codeQuartette.myTime.service.ToDoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,16 +41,24 @@ public class ToDoController {
         toDoService.delete(id);
     }
 
-    //한건 조회
-    @GetMapping("/todo")
-    public ToDoDTO.Response getToDoById(@RequestParam(name = "id", required = false) Long id) {
-        return toDoService.getToDoById(id);
-    }
+    //조회
+    @GetMapping
+    public ResponseEntity<ToDoDTO.ResponseList> find(@RequestParam(name = "toDoId", required = false) Long id,
+                                                     @RequestParam(name = "userId", required = false) Long userId,
+                                                     @RequestParam(name = "date", required = false) LocalDate date) {
 
-    //날짜별 조회
-    @GetMapping("/toDos")
-    public List<ToDoDTO.Response> getToDoByDate(@RequestParam(name = "userId", required = false) Long userId,
-                                                @RequestParam(name = "date", required = false) LocalDate date) {
-        return toDoService.getToDoByDate(userId, date);
+        List<ToDo> toDos = new ArrayList<>();
+        if (id != null) {
+            toDos = toDoService.find(id);
+        } else if (userId != null) {
+            toDos = toDoService.find(userId, date);
+        }
+
+        List<ToDoDTO.Response> toDos2 = toDoService.find(userId, date)
+                .stream()
+                .map(ToDoDTO.Response::of)
+                .toList();
+
+        return ResponseEntity.ok(ToDoDTO.ResponseList.of(toDos2));
     }
 }

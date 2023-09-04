@@ -63,7 +63,7 @@ public class ToDoServiceImpl implements ToDoService {
         return List.of(findToDo(id));
     }
 
-    //날짜별 조회
+    //날짜 별 조회
     @Override
     public List<ToDo> find(Long userId, LocalDate date) {
         MyDate myDate = myDateService.find(date).stream()

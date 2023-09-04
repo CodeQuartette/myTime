@@ -43,6 +43,10 @@ public class MyDate {
     public void addToDo(ToDo toDo) {
         this.toDos.add(toDo);
     }
+
+    public boolean matchUser(Long userId) {
+         return this.user.matchId(userId);
+    }
   
     @Override
     public boolean equals(Object o) {

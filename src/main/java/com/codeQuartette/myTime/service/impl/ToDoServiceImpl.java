@@ -64,14 +64,12 @@ public class ToDoServiceImpl implements ToDoService {
 
     //날짜별 조회
     @Override
-    public List<ToDoDTO.Response> getToDoByDate(Long userId, LocalDate date) {
+    public List<ToDo> find(Long userId, LocalDate date) {
         MyDate myDate = myDateService.find(date).stream()
-                .filter(urDate -> urDate.getUser().getId().equals(userId))
+                .filter(targetDate -> targetDate.matchUser(userId))
                 .findFirst()
                 .orElseThrow(ToDoNotFoundException::new);
 
-        return myDate.getToDos().stream()
-                .map(ToDoDTO.Response::of)
-                .toList();
+        return myDate.getToDos();
     }
 }

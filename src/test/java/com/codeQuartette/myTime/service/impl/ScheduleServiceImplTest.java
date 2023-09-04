@@ -3,11 +3,9 @@ package com.codeQuartette.myTime.service.impl;
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.Schedule;
-import com.codeQuartette.myTime.domain.ScheduleHasMyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.domain.value.Color;
 import com.codeQuartette.myTime.repository.MyDateRepository;
-import com.codeQuartette.myTime.repository.ScheduleHasMyDateRepository;
 import com.codeQuartette.myTime.repository.ScheduleRepository;
 import com.codeQuartette.myTime.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -35,9 +33,6 @@ class ScheduleServiceImplTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private ScheduleHasMyDateRepository scheduleHasMyDateRepository;
-
     User findUser(Long userId){
         return userRepository.findById(userId).get();
     }
@@ -48,10 +43,6 @@ class ScheduleServiceImplTest {
 
     MyDate findMyDate(User user, LocalDate date){
         return myDateRepository.findByUserAndAndDate(user, date).get();
-    }
-
-    ScheduleHasMyDate findScheduleHasMyDate(Schedule schedule){
-        return scheduleHasMyDateRepository.findBySchedule(schedule).get();
     }
 
 
@@ -65,7 +56,7 @@ class ScheduleServiceImplTest {
         LocalDateTime startDate = LocalDateTime.of(2023, 9, 23, 15, 00, 00);
         LocalDateTime endDate = LocalDateTime.of(2023, 9, 23, 19, 00, 00);
 
-        ScheduleDTO.create request = ScheduleDTO.create.builder()
+        ScheduleDTO.Request request = ScheduleDTO.Request.builder()
                 .title(title)
                 .color(color)
                 .startDate(startDate)
@@ -82,7 +73,5 @@ class ScheduleServiceImplTest {
         assertThat(findMyDate(findUser(userId), startDate.toLocalDate()).getDate()).isEqualTo(startDate.toLocalDate());
         assertThat(findMyDate(findUser(userId), startDate.toLocalDate()).getUser().getId()).isEqualTo(userId);
 
-        // ScheduleHasMyDate
-        assertThat(findScheduleHasMyDate(schedule).getSchedule().getId()).isEqualTo(schedule.getId());
     }
 }

@@ -1,4 +1,4 @@
-package com.codeQuartette.myTime.repository;
+package com.codeQuartette.myTime.repository.impl;
 
 import com.codeQuartette.myTime.domain.MyDate;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +28,20 @@ public class MyDateBulkRepository {
                     ps.setString(2, myDate.getUser().getId().toString());
                 });
     }
+
+    @Transactional
+    public void saveAllIgnore(List<MyDate> myDates){
+        String insertSql = "INSERT IGNORE INTO my_date (date, user_id)" +
+                "VALUES (?, ?)";
+
+       jdbcTemplate.batchUpdate(insertSql,
+                myDates,
+                myDates.size(),
+                (PreparedStatement ps, MyDate myDate) -> {
+                    ps.setString(1, myDate.getDate().toString());
+                    ps.setString(2, myDate.getUser().getId().toString());
+                });
+
+    }
+
 }

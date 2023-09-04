@@ -3,10 +3,13 @@ package com.codeQuartette.myTime.repository;
 import com.codeQuartette.myTime.domain.Schedule;
 import com.codeQuartette.myTime.domain.ScheduleHasMyDate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface ScheduleHasMyDateRepository extends JpaRepository<ScheduleHasMyDate, Long> {
+@Repository
+public interface ScheduleHasMyDateRepository extends JpaRepository<ScheduleHasMyDate, Long>, ScheduleHasMyDateBulkRepository {
 
-    Optional<ScheduleHasMyDate> findBySchedule(Schedule schedule);
+    List<ScheduleHasMyDate> findBySchedule(Schedule schedule);
+
 }

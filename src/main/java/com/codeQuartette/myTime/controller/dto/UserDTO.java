@@ -1,7 +1,7 @@
 package com.codeQuartette.myTime.controller.dto;
 
+import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.domain.User;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class UserDTO {
 
     @Getter
+    @Builder
     public static class Request {
 
         private String name;
@@ -29,7 +30,6 @@ public class UserDTO {
 
     @Getter
     @Builder
-    @AllArgsConstructor
     public static class Response {
 
         private Long id;
@@ -39,7 +39,7 @@ public class UserDTO {
         private LocalDate birthday;
         private String profileImage;
         private Boolean gender;
-        private String token;
+        private TokenInfo tokenInfo;
 
         public static UserDTO.Response of(User user) {
             return Response.builder()
@@ -50,8 +50,11 @@ public class UserDTO {
                     .birthday(user.getBirthday())
                     .profileImage(user.getProfileImage())
                     .gender(user.getGender())
-                    .token(user.getToken())
                     .build();
+        }
+
+        public void setTokenInfo(TokenInfo tokenInfo) {
+            this.tokenInfo = tokenInfo;
         }
     }
 }

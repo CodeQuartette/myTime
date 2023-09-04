@@ -1,7 +1,9 @@
 package com.codeQuartette.myTime.service;
 
-import com.codeQuartette.myTime.controller.dto.UserDTO;
+import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.domain.User;
+
+import com.codeQuartette.myTime.controller.dto.UserDTO;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
@@ -10,9 +12,13 @@ public interface UserService {
 
     UserDTO.Response login(UserDTO.Request userDTO);
 
-    UserDTO.Response getUser(Authentication authentication);
+    void logout(Authentication authentication);
 
-    UserDTO.Response updateUser(Authentication authentication, UserDTO.Request userDTO);
+    TokenInfo reissueToken(String refreshToken, Authentication authentication);
+
+    User getUser(Authentication authentication);
+
+    User updateUser(Authentication authentication, UserDTO.Request userDTO);
 
     void deleteUser(Authentication authentication, UserDTO.Request userDTO);
 

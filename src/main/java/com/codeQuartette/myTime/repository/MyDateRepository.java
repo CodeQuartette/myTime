@@ -20,4 +20,8 @@ public interface MyDateRepository extends JpaRepository<MyDate, Long> {
     Optional<MyDate> findByUserAndAndDate(User user, LocalDate date);
     
     List<MyDate> findAllByDateInAndUser(List<LocalDate> dates, User user);
+
+    List<MyDate> findAllByDate(LocalDate date);
+
+
 }

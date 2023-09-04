@@ -23,5 +23,7 @@ public interface MyDateService {
 
     boolean existMyDate(User user, LocalDate date);
 
+    List<MyDate> find(LocalDate date);
+
     List<MyDate> saveAllMyDate(List<MyDate> myDates);
 }

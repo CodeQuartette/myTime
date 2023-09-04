@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.service.impl;
 
+
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.MyDateRepository;
@@ -70,7 +71,7 @@ public class MyDateServiceImpl implements MyDateService {
     }
 
     public List<MyDate> saveAll(List<MyDate> myDates) {
-        myDateBulkRepository.saveAllIgnore(myDates);
+        myDateBulkRepository.saveAll(myDates);
 
         return myDateRepository.findAllByDateInAndUser(myDates.stream().map(myDate -> myDate.getDate()).toList(), myDates.get(0).getUser());
     }
@@ -90,5 +91,9 @@ public class MyDateServiceImpl implements MyDateService {
     @Override
     public boolean existMyDate(User user, LocalDate date) {
         return myDateRepository.findByUserAndAndDate(user, date).isPresent();
+    }
+
+    public List<MyDate> find(LocalDate date) {
+        return myDateRepository.findAllByDate(date);
     }
 }

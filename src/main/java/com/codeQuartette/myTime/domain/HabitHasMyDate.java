@@ -11,15 +11,16 @@ import org.hibernate.annotations.ColumnDefault;
 @AllArgsConstructor
 public class HabitHasMyDate {
 
+
     @EmbeddedId
     private HabitHasMyDateId habitHasMyDateId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitId")
     @MapsId("habitId")
     private Habit habit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "myDateId")
     @MapsId("myDateId")
     private MyDate myDate;

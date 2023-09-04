@@ -14,7 +14,7 @@ public interface ToDoService {
 
     void delete(Long id);
 
-    ToDoDTO.Response getToDoById(Long id);
+    List<ToDo> find(Long id);
 
-    List<ToDoDTO.Response> getToDoByDate(Long userId, LocalDate date);
+    List<ToDo> find(Long userId, LocalDate date);
 }

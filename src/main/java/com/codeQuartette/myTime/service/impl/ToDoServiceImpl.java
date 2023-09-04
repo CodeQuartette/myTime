@@ -25,8 +25,9 @@ public class ToDoServiceImpl implements ToDoService {
 
     private final MyDateService myDateService;
 
-    private ToDo handler(Long id) {
-        return toDoRepository.findById(id)
+
+    private ToDo findToDo(Long toDoId) {
+        return toDoRepository.findById(toDoId)
                 .orElseThrow(ToDoNotFoundException::new);
     }
 
@@ -41,25 +42,25 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public void update(Long id, ToDoDTO.Request toDoRequestDTO) {
-        handler(id).update(toDoRequestDTO);
-        toDoRepository.save(handler(id));
+        findToDo(id).update(toDoRequestDTO);
+        toDoRepository.save(findToDo(id));
     }
 
     //할 일 완료체크 - 수정
     public void updateDone(Long id, ToDoDTO.Request toDoRequestDTO) {
-        handler(id).updateDone(toDoRequestDTO);
-        toDoRepository.save(handler(id));
+        findToDo(id).updateDone(toDoRequestDTO);
+        toDoRepository.save(findToDo(id));
     }
 
     @Override
     public void delete(Long id) {
-        toDoRepository.delete(handler(id));
+        toDoRepository.delete(findToDo(id));
     }
 
     //한건 조회
     @Override
-    public ToDoDTO.Response getToDoById(Long id) {
-        return ToDoDTO.Response.of(handler(id));
+    public List<ToDo> find(Long id) {
+        return List.of(findToDo(id));
     }
 
     //날짜별 조회

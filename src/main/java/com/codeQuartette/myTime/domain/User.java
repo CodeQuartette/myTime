@@ -121,6 +121,10 @@ public class User implements UserDetails { // spring security 자체적으로 Us
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean matchId(Long userId) {
+        return this.id.equals(userId);
+    }
 }
 
 

@@ -33,7 +33,7 @@ public class MyDateServiceImpl implements MyDateService {
     }
 
     public List<MyDate> findAllByUserId(Long userId) {
-        User user = userService.findById(userId);
+        User user = userService.findUser(userId);
         return myDateRepository.findAllByUser(user);
     }
 
@@ -53,7 +53,7 @@ public class MyDateServiceImpl implements MyDateService {
         없는 날은 List에 담고, 있는 날은 id 값 가지고 List에 담아 리턴
      */
     public List<MyDate> validateDates(Long userId, List<LocalDate> habitDates) {
-        User user = userService.findById(userId);
+        User user = userService.findUser(userId);
         List<MyDate> myDates = this.findAllByUserId(userId);
         List<MyDate> allHabitDates = habitDates.stream().map(date -> new MyDate(date, user)).toList(); //습관에 해당하는 모든 날짜
 
@@ -91,5 +91,9 @@ public class MyDateServiceImpl implements MyDateService {
     @Override
     public boolean existMyDate(User user, LocalDate date) {
         return myDateRepository.findByUserAndAndDate(user, date).isPresent();
+    }
+
+    public List<MyDate> find(LocalDate date) {
+        return myDateRepository.findAllByDate(date);
     }
 }

@@ -8,8 +8,6 @@ import org.springframework.security.core.Authentication;
 
 public interface UserService {
 
-    User findById(Long userId);
-
     void signup(UserDTO.Request userInfoRequestDTO);
 
     UserDTO.Response login(UserDTO.Request userDTO);

@@ -12,31 +12,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/todo")
 @RequiredArgsConstructor
 public class ToDoController {
 
     private final ToDoService toDoService;
 
-    @PostMapping("/todo")
+    @PostMapping
     public void create(@RequestParam(name = "userId", required = false) Long userId,
                        @RequestBody ToDoDTO.Request toDoRequestDTO) {
         toDoService.create(userId, toDoRequestDTO);
     }
 
-    @PatchMapping("/todo")
+    @PatchMapping
     public void update(@RequestParam(name = "id", required = false) Long id,
                        @RequestBody ToDoDTO.Request toDoRequestDTO) {
         toDoService.update(id, toDoRequestDTO);
     }
 
     //할 일 완료 체크
-    @PatchMapping("/todo/isDone")
+    @PatchMapping("/isDone")
     public void updateDone(@RequestParam(name = "id", required = false) Long id,
                            @RequestBody ToDoDTO.Request toDoRequestDTO) {
         toDoService.updateDone(id, toDoRequestDTO);
     }
 
-    @DeleteMapping("/todo")
+    @DeleteMapping
     public void delete(@RequestParam(name = "id", required = false) Long id) {
         toDoService.delete(id);
     }

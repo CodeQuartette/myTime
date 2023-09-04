@@ -17,7 +17,7 @@ public class HabitHasMyDateBulkRepository {
 
     @Transactional
     public void saveAll(List<HabitHasMyDate> habitHasMyDates) {
-        String sql = "INSERT INTO habit_has_my_date (habit_id, my_date_id)" +
+        String sql = "INSERT IGNORE INTO habit_has_my_date (habit_id, my_date_id)" +
                 "VALUES (?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
@@ -28,4 +28,14 @@ public class HabitHasMyDateBulkRepository {
                     ps.setString(2, habitHasMyDate.getMyDate().getId().toString());
                 });
     }
+
+    @Transactional
+    public void deleteAllNotDone(Long habitId) {
+        String sql = "DELETE FROM habit_has_my_date where habit_id = " + habitId +
+                " AND is_done = false";
+
+        jdbcTemplate.update(sql);
+    }
+
+
 }

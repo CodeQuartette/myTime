@@ -33,7 +33,7 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public void create(Long userId, ToDoDTO.Request toDoRequestDTO) {
-        User user = userService.findById(userId);
+        User user = userService.findUser(userId);
         MyDate myDate = myDateService.findMyDate(user, toDoRequestDTO.getDate());
         ToDo toDo = ToDo.create(toDoRequestDTO);
         myDate.addToDo(toDo);

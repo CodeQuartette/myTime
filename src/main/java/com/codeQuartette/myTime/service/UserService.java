@@ -6,8 +6,6 @@ import com.codeQuartette.myTime.controller.dto.UserDTO;
 
 public interface UserService {
 
-    User findById(Long userId);
-
     void signup(UserDTO.Request userInfoRequestDTO);
 
     UserDTO.Response login(UserDTO.Request userDTO);

@@ -32,7 +32,7 @@ public class MyDateServiceImpl implements MyDateService {
     }
   
     public List<MyDate> findAllByUserId(Long userId) {
-        User user = userService.findById(userId);
+        User user = userService.findUser(userId);
         return myDateRepository.findAllByUser(user);
     }
 

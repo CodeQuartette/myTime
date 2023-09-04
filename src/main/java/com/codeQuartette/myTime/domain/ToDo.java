@@ -34,7 +34,7 @@ public class ToDo {
     private Boolean isBlind;
 
     public static ToDo create(ToDoDTO.Request toDoRequestDTO) {
-        return com.codeQuartette.myTime.domain.ToDo.builder()
+        return ToDo.builder()
                 .title(toDoRequestDTO.getTitle())
                 .color(toDoRequestDTO.getColor())
                 .date(toDoRequestDTO.getDate())

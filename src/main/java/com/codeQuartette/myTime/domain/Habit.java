@@ -64,26 +64,16 @@ public class Habit {
                 .repeatDay(Arrays.toString(habitRequestDTO.getRepeatDay()))
                 .category(habitRequestDTO.getCategory())
                 .categoryContent(habitRequestDTO.getCategoryContent())
-                .isBlind(habitRequestDTO.isBlind())
+                .isBlind(habitRequestDTO.getIsBlind())
                 .build();
     }
 
     public void update(HabitDTO.Request habitRequestDTO) {
-        this.startDate = habitRequestDTO.getStartDate();
-        this.repeatDay = Arrays.toString(habitRequestDTO.getRepeatDay());
-        this.category = habitRequestDTO.getCategory();
-        this.categoryContent = habitRequestDTO.getCategoryContent();
-        this.isBlind = habitRequestDTO.isBlind();
-    }
-
-    public void createHabitHasDate(MyDate myDate) {
-        HabitHasMyDate habitHasDate = HabitHasMyDate.builder()
-                .habit(this)
-                .myDate(myDate)
-                .isDone(false)
-                .build();
-
-        this.habitHasMyDates.add(habitHasDate);
+        this.startDate = habitRequestDTO.getStartDate() == null ? this.startDate : habitRequestDTO.getStartDate();
+        this.repeatDay = Arrays.toString(habitRequestDTO.getRepeatDay()) == null ? this.repeatDay : Arrays.toString(habitRequestDTO.getRepeatDay());
+        this.category = habitRequestDTO.getCategory() == null ? this.category : habitRequestDTO.getCategory();
+        this.categoryContent = habitRequestDTO.getCategoryContent() == null ? this.categoryContent : habitRequestDTO.getCategoryContent();
+        this.isBlind = habitRequestDTO.getIsBlind() == null ? this.isBlind : habitRequestDTO.getIsBlind();
     }
 
     public void updateAllHabitHasMyDates(List<HabitHasMyDate> habitHasMyDates) {

@@ -30,10 +30,11 @@ public class MyDate {
     private User user;
 
     @Builder.Default
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     @JoinColumn(name = "my_date_id", nullable = false)
     private List<ToDo> toDos = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "myDate", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<HabitHasMyDate> habitHasMyDates = new ArrayList<>();
 

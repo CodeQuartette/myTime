@@ -25,12 +25,14 @@ public class HabitDTO {
 
         private String categoryContent;
 
-        private boolean isBlind;
+        private Boolean isBlind;
     }
 
     @Builder
     @Getter
     public static class Response {
+
+        private Long id;
 
         private LocalDate startDate;
 
@@ -46,6 +48,7 @@ public class HabitDTO {
             String[] repeatDay = Arrays.stream(habit.getRepeatDay().split(",")).map(s -> s.replaceAll("[\"\s\\[\\]]", "")).toArray(String[]::new);
 
             return Response.builder()
+                    .id(habit.getId())
                     .startDate(habit.getStartDate())
                     .repeatDay(repeatDay)
                     .category(habit.getCategory())

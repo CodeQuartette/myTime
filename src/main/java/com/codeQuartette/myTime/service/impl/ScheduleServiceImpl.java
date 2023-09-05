@@ -5,6 +5,7 @@ import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.Schedule;
 import com.codeQuartette.myTime.domain.ScheduleHasMyDate;
 import com.codeQuartette.myTime.domain.User;
+import com.codeQuartette.myTime.exception.ScheduleNotFoundException;
 import com.codeQuartette.myTime.repository.ScheduleRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.ScheduleHasMyDateService;
@@ -30,7 +31,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleHasMyDateService scheduleHasMyDateService;
 
     private Schedule findSchedule(Long scheduleId) {
-        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new RuntimeException(" 해당하는 스케쥴이 없습니다"));
+        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException());
     }
 
     private Schedule saveSchedule(ScheduleDTO.Request requestDTO) {

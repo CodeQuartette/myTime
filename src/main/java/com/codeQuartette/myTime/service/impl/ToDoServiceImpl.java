@@ -41,15 +41,17 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public void update(Long id, ToDoDTO.Request toDoRequestDTO) {
-        findToDo(id).update(toDoRequestDTO);
-        toDoRepository.save(findToDo(id));
+    public ToDo update(Long id, ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = findToDo(id);
+        toDo.update(toDoRequestDTO);
+        return toDoRepository.save(toDo);
     }
 
     //할 일 완료체크 - 수정
-    public void updateDone(Long id, ToDoDTO.Request toDoRequestDTO) {
-        findToDo(id).updateDone(toDoRequestDTO);
-        toDoRepository.save(findToDo(id));
+    public ToDo updateDone(Long id, ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = findToDo(id);
+        toDo.updateDone(toDoRequestDTO);
+        return toDoRepository.save(toDo);
     }
 
     @Override

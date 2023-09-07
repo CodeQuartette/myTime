@@ -25,16 +25,20 @@ public class ToDoController {
     }
 
     @PatchMapping
-    public void update(@RequestParam(name = "id", required = false) Long id,
-                       @RequestBody ToDoDTO.Request toDoRequestDTO) {
-        toDoService.update(id, toDoRequestDTO);
+    public ResponseEntity<ToDoDTO.Response> update(@RequestParam(name = "id", required = false) Long id,
+                                                   @RequestBody ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = toDoService.update(id, toDoRequestDTO);
+        ToDoDTO.Response response = ToDoDTO.Response.of(toDo);
+        return ResponseEntity.ok(response);
     }
 
     //할 일 완료 체크
     @PatchMapping("/isDone")
-    public void updateDone(@RequestParam(name = "id", required = false) Long id,
-                           @RequestBody ToDoDTO.Request toDoRequestDTO) {
-        toDoService.updateDone(id, toDoRequestDTO);
+    public ResponseEntity<ToDoDTO.Response> updateDone(@RequestParam(name = "id", required = false) Long id,
+                                                       @RequestBody ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = toDoService.updateDone(id, toDoRequestDTO);
+        ToDoDTO.Response response = ToDoDTO.Response.of(toDo);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping

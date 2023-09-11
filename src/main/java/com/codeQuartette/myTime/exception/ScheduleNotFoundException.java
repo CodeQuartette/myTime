@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ScheduleNotFoundException extends RuntimeException {
 
     public ScheduleNotFoundException() {
-        super("해당 스케쥴을 찾을수 없습니다.");
+        super("해당 스케줄을 찾을수 없습니다.");
     }
 }

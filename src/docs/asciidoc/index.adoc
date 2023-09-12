@@ -43,6 +43,8 @@
 | 서버 에러
 
 |===
+include::user.adoc[]
+
 include::color.adoc[]
 
 include::schedule.adoc[]

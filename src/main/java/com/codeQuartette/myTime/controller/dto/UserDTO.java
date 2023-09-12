@@ -2,6 +2,7 @@ package com.codeQuartette.myTime.controller.dto;
 
 import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.domain.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ public class UserDTO {
 
     @Getter
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Request {
 
         private String name;
@@ -30,6 +32,7 @@ public class UserDTO {
 
     @Getter
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response {
 
         private Long id;

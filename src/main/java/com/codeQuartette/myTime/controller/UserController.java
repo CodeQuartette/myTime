@@ -23,12 +23,12 @@ public class UserController {
         userService.signup(userDTO);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public UserDTO.Response login(@RequestBody UserDTO.Request userDTO) {
         return userService.login(userDTO);
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/api/logout")
     public void logout(Authentication authentication) {
         userService.logout(authentication);
     }

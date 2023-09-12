@@ -30,9 +30,6 @@ public class SecurityConfig {
                     .sessionManagement(sessionManagement ->
                             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰을 통한 인증을 하기 때문에 session은 불필요, stateless 설정
                     )
-                    .logout(logout ->
-                            logout
-                                    .logoutUrl("logout"))
                     .authorizeHttpRequests(authorizeRequests ->
                             authorizeRequests
                                     .requestMatchers("/user", "/reissueToken").hasRole("USER")

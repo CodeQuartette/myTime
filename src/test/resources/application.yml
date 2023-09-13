@@ -1,0 +1,42 @@
+spring:
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=USER;
+    username: SA
+    password:
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+
+
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        order_inserts: true
+        order_updates: true
+        batch_versioned_date: true
+        jdbc:
+          batch_size: 500
+      dialect: org.hibernate.dialect.MySQL8Dialect
+
+
+    open-in-view: false
+    defer-datasource-initialization: true
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+
+jwt:
+  secret: bXlUaW1lUHJvamVjdFNlY3JldEtleU9mQ29kZVF1YXJ0ZXR0ZTEyMzQ1Njc4OQ==

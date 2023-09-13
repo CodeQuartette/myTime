@@ -1,0 +1,50 @@
+= MyTime
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[OVERVIEW]]
+== Overview
+
+[[OVERVIEW-HOST]]
+===  HOST
+
+|===
+| 환경 | HOST
+| DOCKER
+| http://localhost/
+
+| LOCAL
+| http://localhost:8080/
+|===
+
+[[OVERVIEW-RESPONSE-CODE]]
+=== RESPONSE CODE
+
+|===
+| CODE | MESSAGE | DESCRIPTION
+| `200`
+| OK
+| 성공
+
+| `400`
+| Bad Request
+| 잘못된 요청
+
+| `404`
+| Not Found
+| 존재하지 않는 요청 리소스
+
+| `500`
+| Internal Server Error
+| 서버 에러
+
+|===
+include::user.adoc[]
+
+include::color.adoc[]
+
+include::schedule.adoc[]

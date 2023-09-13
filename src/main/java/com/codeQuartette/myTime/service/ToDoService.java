@@ -10,9 +10,9 @@ public interface ToDoService {
 
     void create(Long userId, ToDoDTO.Request toDoRequestDTO);
 
-    void update(Long id, ToDoDTO.Request toDoRequestDTO);
+    ToDo update(Long id, ToDoDTO.Request toDoRequestDTO);
 
-    void updateDone(Long id, ToDoDTO.Request isDone);
+    ToDo updateDone(Long id, ToDoDTO.Request isDone);
 
     void delete(Long id);
 

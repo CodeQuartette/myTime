@@ -13,11 +13,7 @@ import java.util.List;
 @Repository
 public interface HabitHasMyDateRepository extends JpaRepository<HabitHasMyDate, HabitHasMyDateId> {
 
-    List<HabitHasMyDate> findAllByMyDate_DateIs(LocalDate date);
-
     List<HabitHasMyDate> findAllByMyDate_UserAndMyDate_DateIs(User user, LocalDate date);
-
-    List<HabitHasMyDate> findAllByMyDate_DateBetween(LocalDate startDate, LocalDate endDate);
 
     List<HabitHasMyDate> findAllByMyDate_UserAndMyDate_DateBetween(User user, LocalDate startDate, LocalDate endDate);
 

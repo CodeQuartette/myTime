@@ -24,6 +24,7 @@ public class HabitHasMyDate {
     @MapsId("myDateId")
     private MyDate myDate;
 
+    @Builder.Default
     @ColumnDefault("false")
     private Boolean isDone = false;
 }

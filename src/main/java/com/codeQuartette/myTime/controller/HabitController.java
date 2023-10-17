@@ -7,6 +7,7 @@ import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import com.codeQuartette.myTime.service.HabitService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -54,8 +55,8 @@ public class HabitController {
     }
 
     @GetMapping("/category")
-    public List<String> getCategory() {
-        return habitService.getCategory();
+    public ResponseEntity<List<String>> getCategory() {
+        return ResponseEntity.ok(habitService.getCategory());
     }
 
 }

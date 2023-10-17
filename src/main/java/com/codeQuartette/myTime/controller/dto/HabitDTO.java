@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 public class HabitDTO {
 
+    @Builder
     @Getter
     public static class Request {
 
@@ -36,6 +37,8 @@ public class HabitDTO {
 
         private LocalDate startDate;
 
+        private LocalDate endDate;
+
         private String[] repeatDay;
 
         private Category category;
@@ -50,6 +53,7 @@ public class HabitDTO {
             return Response.builder()
                     .id(habit.getId())
                     .startDate(habit.getStartDate())
+                    .endDate(habit.getEndDate())
                     .repeatDay(repeatDay)
                     .category(habit.getCategory())
                     .categoryContent(habit.getCategoryContent())

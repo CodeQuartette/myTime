@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class HabitHasMyMyDateServiceImpl implements HabitHasMyDateService {
+public class HabitHasMyDateServiceImpl implements HabitHasMyDateService {
 
     private final HabitHasMyDateBulkRepository habitHasDateBulkRepository;
     private final HabitHasMyDateRepository habitHasMyDateRepository;

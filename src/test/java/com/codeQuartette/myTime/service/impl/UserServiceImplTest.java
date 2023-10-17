@@ -51,6 +51,7 @@ class UserServiceImplTest {
                 .profileImage("http://testUserProfileImage.jpg")
                 .gender(false)
                 .build();
+
         userServiceImpl.signup(userDTO);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
 
@@ -71,6 +72,7 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
+
         UserDTO.Response responseUserDTO = userServiceImpl.login(userDTO);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
 
@@ -85,6 +87,7 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
         userServiceImpl.logout(authentication);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
@@ -101,6 +104,7 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
         TokenInfo tokenInfo = userServiceImpl.reissueToken(refreshToken, authentication);
 
@@ -117,6 +121,7 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
         User user = userServiceImpl.getUser(authentication);
         User targetUser = userRepository.findByEmail(authentication.getName()).get();
@@ -140,6 +145,7 @@ class UserServiceImplTest {
                 .nickname("eno")
                 .name("정호인")
                 .build();
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
         userServiceImpl.updateUser(authentication, userDTO);
         User user = userRepository.findByEmail(authentication.getName()).get();
@@ -157,6 +163,7 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
         userServiceImpl.deleteUser(authentication, userDTO);
         User user = userRepository.findByEmail(authentication.getName()).orElse(null);

@@ -30,7 +30,8 @@ public class MyDate {
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "myDate", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
+    @JoinColumn(name = "my_date_id", nullable = false)
     private List<ToDo> toDos = new ArrayList<>();
 
     @Builder.Default
@@ -44,6 +45,10 @@ public class MyDate {
     public MyDate(LocalDate date, User user) {
         this.date = date;
         this.user = user;
+    }
+
+    public void addToDo(ToDo toDo) {
+        this.toDos.add(toDo);
     }
 
     public boolean matchUser(Long userId) {

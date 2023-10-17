@@ -9,7 +9,6 @@ import com.codeQuartette.myTime.repository.ToDoRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.ToDoService;
 import com.codeQuartette.myTime.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +32,12 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    @Transactional
     public void create(Long userId, ToDoDTO.Request toDoRequestDTO) {
         User user = userService.findUser(userId);
         MyDate myDate = myDateService.findMyDate(user, toDoRequestDTO.getDate());
-        MyDate saveMyDate = myDateService.save(myDate);
-        ToDo toDo = ToDo.create(toDoRequestDTO, saveMyDate);
-        toDoRepository.save(toDo);
+        ToDo toDo = ToDo.create(toDoRequestDTO);
+        myDate.addToDo(toDo);
+        myDateService.save(myDate);
     }
 
     @Override

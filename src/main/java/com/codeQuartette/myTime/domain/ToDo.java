@@ -33,13 +33,18 @@ public class ToDo {
 
     private Boolean isBlind;
 
-    public static ToDo create(ToDoDTO.Request toDoRequestDTO) {
+    @ManyToOne
+    @JoinColumn(name = "my_date_id")
+    private MyDate myDate;
+
+    public static ToDo create(ToDoDTO.Request toDoRequestDTO, MyDate myDate) {
         return ToDo.builder()
                 .title(toDoRequestDTO.getTitle())
                 .color(toDoRequestDTO.getColor())
                 .date(toDoRequestDTO.getDate())
                 .isDone(Boolean.FALSE)
                 .isBlind(toDoRequestDTO.getIsBlind())
+                .myDate(myDate)
                 .build();
     }
 

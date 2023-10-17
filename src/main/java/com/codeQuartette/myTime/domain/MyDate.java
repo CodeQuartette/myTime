@@ -30,8 +30,7 @@ public class MyDate {
     private User user;
 
     @Builder.Default
-    @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
-    @JoinColumn(name = "my_date_id", nullable = false)
+    @OneToMany(mappedBy = "myDate", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<ToDo> toDos = new ArrayList<>();
 
     @Builder.Default

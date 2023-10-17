@@ -46,10 +46,6 @@ public class MyDate {
         this.user = user;
     }
 
-    public void addToDo(ToDo toDo) {
-        this.toDos.add(toDo);
-    }
-
     public boolean matchUser(Long userId) {
          return this.user.matchId(userId);
     }

@@ -3,12 +3,18 @@ package com.codeQuartette.myTime.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleHasMyDate {
+public class ScheduleHasMyDate implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2180310186780008619L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

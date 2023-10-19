@@ -18,4 +18,12 @@ public class GlobalExceptionHandler {
 
         return ResponseDTO.exception(ResponseType.NOT_FOUND, e.getMessage());
     }
+
+    @ResponseBody
+    @ExceptionHandler({DuplicateUserException.class, DuplicateNicknameException.class})
+    public ResponseDTO<?> duplicateException(Exception e) {
+        log.info("e: {}", e.getMessage());
+
+        return ResponseDTO.exception(ResponseType.BAD_REQUEST, e.getMessage());
+    }
 }

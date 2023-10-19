@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### 2. 일반 로그인 API
-POST {{localhost}}/login
+POST {{localhost}}/api/login
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ### 3. 로그아웃 API
-GET {{localhost}}/logout
+GET {{localhost}}/api/logout
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
 

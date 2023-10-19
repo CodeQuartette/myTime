@@ -21,8 +21,6 @@ public class HabitHasMyDateDTO {
         @Nullable
         private LocalDate endDate;
 
-        private String[] repeatDay;
-
         private Boolean isBlind;
 
         private Category category;
@@ -38,6 +36,7 @@ public class HabitHasMyDateDTO {
                     .habitId(habitHasMyDate.getHabit().getId())
                     .startDate(habitHasMyDate.getHabit().getStartDate())
                     .endDate(habitHasMyDate.getHabit().getEndDate())
+                    .isBlind(habitHasMyDate.getHabit().getIsBlind())
                     .category(habitHasMyDate.getHabit().getCategory())
                     .categoryContent(habitHasMyDate.getHabit().getCategoryContent())
                     .date(habitHasMyDate.getMyDate().getDate())

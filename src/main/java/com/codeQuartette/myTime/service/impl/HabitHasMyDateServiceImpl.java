@@ -7,6 +7,7 @@ import com.codeQuartette.myTime.repository.impl.HabitHasMyDateBulkRepository;
 import com.codeQuartette.myTime.service.HabitHasMyDateService;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,12 +31,14 @@ public class HabitHasMyDateServiceImpl implements HabitHasMyDateService {
     }
 
     @Override
+    @Cacheable(cacheNames = "find-habit", key = "#userId.toString() + ':' + #date")
     public List<HabitHasMyDate> findAllHabitHasMyDate(Long userId, LocalDate date) {
         User user = userService.findUser(userId);
         return habitHasMyDateRepository.findAllByMyDate_UserAndMyDate_DateIs(user, date);
     }
 
     @Override
+    @Cacheable(cacheNames = "find-habit", key = "#userId.toString() + ':' + #yearMonth")
     public List<HabitHasMyDate> findAllHabitHasMyDate(Long userId, YearMonth yearMonth) {
         User user = userService.findUser(userId);
         LocalDate startDate = yearMonth.atDay(1);

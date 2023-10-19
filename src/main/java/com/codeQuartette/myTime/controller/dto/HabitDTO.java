@@ -2,8 +2,7 @@ package com.codeQuartette.myTime.controller.dto;
 
 import com.codeQuartette.myTime.domain.Habit;
 import com.codeQuartette.myTime.domain.value.Category;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
@@ -13,6 +12,9 @@ public class HabitDTO {
 
     @Builder
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
     public static class Request {
 
         private LocalDate startDate;

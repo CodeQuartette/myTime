@@ -4,6 +4,7 @@ import com.codeQuartette.myTime.domain.HabitHasMyDate;
 import com.codeQuartette.myTime.domain.value.Category;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,15 @@ public class HabitHasMyDateDTO {
     public static class Response {
 
         private Long habitId;
+
+        private LocalDate startDate;
+
+        @Nullable
+        private LocalDate endDate;
+
+        private String[] repeatDay;
+
+        private Boolean isBlind;
 
         private Category category;
 
@@ -26,6 +36,8 @@ public class HabitHasMyDateDTO {
         public static HabitHasMyDateDTO.Response of(HabitHasMyDate habitHasMyDate) {
             return Response.builder()
                     .habitId(habitHasMyDate.getHabit().getId())
+                    .startDate(habitHasMyDate.getHabit().getStartDate())
+                    .endDate(habitHasMyDate.getHabit().getEndDate())
                     .category(habitHasMyDate.getHabit().getCategory())
                     .categoryContent(habitHasMyDate.getHabit().getCategoryContent())
                     .date(habitHasMyDate.getMyDate().getDate())

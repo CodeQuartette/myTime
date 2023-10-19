@@ -60,7 +60,7 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseDTO<?> create(@RequestParam(name = "userId") Long userId,
-                                      @RequestBody ScheduleDTO.Request request) {
+                                 @RequestBody ScheduleDTO.Request request) {
         scheduleService.create(userId, request);
         return ResponseDTO.from(ResponseType.CREATED);
     }
@@ -84,7 +84,7 @@ public class ScheduleController {
 
     @DeleteMapping
     public ResponseDTO<?> delete(@RequestParam(name = "userId") Long userId,
-                                      @RequestParam(name = "id") Long scheduleId) {
+                                 @RequestParam(name = "id") Long scheduleId) {
         scheduleService.delete(userId, scheduleId);
         return ResponseDTO.from(ResponseType.SUCCESS);
     }

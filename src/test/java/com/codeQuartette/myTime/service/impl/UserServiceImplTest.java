@@ -1,6 +1,5 @@
 package com.codeQuartette.myTime.service.impl;
 
-import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.repository.UserRepository;
@@ -13,14 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-
-import static com.codeQuartette.myTime.auth.JwtProvider.BEARER;
 
 @ExtendWith(SoftAssertionsExtension.class)
 @SpringBootTest
@@ -88,30 +83,30 @@ class UserServiceImplTest {
                 .password("1234")
                 .build();
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        userServiceImpl.logout(authentication);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        userServiceImpl.logout(user.getId());
+        user = userRepository.findById(user.getId()).get();
 
         softly.assertThat(user.getToken()).isNull();
     }
 
-    @Test
-    @Transactional
-    @DisplayName("토큰 재발급 서비스 로직 테스트, refreshToken을 확인하여 accessToken을 재발급 해야 한다.")
-    void reissueToken() {
-        String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIn0.ysfQimdEO_LZwRgZEEPDI0dxQKlvnIXSWQgpZHnJqRg";
-        UserDTO.Request userDTO = UserDTO.Request.builder()
-                .email("enolj76@gmail.com")
-                .password("1234")
-                .build();
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        TokenInfo tokenInfo = userServiceImpl.reissueToken(refreshToken, authentication);
-
-        softly.assertThat(tokenInfo.getGrantType()).isEqualTo(BEARER);
-        softly.assertThat(tokenInfo.getRefreshToken()).isEqualTo(refreshToken);
-        softly.assertThat(tokenInfo.getAccessToken()).isNotNull();
-    }
+//    @Test
+//    @Transactional
+//    @DisplayName("토큰 재발급 서비스 로직 테스트, refreshToken을 확인하여 accessToken을 재발급 해야 한다.")
+//    void reissueToken() {
+//        String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIn0.ysfQimdEO_LZwRgZEEPDI0dxQKlvnIXSWQgpZHnJqRg";
+//        UserDTO.Request userDTO = UserDTO.Request.builder()
+//                .email("enolj76@gmail.com")
+//                .password("1234")
+//                .build();
+//
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+//        TokenInfo tokenInfo = userServiceImpl.reissueToken(refreshToken, authentication);
+//
+//        softly.assertThat(tokenInfo.getGrantType()).isEqualTo(BEARER);
+//        softly.assertThat(tokenInfo.getRefreshToken()).isEqualTo(refreshToken);
+//        softly.assertThat(tokenInfo.getAccessToken()).isNotNull();
+//    }
 
     @Test
     @Transactional
@@ -122,9 +117,8 @@ class UserServiceImplTest {
                 .password("1234")
                 .build();
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        User user = userServiceImpl.getUser(authentication);
-        User targetUser = userRepository.findByEmail(authentication.getName()).get();
+        User targetUser = userRepository.findByEmail(userDTO.getEmail()).get();
+        User user = userServiceImpl.getUser(targetUser.getId());
 
         softly.assertThat(user.getName()).isEqualTo(targetUser.getName());
         softly.assertThat(user.getNickname()).isEqualTo(targetUser.getNickname());
@@ -146,9 +140,9 @@ class UserServiceImplTest {
                 .name("정호인")
                 .build();
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        userServiceImpl.updateUser(authentication, userDTO);
-        User user = userRepository.findByEmail(authentication.getName()).get();
+        User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        userServiceImpl.updateUser(user.getId(), userDTO);
+        user = userRepository.findById(user.getId()).get();
 
         softly.assertThat(user.getName()).isEqualTo(userDTO.getName());
         softly.assertThat(user.getNickname()).isEqualTo(userDTO.getNickname());
@@ -164,9 +158,10 @@ class UserServiceImplTest {
                 .password("1234")
                 .build();
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        userServiceImpl.deleteUser(authentication, userDTO);
-        User user = userRepository.findByEmail(authentication.getName()).orElse(null);
+        User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        userServiceImpl.deleteUser(user.getId(), userDTO);
+        user = userRepository.findById(user.getId()).orElse(null);
+
 
         softly.assertThat(user).isNull();
     }

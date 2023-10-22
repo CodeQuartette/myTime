@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.controller;
 
+import com.codeQuartette.myTime.annotation.UserId;
 import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.controller.globalResponse.ResponseDTO;
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/api/logout")
-    public ResponseDTO<?> logout(Authentication authentication) {
-        userService.logout(authentication);
+    public ResponseDTO<?> logout(@UserId Long userId) {
+        userService.logout(userId);
         return ResponseDTO.from(ResponseType.SUCCESS);
     }
 
@@ -47,22 +48,22 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public ResponseDTO<UserDTO.Response> getUser(Authentication authentication) {
-        User user = userService.getUser(authentication);
+    public ResponseDTO<UserDTO.Response> getUser(@UserId Long userId) {
+        User user = userService.getUser(userId);
         UserDTO.Response response = UserDTO.Response.of(user);
         return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @PatchMapping("/user")
-    public ResponseDTO<UserDTO.Response> updateUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
-        User user = userService.updateUser(authentication, userDTO);
+    public ResponseDTO<UserDTO.Response> updateUser(@UserId Long userId, @RequestBody UserDTO.Request userDTO) {
+        User user = userService.updateUser(userId, userDTO);
         UserDTO.Response response = UserDTO.Response.of(user);
         return ResponseDTO.from(ResponseType.CREATED, response);
     }
 
     @DeleteMapping("/user")
-    public ResponseDTO<?> deleteUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
-        userService.deleteUser(authentication, userDTO);
+    public ResponseDTO<?> deleteUser(@UserId Long userId, @RequestBody UserDTO.Request userDTO) {
+        userService.deleteUser(userId, userDTO);
         return ResponseDTO.from(ResponseType.SUCCESS);
     }
 }

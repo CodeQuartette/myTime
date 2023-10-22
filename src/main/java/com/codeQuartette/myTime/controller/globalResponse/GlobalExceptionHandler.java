@@ -26,4 +26,12 @@ public class GlobalExceptionHandler {
 
         return ResponseDTO.exception(ResponseType.BAD_REQUEST, e.getMessage());
     }
+
+    @ResponseBody
+    @ExceptionHandler({UserNotMatchException.class, TokenNotMatchException.class})
+    public ResponseDTO<?> notMatchException(Exception e) {
+        log.info("e: {}", e.getMessage());
+
+        return ResponseDTO.exception(ResponseType.BAD_REQUEST, e.getMessage());
+    }
 }

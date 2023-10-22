@@ -26,23 +26,23 @@ Content-Type: application/json
 ### 3. 로그아웃 API
 GET {{localhost}}/api/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 ### 4. 토큰 재발급 API
 GET {{localhost}}/reissueToken
 Content-Type: application/json
 Refresh_Token: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIn0.ysfQimdEO_LZwRgZEEPDI0dxQKlvnIXSWQgpZHnJqRg
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 ### 5. 회원 조회 API
 GET {{localhost}}/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 ### 6. 회원 정보 수정 API
 PATCH {{localhost}}/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 {
   "password" : "1234",
@@ -54,7 +54,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViI
 ### 7. 회원 삭제 API
 DELETE {{localhost}}/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwic3ViIjoiZW5vbGo3NkBnbWFpbC5jb20iLCJyb2xlcyI6IlJPTEVfVVNFUiJ9.ep-gj8dGemncg_NxgxdwZ3plLjnDX7gG31NZsM4MTOE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 {
   "password" : "1234"

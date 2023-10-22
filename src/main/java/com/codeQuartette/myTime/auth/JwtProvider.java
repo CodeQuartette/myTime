@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -48,12 +47,12 @@ public class JwtProvider {
     }
 
     public String createAccessToken(Authentication authentication) {
-        String roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+        User user = (User) authentication.getPrincipal();
+        String roles = String.join(",", user.getRoles());
 
         return Jwts.builder()
                 .setIssuer(ISSURE)
+                .setId(user.getId().toString())
                 .setSubject(authentication.getName())
                 .claim(ROLES, roles)
                 .setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_TIME))
@@ -78,6 +77,11 @@ public class JwtProvider {
         }
 
         return getAuthenticationByClaims(claims);
+    }
+
+    public Long getUserId(String token) {
+        Claims claims = getUserClaimsByToken(token);
+        return Long.parseLong(claims.getId());
     }
 
     private Claims getUserClaimsByToken(String token) {

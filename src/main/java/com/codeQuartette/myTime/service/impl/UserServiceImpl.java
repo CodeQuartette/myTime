@@ -4,10 +4,7 @@ import com.codeQuartette.myTime.auth.JwtProvider;
 import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
-import com.codeQuartette.myTime.exception.DuplicateNicknameException;
-import com.codeQuartette.myTime.exception.DuplicateUserException;
-import com.codeQuartette.myTime.exception.TokenNotMatchException;
-import com.codeQuartette.myTime.exception.UserNotFoundException;
+import com.codeQuartette.myTime.exception.*;
 import com.codeQuartette.myTime.repository.UserRepository;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +52,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void logout(Authentication authentication) {
-        User user = findUser(authentication.getName());
+    public void logout(Long userId) {
+        User user = findUser(userId);
         user.updateToken(null);
         userRepository.save(user);
     }
@@ -72,23 +69,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUser(Authentication authentication) {
-        return findUser(authentication.getName());
+    public User getUser(Long userId) {
+        return findUser(userId);
     }
 
     @Override
-    public User updateUser(Authentication authentication, UserDTO.Request userDTO) {
-        Authentication targetUserAuthentication = getAuthentication(authentication.getName(), userDTO.getPassword());
-        User user = (User) targetUserAuthentication.getPrincipal();
+    public User updateUser(Long userId, UserDTO.Request userDTO) {
+        User user = findUser(userId);
+        getAuthentication(user.getEmail(), userDTO.getPassword());
+        matchUser(userId, user);
         doubleCheckNickname(userDTO);
         user.updateInfo(userDTO, bCryptPasswordEncoder);
         return userRepository.save(user);
     }
 
     @Override
-    public void deleteUser(Authentication authentication, UserDTO.Request userDTO) {
-        Authentication targetUserAuthentication = getAuthentication(authentication.getName(), userDTO.getPassword());
-        User user = (User) targetUserAuthentication.getPrincipal();
+    public void deleteUser(Long userId, UserDTO.Request userDTO) {
+        User user = findUser(userId);
+        getAuthentication(user.getEmail(), userDTO.getPassword());
+        matchUser(userId, user);
         userRepository.delete(user);
     }
 
@@ -98,6 +97,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private Authentication getAuthentication(String email, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    }
+
+    private void matchUser(Long userId, User user) {
+        if (!user.matchUserId(userId)) {
+            throw new UserNotMatchException();
+        }
     }
 
     private void doubleCheckNickname(UserDTO.Request userDTO) {

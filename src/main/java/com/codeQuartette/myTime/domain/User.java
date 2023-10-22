@@ -81,6 +81,10 @@ public class User implements UserDetails { // spring security 자체적으로 Us
         this.token = token;
     }
 
+    public boolean matchUserId(Long id) {
+        return this.id.equals(id);
+    }
+
     public boolean matchToken(String token) {
         return this.token.equals(token);
     }

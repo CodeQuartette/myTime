@@ -31,7 +31,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -65,13 +66,13 @@ class ScheduleControllerTest {
                 .build());
 
 
-        given(scheduleService.find(any())).willReturn(schedules);
+        given(scheduleService.find(any(), any(Long.class))).willReturn(schedules);
 
         mvc.perform(RestDocumentationRequestBuilders.get("/schedule")
                 .param("scheduleId", "1")
+                .header("Authorization", "Bearer accessToken")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("code").value(200))
                 .andExpect(jsonPath("message").value("OK"))
@@ -86,7 +87,8 @@ class ScheduleControllerTest {
                 .andDo(print())
                 .andDo(document("find-scheduleId-schedule",
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("USER TOKEN")
                         ),
                         queryParameters(
                                 parameterWithName("scheduleId").description("스케줄 아이디")
@@ -120,10 +122,10 @@ class ScheduleControllerTest {
                 .alert(Boolean.TRUE)
                 .build());
 
-        given(scheduleService.find(any(Long.class), any(LocalDate.class))).willReturn(schedules);
+        given(scheduleService.find(any(), any(LocalDate.class))).willReturn(schedules);
 
         mvc.perform(RestDocumentationRequestBuilders.get("/schedule")
-                .param("userId", "1")
+                .header("Authorization", "Bearer accessToken")
                 .param("date", "2023-08-30")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -141,11 +143,11 @@ class ScheduleControllerTest {
                 .andDo(print())
                 .andDo(document("find-date-schedule",
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("USER TOKEN")
                         ),
                         queryParameters(
-                                parameterWithName("date").description("날짜"),
-                                parameterWithName("userId").description("유저 아이디")
+                                parameterWithName("date").description("날짜")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
@@ -176,12 +178,12 @@ class ScheduleControllerTest {
                 .alert(Boolean.TRUE)
                 .build());
 
-        given(scheduleService.find(any(Long.class), any(YearMonth.class))).willReturn(schedules);
+        given(scheduleService.find(any(), any(YearMonth.class))).willReturn(schedules);
 
         mvc.perform(RestDocumentationRequestBuilders.get("/schedule")
-                .param("userId", "1")
                 .param("yearMonth", "2023-09")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer accessToken"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("code").value(200))
@@ -197,11 +199,11 @@ class ScheduleControllerTest {
                 .andDo(print())
                 .andDo(document("find-yearMonth-schedule",
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("USER TOKEN")
                         ),
                         queryParameters(
-                                parameterWithName("yearMonth").description("년월"),
-                                parameterWithName("userId").description("유저 아이디")
+                                parameterWithName("yearMonth").description("년월")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
@@ -234,6 +236,7 @@ class ScheduleControllerTest {
         mvc.perform(RestDocumentationRequestBuilders.post("/schedule")
                 .param("userId", "1")
                 .with(csrf())
+                .header("Authorization", "Bearer accessToken")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
@@ -242,7 +245,8 @@ class ScheduleControllerTest {
                 .andDo(print())
                 .andDo(document("create-schedule",
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("USER TOKEN")
                         ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"),
@@ -276,12 +280,12 @@ class ScheduleControllerTest {
                 .alert(Boolean.TRUE)
                 .build();
 
-        given(scheduleService.update(any(Long.class), any(Long.class), any())).willReturn(schedule);
+        given(scheduleService.update(any(), any(), any())).willReturn(schedule);
 
         mvc.perform(RestDocumentationRequestBuilders.put("/schedule")
-                .param("userId", "1")
                 .param("id", "1")
                 .with(csrf().asHeader())
+                .header("Authorization", "Bearer accessToken")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -299,10 +303,10 @@ class ScheduleControllerTest {
                 .andDo(print())
                 .andDo(document("update-schedule",
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("USER TOKEN")
                         ),
                         queryParameters(
-                                parameterWithName("userId").description("유저 아이디"),
                                 parameterWithName("id").description("스케줄 아이디")
                         ),
                         requestFields(
@@ -337,6 +341,7 @@ class ScheduleControllerTest {
                 .param("userId", "1")
                 .param("id", "1")
                 .with(csrf().asHeader())
+                .header("Authorization", "Bearer accessToken")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value(200))
@@ -344,10 +349,10 @@ class ScheduleControllerTest {
                 .andDo(print())
                 .andDo(document("delete-schedule",
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("USER TOKEN")
                         ),
                         queryParameters(
-                                parameterWithName("userId").description("유저 아이디").optional(),
                                 parameterWithName("id").description("스케줄 아이디").optional()
                         ),
                         responseHeaders(

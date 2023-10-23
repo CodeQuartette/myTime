@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.controller;
 
+import com.codeQuartette.myTime.annotation.UserId;
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
 import com.codeQuartette.myTime.controller.globalResponse.ResponseDTO;
 import com.codeQuartette.myTime.controller.globalResponse.ResponseType;
@@ -27,18 +28,18 @@ public class ScheduleController {
      * */
 
     @GetMapping
-    public ResponseDTO<ScheduleDTO.ResponseList> find(@RequestParam(name = "scheduleId", required = false) Long scheduleId,
-                                                      @RequestParam(name = "userId", required = false) Long userId,
+    public ResponseDTO<ScheduleDTO.ResponseList> find(@UserId Long userId,
+                                                      @RequestParam(name = "scheduleId", required = false) Long scheduleId,
                                                       @RequestParam(name = "date", required = false) LocalDate date,
                                                       @RequestParam(name = "yearMonth", required = false) YearMonth yearMonth) {
 
         List<Schedule> schedules = new ArrayList<>();
 
         if (scheduleId != null) {
-            schedules = scheduleService.find(scheduleId);
-        } else if (userId != null && date != null) {
+            schedules = scheduleService.find(userId,scheduleId);
+        } else if (date != null) {
             schedules = scheduleService.find(userId, date);
-        } else if (userId != null && yearMonth != null) {
+        } else if (yearMonth != null) {
             schedules = scheduleService.find(userId, yearMonth);
         }
 
@@ -59,14 +60,14 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseDTO<?> create(@RequestParam(name = "userId") Long userId,
+    public ResponseDTO<?> create(@UserId Long userId,
                                  @RequestBody ScheduleDTO.Request request) {
         scheduleService.create(userId, request);
         return ResponseDTO.from(ResponseType.CREATED);
     }
 
     @PutMapping
-    public ResponseDTO<ScheduleDTO.Response> update(@RequestParam(name = "userId") Long userId,
+    public ResponseDTO<ScheduleDTO.Response> update(@UserId Long userId,
                                                     @RequestParam(name = "id") Long scheduleId,
                                                     @RequestBody ScheduleDTO.Request request) {
         Schedule schedule = scheduleService.update(userId, scheduleId, request);
@@ -83,7 +84,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping
-    public ResponseDTO<?> delete(@RequestParam(name = "userId") Long userId,
+    public ResponseDTO<?> delete(@UserId Long userId,
                                  @RequestParam(name = "id") Long scheduleId) {
         scheduleService.delete(userId, scheduleId);
         return ResponseDTO.from(ResponseType.SUCCESS);

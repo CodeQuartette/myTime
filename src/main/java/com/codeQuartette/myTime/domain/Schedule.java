@@ -3,10 +3,7 @@ package com.codeQuartette.myTime.domain;
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
 import com.codeQuartette.myTime.domain.value.Color;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;

@@ -192,7 +192,7 @@ class ScheduleServiceImplTest {
         scheduleService.delete(userId, schedule.getId());
 
         //then
-        assertThatThrownBy(() -> scheduleService.find(schedule.getId()))
+        assertThatThrownBy(() -> scheduleService.find(userId, schedule.getId()))
                 .isInstanceOf(ScheduleNotFoundException.class);
     }
 }

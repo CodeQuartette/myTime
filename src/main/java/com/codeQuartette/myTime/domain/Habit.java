@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +22,10 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Habit {
+public class Habit implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -8819820070714918581L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

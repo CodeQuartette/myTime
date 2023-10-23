@@ -1,6 +1,5 @@
 package com.codeQuartette.myTime.controller;
 
-import com.codeQuartette.myTime.auth.JwtProvider;
 import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
 import com.codeQuartette.myTime.domain.User;
@@ -51,11 +50,8 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private JwtProvider jwtProvider;
-
     @Test
-    @DisplayName("회원가입 API 테스트, 상태코드가 200이여야 한다.")
+    @DisplayName("회원가입 API 테스트, 상태코드가 201이여야 한다.")
     void signup() throws Exception {
         UserDTO.Request request = UserDTO.Request.builder()
                 .name("testUser")
@@ -72,6 +68,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value(201))
+                .andExpect(jsonPath("$.message").value("Created"))
                 .andDo(print())
                 .andDo(document("signup-user",
                         requestHeaders(
@@ -85,6 +83,13 @@ class UserControllerTest {
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("유저 패스워드"),
                                 fieldWithPath("profileImage").type(JsonFieldType.STRING).description("유저 프로필 이미지"),
                                 fieldWithPath("gender").type(JsonFieldType.BOOLEAN).description("유저 성별")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                        ),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지")
                         )));
     }
 
@@ -120,15 +125,17 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.name").value("testUser"))
-                .andExpect(jsonPath("$.nickname").value("testUserNickname"))
-                .andExpect(jsonPath("$.email").value("testEmail@gmail.com"))
-                .andExpect(jsonPath("$.birthday").value("2000-02-22"))
-                .andExpect(jsonPath("$.profileImage").value("http://testUserProfileImage.jpg"))
-                .andExpect(jsonPath("$.gender").value(false))
-                .andExpect(jsonPath("$.tokenInfo.grantType").value(BEARER))
-                .andExpect(jsonPath("$.tokenInfo.refreshToken", notNullValue()))
-                .andExpect(jsonPath("$.tokenInfo.accessToken", notNullValue()))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.response.name").value("testUser"))
+                .andExpect(jsonPath("$.response.nickname").value("testUserNickname"))
+                .andExpect(jsonPath("$.response.email").value("testEmail@gmail.com"))
+                .andExpect(jsonPath("$.response.birthday").value("2000-02-22"))
+                .andExpect(jsonPath("$.response.profileImage").value("http://testUserProfileImage.jpg"))
+                .andExpect(jsonPath("$.response.gender").value(false))
+                .andExpect(jsonPath("$.response.tokenInfo.grantType").value(BEARER))
+                .andExpect(jsonPath("$.response.tokenInfo.refreshToken", notNullValue()))
+                .andExpect(jsonPath("$.response.tokenInfo.accessToken", notNullValue()))
                 .andDo(print())
                 .andDo(document("login-user",
                         requestHeaders(
@@ -142,15 +149,17 @@ class UserControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
                         responseFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("유저 이름"),
-                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("유저 이메일"),
-                                fieldWithPath("birthday").type(JsonFieldType.STRING).description("유저 생년월일"),
-                                fieldWithPath("profileImage").type(JsonFieldType.STRING).description("유저 프로필 이미지"),
-                                fieldWithPath("gender").type(JsonFieldType.BOOLEAN).description("유저 성별"),
-                                fieldWithPath("tokenInfo.grantType").type(JsonFieldType.STRING).description("토큰 타입"),
-                                fieldWithPath("tokenInfo.refreshToken").type(JsonFieldType.STRING).description("재발급 토큰"),
-                                fieldWithPath("tokenInfo.accessToken").type(JsonFieldType.STRING).description("인증 토큰")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지"),
+                                fieldWithPath("response.name").type(JsonFieldType.STRING).description("유저 이름"),
+                                fieldWithPath("response.nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
+                                fieldWithPath("response.email").type(JsonFieldType.STRING).description("유저 이메일"),
+                                fieldWithPath("response.birthday").type(JsonFieldType.STRING).description("유저 생년월일"),
+                                fieldWithPath("response.profileImage").type(JsonFieldType.STRING).description("유저 프로필 이미지"),
+                                fieldWithPath("response.gender").type(JsonFieldType.BOOLEAN).description("유저 성별"),
+                                fieldWithPath("response.tokenInfo.grantType").type(JsonFieldType.STRING).description("토큰 타입"),
+                                fieldWithPath("response.tokenInfo.refreshToken").type(JsonFieldType.STRING).description("재발급 토큰"),
+                                fieldWithPath("response.tokenInfo.accessToken").type(JsonFieldType.STRING).description("인증 토큰")
                         )
                 ));
     }
@@ -165,11 +174,20 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, accessToken))
                 .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(print())
                 .andDo(document("logout-user",
                         requestHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json"),
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("Access Token")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                        ),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지")
                         )));
     }
 
@@ -180,7 +198,7 @@ class UserControllerTest {
         String accessToken = "Bearer Access Token";
 
         TokenInfo tokenInfo = TokenInfo.create(BEARER, refreshToken, accessToken);
-        given(userService.reissueToken(anyString(), any())).willReturn(tokenInfo);
+        given(userService.reissueToken(anyLong(), anyString())).willReturn(tokenInfo);
 
         mvc.perform(RestDocumentationRequestBuilders.get("/reissueToken")
                         .with(csrf())
@@ -188,9 +206,11 @@ class UserControllerTest {
                         .header("Refresh_Token", refreshToken)
                         .header(HttpHeaders.AUTHORIZATION, accessToken))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.grantType").value(BEARER))
-                .andExpect(jsonPath("$.refreshToken", notNullValue()))
-                .andExpect(jsonPath("$.accessToken", notNullValue()))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.response.grantType").value(BEARER))
+                .andExpect(jsonPath("$.response.refreshToken", notNullValue()))
+                .andExpect(jsonPath("$.response.accessToken", notNullValue()))
                 .andDo(print())
                 .andDo(document("reissueToken-user",
                         requestHeaders(
@@ -202,9 +222,11 @@ class UserControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
                         responseFields(
-                                fieldWithPath("grantType").type(JsonFieldType.STRING).description("토큰 타입"),
-                                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("재발급 토큰"),
-                                fieldWithPath("accessToken").type(JsonFieldType.STRING).description("인증 토큰")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지"),
+                                fieldWithPath("response.grantType").type(JsonFieldType.STRING).description("토큰 타입"),
+                                fieldWithPath("response.refreshToken").type(JsonFieldType.STRING).description("재발급 토큰"),
+                                fieldWithPath("response.accessToken").type(JsonFieldType.STRING).description("인증 토큰")
                         )));
     }
 
@@ -228,12 +250,14 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, accessToken))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.name").value("testName"))
-                .andExpect(jsonPath("$.nickname").value("testNickname"))
-                .andExpect(jsonPath("$.email").value("testEmail@gmail.com"))
-                .andExpect(jsonPath("$.birthday").value("2000-02-22"))
-                .andExpect(jsonPath("$.profileImage").value("http://ProfileImage.jpg"))
-                .andExpect(jsonPath("$.gender").value(false))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.response.name").value("testName"))
+                .andExpect(jsonPath("$.response.nickname").value("testNickname"))
+                .andExpect(jsonPath("$.response.email").value("testEmail@gmail.com"))
+                .andExpect(jsonPath("$.response.birthday").value("2000-02-22"))
+                .andExpect(jsonPath("$.response.profileImage").value("http://ProfileImage.jpg"))
+                .andExpect(jsonPath("$.response.gender").value(false))
                 .andDo(print())
                 .andDo(document("get-user",
                         requestHeaders(
@@ -244,12 +268,14 @@ class UserControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
                         responseFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("유저 이름"),
-                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("유저 이메일"),
-                                fieldWithPath("birthday").type(JsonFieldType.STRING).description("2000-02-22"),
-                                fieldWithPath("profileImage").type(JsonFieldType.STRING).description("http://ProfileImage.jpg"),
-                                fieldWithPath("gender").type(JsonFieldType.BOOLEAN).description(false)
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지"),
+                                fieldWithPath("response.name").type(JsonFieldType.STRING).description("유저 이름"),
+                                fieldWithPath("response.nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
+                                fieldWithPath("response.email").type(JsonFieldType.STRING).description("유저 이메일"),
+                                fieldWithPath("response.birthday").type(JsonFieldType.STRING).description("2000-02-22"),
+                                fieldWithPath("response.profileImage").type(JsonFieldType.STRING).description("http://ProfileImage.jpg"),
+                                fieldWithPath("response.gender").type(JsonFieldType.BOOLEAN).description(false)
                         )));
     }
 
@@ -277,8 +303,10 @@ class UserControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, accessToken)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.name").value("newName"))
-                .andExpect(jsonPath("$.nickname").value("newNickname"))
+                .andExpect(jsonPath("$.code").value(201))
+                .andExpect(jsonPath("$.message").value("Created"))
+                .andExpect(jsonPath("$.response.name").value("newName"))
+                .andExpect(jsonPath("$.response.nickname").value("newNickname"))
                 .andDo(print())
                 .andDo(document("update-user",
                         requestHeaders(
@@ -295,8 +323,10 @@ class UserControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
                         responseFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("변경 된 이름"),
-                                fieldWithPath("nickname").type(JsonFieldType.STRING).description("변경 된 닉네임")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지"),
+                                fieldWithPath("response.name").type(JsonFieldType.STRING).description("변경 된 이름"),
+                                fieldWithPath("response.nickname").type(JsonFieldType.STRING).description("변경 된 닉네임")
                         )));
     }
 
@@ -315,6 +345,8 @@ class UserControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, accessToken)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(print())
                 .andDo(document("delete-user",
                         requestHeaders(
@@ -324,6 +356,13 @@ class UserControllerTest {
                         requestFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("확인 이메일"),
                                 fieldWithPath("password").type(JsonFieldType.STRING).description("확인 비밀번호")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                        ),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지")
                         )));
     }
 }

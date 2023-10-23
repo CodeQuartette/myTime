@@ -1,13 +1,15 @@
 package com.codeQuartette.myTime.controller;
 
+import com.codeQuartette.myTime.annotation.UserId;
 import com.codeQuartette.myTime.auth.TokenInfo;
 import com.codeQuartette.myTime.controller.dto.UserDTO;
+import com.codeQuartette.myTime.controller.globalResponse.ResponseDTO;
+import com.codeQuartette.myTime.controller.globalResponse.ResponseType;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.service.UserService;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static com.codeQuartette.myTime.auth.JwtProvider.REFRESH_TOKEN;
@@ -19,41 +21,48 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public void signup(@RequestBody UserDTO.Request userDTO) {
+    public ResponseDTO<?> signup(@RequestBody UserDTO.Request userDTO) {
         userService.signup(userDTO);
+        return ResponseDTO.from(ResponseType.CREATED);
     }
 
     @PostMapping("/api/login")
-    public UserDTO.Response login(@RequestBody UserDTO.Request userDTO) {
-        return userService.login(userDTO);
+    public ResponseDTO<UserDTO.Response> login(@RequestBody UserDTO.Request userDTO) {
+        UserDTO.Response response = userService.login(userDTO);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @GetMapping("/api/logout")
-    public void logout(Authentication authentication) {
-        userService.logout(authentication);
+    public ResponseDTO<?> logout(@UserId Long userId) {
+        userService.logout(userId);
+        return ResponseDTO.from(ResponseType.SUCCESS);
     }
 
     @GetMapping("/reissueToken")
-    public TokenInfo reissueToken(ServletRequest request, Authentication authentication) {
+    public ResponseDTO<TokenInfo> reissueToken(@UserId Long userId, ServletRequest request) {
         String bearerToken = ((HttpServletRequest) request).getHeader(REFRESH_TOKEN);
         String refreshToken = bearerToken.substring(7);
-        return userService.reissueToken(refreshToken, authentication);
+        TokenInfo response = userService.reissueToken(userId, refreshToken);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @GetMapping("/user")
-    public UserDTO.Response getUser(Authentication authentication) {
-        User user = userService.getUser(authentication);
-        return UserDTO.Response.of(user);
+    public ResponseDTO<UserDTO.Response> getUser(@UserId Long userId) {
+        User user = userService.getUser(userId);
+        UserDTO.Response response = UserDTO.Response.of(user);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @PatchMapping("/user")
-    public UserDTO.Response updateUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
-        User user = userService.updateUser(authentication, userDTO);
-        return UserDTO.Response.of(user);
+    public ResponseDTO<UserDTO.Response> updateUser(@UserId Long userId, @RequestBody UserDTO.Request userDTO) {
+        User user = userService.updateUser(userId, userDTO);
+        UserDTO.Response response = UserDTO.Response.of(user);
+        return ResponseDTO.from(ResponseType.CREATED, response);
     }
 
     @DeleteMapping("/user")
-    public void deleteUser(Authentication authentication, @RequestBody UserDTO.Request userDTO) {
-        userService.deleteUser(authentication, userDTO);
+    public ResponseDTO<?> deleteUser(@UserId Long userId, @RequestBody UserDTO.Request userDTO) {
+        userService.deleteUser(userId, userDTO);
+        return ResponseDTO.from(ResponseType.SUCCESS);
     }
 }

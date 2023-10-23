@@ -16,6 +16,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
+    private static final String USER_ID = "userId";
+
     private final JwtProvider jwtProvider;
 
     @Override
@@ -28,11 +30,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             if(refreshToken != null && accessToken != null && jwtProvider.validateToken(refreshToken)) {
                 Authentication authentication = jwtProvider.getAuthenticationByExpiredToken(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                httpRequest.setAttribute(USER_ID, jwtProvider.getUserIdByExpiredToken(accessToken));
             }
         } else {
             if (accessToken != null && jwtProvider.validateToken(accessToken)) {
                 Authentication authentication = jwtProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                httpRequest.setAttribute(USER_ID, jwtProvider.getUserId(accessToken));
             }
         }
 

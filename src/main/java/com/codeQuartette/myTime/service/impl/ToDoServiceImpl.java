@@ -79,11 +79,8 @@ public class ToDoServiceImpl implements ToDoService {
     @Transactional
     @Cacheable(cacheNames = "find-todo", key = "#userId.toString() + ':' + #date")
     public List<ToDo> find(Long userId, LocalDate date) {
-        MyDate myDate = myDateService.find(date).stream()
-                .filter(targetDate -> targetDate.matchUser(userId))
-                .findFirst()
-                .orElseThrow(ToDoNotFoundException::new);
-
-        return myDate.getToDos();
+        User user = userService.findUser(userId);
+        MyDate myDate = myDateService.findMyDate(user, date);
+        return toDoRepository.findAllByMyDate(myDate);
     }
 }

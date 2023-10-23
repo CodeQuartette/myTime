@@ -62,7 +62,7 @@ public class ToDoController {
             toDos = toDoService.find(userId, date);
         }
 
-        List<ToDoDTO.Response> toDos2 = toDoService.find(userId, date)
+        List<ToDoDTO.Response> toDos2 = toDos
                 .stream()
                 .map(ToDoDTO.Response::of)
                 .toList();

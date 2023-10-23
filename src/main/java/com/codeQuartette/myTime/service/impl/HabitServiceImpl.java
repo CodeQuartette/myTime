@@ -14,6 +14,7 @@ import com.codeQuartette.myTime.service.HabitService;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "find-habit", allEntries = true)
     public void create(Long userId, HabitDTO.Request habitRequestDTO) {
         User user = userService.findUser(userId);
         Habit habit = Habit.create(habitRequestDTO);
@@ -52,6 +54,8 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
+    @Transactional
+    @CacheEvict(cacheNames = "find-habit", allEntries = true)
     public void update(Long userId, Long id, HabitDTO.Request habitRequestDTO) {
         User user = userService.findUser(userId);
         Habit habit = habitRepository.findById(id)
@@ -74,6 +78,7 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "find-habit", allEntries = true)
     public void delete(Long id) {
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("삭제하려는 습관을 조회할 수 없습니다."));

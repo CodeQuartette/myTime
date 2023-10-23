@@ -59,7 +59,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(document("create Habit",
+                .andDo(document("create-habit",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 requestFields(
@@ -91,7 +91,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(document("patch Habit",
+                .andDo(document("update-habit",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 requestFields(
@@ -112,7 +112,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
     void deleteHabit() throws Exception {
         mockMvc.perform(delete("/habit?id=1"))
                 .andExpect(status().isOk())
-                .andDo(document("deleteHabit",
+                .andDo(document("delete-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())));
     }
@@ -133,17 +133,19 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(get("/habit?id=1"))
                 .andExpect(status().isOk())
-                .andDo(document("getHabitById",
+                .andDo(document("find-habitId-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("습관 ID"),
-                                fieldWithPath("startDate").type(JsonFieldType.STRING).description("습관 시작 날짜"),
-                                fieldWithPath("endDate").type(JsonFieldType.STRING).description("습관 종료 날짜"),
-                                fieldWithPath("repeatDay").type(JsonFieldType.ARRAY).description("습관 반복 요일"),
-                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
-                                fieldWithPath("categoryContent").type(JsonFieldType.STRING).description("카테고리 상세 내용"),
-                                fieldWithPath("blind").type(JsonFieldType.BOOLEAN).description("달력 노출 여부")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시"),
+                                fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("습관 ID"),
+                                fieldWithPath("response.startDate").type(JsonFieldType.STRING).description("습관 시작 날짜"),
+                                fieldWithPath("response.endDate").type(JsonFieldType.STRING).description("습관 종료 날짜"),
+                                fieldWithPath("response.repeatDay").type(JsonFieldType.ARRAY).description("습관 반복 요일"),
+                                fieldWithPath("response.category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("response.categoryContent").type(JsonFieldType.STRING).description("카테고리 상세 내용"),
+                                fieldWithPath("response.blind").type(JsonFieldType.BOOLEAN).description("달력 노출 여부")
                         )
                 ));
     }
@@ -187,15 +189,20 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(get("/habit?userId=1&date=2023-01-27"))
                 .andExpect(status().isOk())
-                .andDo(document("getHabitByDate",
+                .andDo(document("find-date-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("[].habitId").type(JsonFieldType.NUMBER).description("습관 ID"),
-                                fieldWithPath("[].category").type(JsonFieldType.STRING).description("카테고리"),
-                                fieldWithPath("[].categoryContent").type(JsonFieldType.STRING).description("카테고리 상세 내용"),
-                                fieldWithPath("[].date").type(JsonFieldType.STRING).description("습관을 이행하는 날짜"),
-                                fieldWithPath("[].done").type(JsonFieldType.BOOLEAN).description("완료 여부")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("response.[].habitId").type(JsonFieldType.NUMBER).description("습관 ID"),
+                                fieldWithPath("response.[].startDate").type(JsonFieldType.STRING).description("습관 시작 날짜"),
+                                fieldWithPath("response.[].endDate").type(JsonFieldType.STRING).description("습관 종료 날짜"),
+                                fieldWithPath("response.[].isBlind").type(JsonFieldType.BOOLEAN).description("습관 공개 여부"),
+                                fieldWithPath("response.[].category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("response.[].categoryContent").type(JsonFieldType.STRING).description("카테고리 상세 내용"),
+                                fieldWithPath("response.[].date").type(JsonFieldType.STRING).description("습관을 이행하는 날짜"),
+                                fieldWithPath("response.[].done").type(JsonFieldType.BOOLEAN).description("완료 여부")
                         )
                 ));
     }
@@ -252,15 +259,20 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(get("/habit?userId=1&yearMonth=2023-10"))
                 .andExpect(status().isOk())
-                .andDo(document("getHabitByMonth",
+                .andDo(document("find-yearMonth-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("[].habitId").type(JsonFieldType.NUMBER).description("습관 ID"),
-                                fieldWithPath("[].category").type(JsonFieldType.STRING).description("카테고리"),
-                                fieldWithPath("[].categoryContent").type(JsonFieldType.STRING).description("카테고리 상세 내용"),
-                                fieldWithPath("[].date").type(JsonFieldType.STRING).description("습관을 이행하는 날짜"),
-                                fieldWithPath("[].done").type(JsonFieldType.BOOLEAN).description("완료 여부")
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("response.[].habitId").type(JsonFieldType.NUMBER).description("습관 ID"),
+                                fieldWithPath("response.[].startDate").type(JsonFieldType.STRING).description("습관 시작 날짜"),
+                                fieldWithPath("response.[].endDate").type(JsonFieldType.STRING).description("습관 종료 날짜"),
+                                fieldWithPath("response.[].isBlind").type(JsonFieldType.BOOLEAN).description("습관 공개 여부"),
+                                fieldWithPath("response.[].category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("response.[].categoryContent").type(JsonFieldType.STRING).description("카테고리 상세 내용"),
+                                fieldWithPath("response.[].date").type(JsonFieldType.STRING).description("습관을 이행하는 날짜"),
+                                fieldWithPath("response.[].done").type(JsonFieldType.BOOLEAN).description("완료 여부")
                         )
                 ));
     }

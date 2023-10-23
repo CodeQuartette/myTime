@@ -59,7 +59,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(document("create Habit",
+                .andDo(document("create-habit",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 requestFields(
@@ -91,7 +91,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(document("patch Habit",
+                .andDo(document("update-habit",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 requestFields(
@@ -112,7 +112,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
     void deleteHabit() throws Exception {
         mockMvc.perform(delete("/habit?id=1"))
                 .andExpect(status().isOk())
-                .andDo(document("deleteHabit",
+                .andDo(document("delete-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())));
     }
@@ -133,7 +133,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(get("/habit?id=1"))
                 .andExpect(status().isOk())
-                .andDo(document("getHabitById",
+                .andDo(document("find-habitId-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -189,7 +189,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(get("/habit?userId=1&date=2023-01-27"))
                 .andExpect(status().isOk())
-                .andDo(document("getHabitByDate",
+                .andDo(document("find-date-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -259,7 +259,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(get("/habit?userId=1&yearMonth=2023-10"))
                 .andExpect(status().isOk())
-                .andDo(document("getHabitByMonth",
+                .andDo(document("find-yearMonth-habit",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(

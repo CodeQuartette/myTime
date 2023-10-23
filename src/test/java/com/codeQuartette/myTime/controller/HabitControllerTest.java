@@ -285,9 +285,12 @@ class HabitControllerTest extends AbstractRestDocsTests {
 
         mockMvc.perform(RestDocumentationRequestBuilders.get("/category"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(objectMapper.writeValueAsString(categoryList)))
-                .andDo(print())
-                .andDo(document("getCategory"));
+                .andDo(document("getCategory",
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("response.[]").type(JsonFieldType.ARRAY).description("습관 카테고리 종류")
+                        )));
     }
 }

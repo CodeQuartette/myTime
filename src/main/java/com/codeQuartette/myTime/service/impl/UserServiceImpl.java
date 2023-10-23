@@ -40,9 +40,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO.Response login(UserDTO.Request userDTO) {
         Authentication authentication = getAuthentication(userDTO.getEmail(), userDTO.getPassword());
-        String refreshToken = jwtProvider.createRefreshToken();
-        String accessToken = jwtProvider.createAccessToken(authentication);
         User user = (User) authentication.getPrincipal();
+        String accessToken = jwtProvider.createAccessToken(user);
+        String refreshToken = jwtProvider.createRefreshToken();
         user.updateToken(refreshToken);
         userRepository.save(user);
         UserDTO.Response responseUserDTO = UserDTO.Response.of(user);
@@ -59,12 +59,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public TokenInfo reissueToken(String refreshToken, Authentication authentication) {
-        User user = findUser(authentication.getName());
+    public TokenInfo reissueToken(Long userId, String refreshToken) {
+        User user = findUser(userId);
         if (!user.matchToken(refreshToken)) {
             throw new TokenNotMatchException();
         }
-        String accessToken = jwtProvider.createAccessToken(authentication);
+        String accessToken = jwtProvider.createAccessToken(user);
         return TokenInfo.create(BEARER, user.getToken(), accessToken);
     }
 

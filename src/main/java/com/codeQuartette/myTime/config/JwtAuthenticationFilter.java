@@ -30,6 +30,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             if(refreshToken != null && accessToken != null && jwtProvider.validateToken(refreshToken)) {
                 Authentication authentication = jwtProvider.getAuthenticationByExpiredToken(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                httpRequest.setAttribute(USER_ID, jwtProvider.getUserIdByExpiredToken(accessToken));
             }
         } else {
             if (accessToken != null && jwtProvider.validateToken(accessToken)) {

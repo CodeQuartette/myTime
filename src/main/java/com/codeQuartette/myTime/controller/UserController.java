@@ -10,7 +10,6 @@ import com.codeQuartette.myTime.service.UserService;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static com.codeQuartette.myTime.auth.JwtProvider.REFRESH_TOKEN;
@@ -40,10 +39,10 @@ public class UserController {
     }
 
     @GetMapping("/reissueToken")
-    public ResponseDTO<TokenInfo> reissueToken(ServletRequest request, Authentication authentication) {
+    public ResponseDTO<TokenInfo> reissueToken(@UserId Long userId, ServletRequest request) {
         String bearerToken = ((HttpServletRequest) request).getHeader(REFRESH_TOKEN);
         String refreshToken = bearerToken.substring(7);
-        TokenInfo response = userService.reissueToken(refreshToken, authentication);
+        TokenInfo response = userService.reissueToken(userId, refreshToken);
         return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 

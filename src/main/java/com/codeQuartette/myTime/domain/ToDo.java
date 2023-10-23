@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -15,7 +17,10 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ToDo {
+public class ToDo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2334566915945398092L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

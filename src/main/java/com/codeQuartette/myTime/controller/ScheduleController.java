@@ -59,8 +59,8 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseDTO<String> create(@RequestParam(name = "userId") Long userId,
-                                      @RequestBody ScheduleDTO.Request request) {
+    public ResponseDTO<?> create(@RequestParam(name = "userId") Long userId,
+                                 @RequestBody ScheduleDTO.Request request) {
         scheduleService.create(userId, request);
         return ResponseDTO.from(ResponseType.CREATED);
     }
@@ -79,12 +79,12 @@ public class ScheduleController {
                 .isSpecificTime(schedule.getIsSpecificTime())
                 .alert(schedule.getAlert())
                 .build();
-        return ResponseDTO.from(ResponseType.SUCCESS);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @DeleteMapping
-    public ResponseDTO<String> delete(@RequestParam(name = "userId") Long userId,
-                                      @RequestParam(name = "id") Long scheduleId) {
+    public ResponseDTO<?> delete(@RequestParam(name = "userId") Long userId,
+                                 @RequestParam(name = "id") Long scheduleId) {
         scheduleService.delete(userId, scheduleId);
         return ResponseDTO.from(ResponseType.SUCCESS);
     }

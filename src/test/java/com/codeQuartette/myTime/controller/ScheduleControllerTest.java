@@ -72,14 +72,17 @@ class ScheduleControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("schedules").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.id == '%s')]", "1").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.title == '%s')]", "아침밥 먹기").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.color == '%s')]", "ADC4FF").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.startDate == '%s')]", "2023-08-30T09:00:00").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.endDate == '%s')]", "2023-08-30T10:00:00").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.alert == %b)]", Boolean.TRUE).exists())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("response.schedules").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.id == '%s')]", "1").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.title == '%s')]", "아침밥 먹기").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.color == '%s')]", "ADC4FF").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.startDate == '%s')]", "2023-08-30T09:00:00").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.endDate == '%s')]", "2023-08-30T10:00:00").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.alert == %b)]", Boolean.TRUE).exists())
                 .andDo(print())
                 .andDo(document("find-scheduleId-schedule",
                         requestHeaders(
@@ -91,14 +94,16 @@ class ScheduleControllerTest {
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
-                        responseFields()
-                                .andWithPrefix("schedules.[0]", fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))
                 ));
     }
 
@@ -123,14 +128,16 @@ class ScheduleControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("schedules").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.id == '%s')]", "1").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.title == '%s')]", "아침밥 먹기").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.color == '%s')]", "ADC4FF").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.startDate == '%s')]", "2023-08-30T09:00:00").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.endDate == '%s')]", "2023-08-30T10:00:00").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.alert == %b)]", Boolean.TRUE).exists())
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("response.schedules").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.id == '%s')]", "1").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.title == '%s')]", "아침밥 먹기").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.color == '%s')]", "ADC4FF").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.startDate == '%s')]", "2023-08-30T09:00:00").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.endDate == '%s')]", "2023-08-30T10:00:00").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.alert == %b)]", Boolean.TRUE).exists())
                 .andDo(print())
                 .andDo(document("find-date-schedule",
                         requestHeaders(
@@ -143,14 +150,16 @@ class ScheduleControllerTest {
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
-                        responseFields()
-                                .andWithPrefix("schedules.[0]", fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))
                 ));
     }
 
@@ -175,14 +184,16 @@ class ScheduleControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("schedules").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.id == '%s')]", "1").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.title == '%s')]", "아침밥 먹기").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.color == '%s')]", "ADC4FF").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.startDate == '%s')]", "2023-08-30T09:00:00").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.endDate == '%s')]", "2023-08-30T10:00:00").exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
-                .andExpect(jsonPath("$..schedules[0][?(@.alert == %b)]", Boolean.TRUE).exists())
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("response.schedules").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.id == '%s')]", "1").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.title == '%s')]", "아침밥 먹기").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.color == '%s')]", "ADC4FF").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.startDate == '%s')]", "2023-08-30T09:00:00").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.endDate == '%s')]", "2023-08-30T10:00:00").exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
+                .andExpect(jsonPath("$..response.schedules[0][?(@.alert == %b)]", Boolean.TRUE).exists())
                 .andDo(print())
                 .andDo(document("find-yearMonth-schedule",
                         requestHeaders(
@@ -195,14 +206,16 @@ class ScheduleControllerTest {
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
-                        responseFields()
-                                .andWithPrefix("schedules.[0]", fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"))
-                                .andWithPrefix("schedules.[0]", fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"))
+                                .andWithPrefix("response.schedules.[0]", fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))
                 ));
     }
 
@@ -224,6 +237,8 @@ class ScheduleControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("code").value(201))
+                .andExpect(jsonPath("message").value("Created"))
                 .andDo(print())
                 .andDo(document("create-schedule",
                         requestHeaders(
@@ -270,14 +285,17 @@ class ScheduleControllerTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("response").exists())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[?(@.id == '%s')]", "1").exists())
-                .andExpect(jsonPath("$.[?(@.title == '%s')]", "점심밥 먹기").exists())
-                .andExpect(jsonPath("$.[?(@.color == '%s')]", "ADC4FF").exists())
-                .andExpect(jsonPath("$.[?(@.startDate == '%s')]", "2023-08-30T12:00:00").exists())
-                .andExpect(jsonPath("$.[?(@.endDate == '%s')]", "2023-08-30T13:00:00").exists())
-                .andExpect(jsonPath("$.[?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
-                .andExpect(jsonPath("$.[?(@.alert == %b)]", Boolean.TRUE).exists())
+                .andExpect(jsonPath("$.response.[?(@.id == '%s')]", "1").exists())
+                .andExpect(jsonPath("$.response.[?(@.title == '%s')]", "점심밥 먹기").exists())
+                .andExpect(jsonPath("$.response.[?(@.color == '%s')]", "ADC4FF").exists())
+                .andExpect(jsonPath("$.response.[?(@.startDate == '%s')]", "2023-08-30T12:00:00").exists())
+                .andExpect(jsonPath("$.response.[?(@.endDate == '%s')]", "2023-08-30T13:00:00").exists())
+                .andExpect(jsonPath("$.response.[?(@.isSpecificTime == %b)]", Boolean.FALSE).exists())
+                .andExpect(jsonPath("$.response.[?(@.alert == %b)]", Boolean.TRUE).exists())
                 .andDo(print())
                 .andDo(document("update-schedule",
                         requestHeaders(
@@ -299,13 +317,15 @@ class ScheduleControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("스케줄 아이디"),
-                                fieldWithPath("title").type(JsonFieldType.STRING).description("스케줄 제목"),
-                                fieldWithPath("color").type(JsonFieldType.STRING).description("스케줄 색상"),
-                                fieldWithPath("startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"),
-                                fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"),
-                                fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"),
-                                fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))));
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
+                                fieldWithPath("response.id").type(JsonFieldType.NUMBER).description("스케줄 아이디"),
+                                fieldWithPath("response.title").type(JsonFieldType.STRING).description("스케줄 제목"),
+                                fieldWithPath("response.color").type(JsonFieldType.STRING).description("스케줄 색상"),
+                                fieldWithPath("response.startDate").type(JsonFieldType.STRING).description("스케줄 시작 날짜 및 시간"),
+                                fieldWithPath("response.endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"),
+                                fieldWithPath("response.isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"),
+                                fieldWithPath("response.alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부"))));
 
     }
 
@@ -319,6 +339,8 @@ class ScheduleControllerTest {
                 .with(csrf().asHeader())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("OK"))
                 .andDo(print())
                 .andDo(document("delete-schedule",
                         requestHeaders(
@@ -327,6 +349,12 @@ class ScheduleControllerTest {
                         queryParameters(
                                 parameterWithName("userId").description("유저 아이디").optional(),
                                 parameterWithName("id").description("스케줄 아이디").optional()
-                        )));
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Application/json")
+                        ),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"))));
     }
 }

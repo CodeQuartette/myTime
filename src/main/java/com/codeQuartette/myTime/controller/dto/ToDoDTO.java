@@ -13,6 +13,7 @@ import java.util.List;
 public class ToDoDTO {
 
     @Getter
+    @ToString
      public static class Request{
 
         private String title;

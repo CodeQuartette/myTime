@@ -198,7 +198,7 @@ class UserControllerTest {
         String accessToken = "Bearer Access Token";
 
         TokenInfo tokenInfo = TokenInfo.create(BEARER, refreshToken, accessToken);
-        given(userService.reissueToken(anyLong(), anyString())).willReturn(tokenInfo);
+        given(userService.reissueToken(any(), anyString())).willReturn(tokenInfo);
 
         mvc.perform(RestDocumentationRequestBuilders.get("/reissueToken")
                         .with(csrf())

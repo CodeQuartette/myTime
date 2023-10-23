@@ -1,10 +1,11 @@
 package com.codeQuartette.myTime.controller;
 
 import com.codeQuartette.myTime.controller.dto.ToDoDTO;
+import com.codeQuartette.myTime.controller.globalResponse.ResponseDTO;
+import com.codeQuartette.myTime.controller.globalResponse.ResponseType;
 import com.codeQuartette.myTime.domain.ToDo;
 import com.codeQuartette.myTime.service.ToDoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -19,36 +20,38 @@ public class ToDoController {
     private final ToDoService toDoService;
 
     @PostMapping
-    public void create(@RequestParam(name = "userId", required = false) Long userId,
+    public ResponseDTO<String> create(@RequestParam(name = "userId", required = false) Long userId,
                        @RequestBody ToDoDTO.Request toDoRequestDTO) {
         toDoService.create(userId, toDoRequestDTO);
+        return  ResponseDTO.from(ResponseType.CREATED);
     }
 
     @PatchMapping
-    public ResponseEntity<ToDoDTO.Response> update(@RequestParam(name = "id", required = false) Long id,
-                                                   @RequestBody ToDoDTO.Request toDoRequestDTO) {
+    public ResponseDTO<ToDoDTO.Response> update(@RequestParam(name = "id", required = false) Long id,
+                                                @RequestBody ToDoDTO.Request toDoRequestDTO) {
         ToDo toDo = toDoService.update(id, toDoRequestDTO);
         ToDoDTO.Response response = ToDoDTO.Response.of(toDo);
-        return ResponseEntity.ok(response);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     //할 일 완료 체크
     @PatchMapping("/isDone")
-    public ResponseEntity<ToDoDTO.Response> updateDone(@RequestParam(name = "id", required = false) Long id,
+    public ResponseDTO<ToDoDTO.Response> updateDone(@RequestParam(name = "id", required = false) Long id,
                                                        @RequestBody ToDoDTO.Request toDoRequestDTO) {
         ToDo toDo = toDoService.updateDone(id, toDoRequestDTO);
         ToDoDTO.Response response = ToDoDTO.Response.of(toDo);
-        return ResponseEntity.ok(response);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @DeleteMapping
-    public void delete(@RequestParam(name = "id", required = false) Long id) {
+    public ResponseDTO<String> delete(@RequestParam(name = "id", required = false) Long id) {
         toDoService.delete(id);
+        return ResponseDTO.from(ResponseType.SUCCESS);
     }
 
     //조회
     @GetMapping
-    public ResponseEntity<ToDoDTO.ResponseList> find(@RequestParam(name = "toDoId", required = false) Long id,
+    public ResponseDTO<ToDoDTO.ResponseList> find(@RequestParam(name = "id", required = false) Long id,
                                                      @RequestParam(name = "userId", required = false) Long userId,
                                                      @RequestParam(name = "date", required = false) LocalDate date) {
 
@@ -64,6 +67,6 @@ public class ToDoController {
                 .map(ToDoDTO.Response::of)
                 .toList();
 
-        return ResponseEntity.ok(ToDoDTO.ResponseList.of(toDos2));
+        return ResponseDTO.from(ResponseType.SUCCESS, ToDoDTO.ResponseList.of(toDos2));
     }
 }

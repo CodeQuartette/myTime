@@ -49,7 +49,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Schedule> find(Long scheduleId) {
+    public List<Schedule> find(Long userId, Long scheduleId) {
         return List.of(findSchedule(scheduleId));
     }
 

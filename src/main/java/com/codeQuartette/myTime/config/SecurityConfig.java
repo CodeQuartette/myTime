@@ -1,6 +1,7 @@
 package com.codeQuartette.myTime.config;
 
 import com.codeQuartette.myTime.auth.JwtProvider;
+import com.codeQuartette.myTime.controller.HabitController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class SecurityConfig {
                     )
                     .authorizeHttpRequests(authorizeRequests ->
                             authorizeRequests
-                                    .requestMatchers("/user", "/reissueToken", "/schedule/*").hasRole("USER")
+                                    .requestMatchers("/user", "/reissueToken", "/schedule/*", "/habit", "/habit/**").hasRole("USER")
                                     .anyRequest().permitAll()
                     )
                     .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

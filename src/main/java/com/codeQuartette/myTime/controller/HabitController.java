@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.controller;
 
+import com.codeQuartette.myTime.annotation.UserId;
 import com.codeQuartette.myTime.controller.dto.HabitDTO;
 import com.codeQuartette.myTime.controller.dto.HabitHasMyDateDTO;
 import com.codeQuartette.myTime.controller.globalResponse.ResponseDTO;
@@ -24,38 +25,38 @@ public class HabitController {
     private final HabitHasMyDateService habitHasMyDateService;
 
     @PostMapping("/habit")
-    public ResponseDTO<String> create(@RequestParam Long userId, @RequestBody HabitDTO.Request habitRequestDTO) {
+    public ResponseDTO<String> create(@UserId Long userId, @RequestBody HabitDTO.Request habitRequestDTO) {
         habitService.create(userId, habitRequestDTO);
         return ResponseDTO.from(ResponseType.CREATED);
     }
 
     @PatchMapping("/habit")
-    public ResponseDTO<String> update(@RequestParam Long userId, @RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
+    public ResponseDTO<String> update(@UserId Long userId, @RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
         habitService.update(userId, id, habitRequestDTO);
         return ResponseDTO.from(ResponseType.SUCCESS);
     }
 
     @DeleteMapping("/habit")
-    public ResponseDTO<String> delete(@RequestParam Long id) {
-        habitService.delete(id);
+    public ResponseDTO<String> delete(@UserId Long userId, @RequestParam Long id) {
+        habitService.delete(userId, id);
         return ResponseDTO.from(ResponseType.SUCCESS);
     }
 
     @GetMapping(value = "/habit", params = "id")
-    public ResponseDTO<HabitDTO.Response> getHabitById(@RequestParam(name = "id") Long id) {
-        Habit habit = habitService.findHabit(id);
+    public ResponseDTO<HabitDTO.Response> getHabitById(@UserId Long userId, @RequestParam(name = "id") Long id) {
+        Habit habit = habitService.findHabit(userId, id);
         return ResponseDTO.from(ResponseType.SUCCESS, HabitDTO.Response.of(habit));
     }
 
     @GetMapping(value = "/habit", params = {"userId", "date"})
-    public ResponseDTO<List<HabitHasMyDateDTO.Response>> getHabitByDate(@RequestParam(name = "userId") Long userId, @RequestParam(name = "date") LocalDate date) {
+    public ResponseDTO<List<HabitHasMyDateDTO.Response>> getHabitByDate(@UserId Long userId, @RequestParam(name = "date") LocalDate date) {
         List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(userId, date);
         List<HabitHasMyDateDTO.Response> response = habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
         return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @GetMapping(value = "/habit", params = {"userId", "yearMonth"})
-    public ResponseDTO<List<HabitHasMyDateDTO.Response>> getHabitByMonth(@RequestParam(name = "userId") Long userId, @RequestParam YearMonth yearMonth) {
+    public ResponseDTO<List<HabitHasMyDateDTO.Response>> getHabitByMonth(@UserId Long userId, @RequestParam YearMonth yearMonth) {
         List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(userId, yearMonth);
         List<HabitHasMyDateDTO.Response> response = habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
         return ResponseDTO.from(ResponseType.SUCCESS, response);

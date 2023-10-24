@@ -129,7 +129,7 @@ class HabitControllerTest extends AbstractRestDocsTests {
                 .isBlind(false)
                 .build();
 
-        when(habitService.findHabit(any())).thenReturn(habit);
+        when(habitService.findHabit(any(), any())).thenReturn(habit);
 
         mockMvc.perform(get("/habit?id=1"))
                 .andExpect(status().isOk())

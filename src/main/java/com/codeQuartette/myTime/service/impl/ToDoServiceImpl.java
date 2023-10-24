@@ -11,6 +11,8 @@ import com.codeQuartette.myTime.service.ToDoService;
 import com.codeQuartette.myTime.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -34,6 +36,7 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "find-todo", allEntries = true)
     public void create(Long userId, ToDoDTO.Request toDoRequestDTO) {
         User user = userService.findUser(userId);
         MyDate myDate = myDateService.findMyDate(user, toDoRequestDTO.getDate());
@@ -43,13 +46,16 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "find-todo", allEntries = true)
     public ToDo update(Long id, ToDoDTO.Request toDoRequestDTO) {
         ToDo toDo = findToDo(id);
         toDo.update(toDoRequestDTO);
         return toDoRepository.save(toDo);
     }
 
-    //할 일 완료체크 - 수정
+    //할 일 완료체크
+    @Override
+    @CacheEvict(cacheNames = "find-todo", allEntries = true)
     public ToDo updateDone(Long id, ToDoDTO.Request toDoRequestDTO) {
         ToDo toDo = findToDo(id);
         toDo.updateDone(toDoRequestDTO);
@@ -57,6 +63,7 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "find-todo", allEntries = true)
     public void delete(Long id) {
         toDoRepository.delete(findToDo(id));
     }
@@ -69,12 +76,11 @@ public class ToDoServiceImpl implements ToDoService {
 
     //날짜 별 조회
     @Override
+    @Transactional
+    @Cacheable(cacheNames = "find-todo", key = "#userId.toString() + ':' + #date")
     public List<ToDo> find(Long userId, LocalDate date) {
-        MyDate myDate = myDateService.find(date).stream()
-                .filter(targetDate -> targetDate.matchUser(userId))
-                .findFirst()
-                .orElseThrow(ToDoNotFoundException::new);
-
-        return myDate.getToDos();
+        User user = userService.findUser(userId);
+        MyDate myDate = myDateService.findMyDate(user, date);
+        return toDoRepository.findAllByMyDate(myDate);
     }
 }

@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  data:
+    redis:
+      host: my-time-redis-ro.55mxz1.ng.0001.apn2.cache.amazonaws.com
+      port: 6379

@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  data:
+    redis:
+      host: my-time-redis-ro.55mxz1.ng.0001.apn2.cache.amazonaws.com
+      port: 6379
+
+  sql:
+    init:
+      mode: never
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://my-time-mysql.csusbupoeps3.ap-northeast-2.rds.amazonaws.com:3306/my_time?rewriteBatchedStatements=true
+    username: user
+    password: user123
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE

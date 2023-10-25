@@ -13,7 +13,7 @@ public interface ScheduleService {
 
     void delete(Long userId, Long scheduleId);
 
-    List<Schedule> find(Long scheduleId);
+    List<Schedule> find(Long userId, Long scheduleId);
 
     List<Schedule> find(Long userId, LocalDate date);
 

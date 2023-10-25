@@ -30,6 +30,10 @@
 | OK
 | 성공
 
+| `201`
+| Created
+| 생성
+
 | `400`
 | Bad Request
 | 잘못된 요청
@@ -48,3 +52,5 @@ include::user.adoc[]
 include::color.adoc[]
 
 include::schedule.adoc[]
+
+include::habit.adoc[]

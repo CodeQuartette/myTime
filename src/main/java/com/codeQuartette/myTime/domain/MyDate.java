@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,10 @@ import java.util.Objects;
 @Table(uniqueConstraints = @UniqueConstraint(name = "unique_date_user_id", columnNames = {"date", "user_id"}))
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyDate {
+public class MyDate implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7185577371366593650L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +35,7 @@ public class MyDate {
     private User user;
 
     @Builder.Default
-    @OneToMany(cascade = {CascadeType.PERSIST}, orphanRemoval = true)
-    @JoinColumn(name = "my_date_id", nullable = false)
+    @OneToMany(mappedBy = "myDate", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<ToDo> toDos = new ArrayList<>();
 
     @Builder.Default
@@ -45,10 +49,6 @@ public class MyDate {
     public MyDate(LocalDate date, User user) {
         this.date = date;
         this.user = user;
-    }
-
-    public void addToDo(ToDo toDo) {
-        this.toDos.add(toDo);
     }
 
     public boolean matchUser(Long userId) {

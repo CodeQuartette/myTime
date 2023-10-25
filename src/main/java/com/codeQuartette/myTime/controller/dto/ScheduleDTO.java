@@ -1,10 +1,7 @@
 package com.codeQuartette.myTime.controller.dto;
 
 import com.codeQuartette.myTime.domain.value.Color;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +10,7 @@ public class ScheduleDTO {
 
     @Getter
     @Builder
+    @ToString
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {

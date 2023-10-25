@@ -1,4 +1,4 @@
 [[Color-API]]
 == Color API
 
-operation::find-color[snippets='curl-request,http-request,http-response,response-body']
+operation::find-color[snippets='curl-request,http-request,http-response,response-body,response-fields']

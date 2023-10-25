@@ -1,11 +1,12 @@
 package com.codeQuartette.myTime.controller;
 
+import com.codeQuartette.myTime.annotation.UserId;
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
+import com.codeQuartette.myTime.controller.globalResponse.ResponseDTO;
+import com.codeQuartette.myTime.controller.globalResponse.ResponseType;
 import com.codeQuartette.myTime.domain.Schedule;
 import com.codeQuartette.myTime.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -27,18 +28,18 @@ public class ScheduleController {
      * */
 
     @GetMapping
-    public ResponseEntity<ScheduleDTO.ResponseList> find(@RequestParam(name = "scheduleId", required = false) Long scheduleId,
-                                                         @RequestParam(name = "userId", required = false) Long userId,
-                                                         @RequestParam(name = "date", required = false) LocalDate date,
-                                                         @RequestParam(name = "yearMonth", required = false) YearMonth yearMonth) {
+    public ResponseDTO<ScheduleDTO.ResponseList> find(@UserId Long userId,
+                                                      @RequestParam(name = "scheduleId", required = false) Long scheduleId,
+                                                      @RequestParam(name = "date", required = false) LocalDate date,
+                                                      @RequestParam(name = "yearMonth", required = false) YearMonth yearMonth) {
 
         List<Schedule> schedules = new ArrayList<>();
 
         if (scheduleId != null) {
-            schedules = scheduleService.find(scheduleId);
-        } else if (userId != null && date != null) {
+            schedules = scheduleService.find(userId,scheduleId);
+        } else if (date != null) {
             schedules = scheduleService.find(userId, date);
-        } else if (userId != null && yearMonth != null) {
+        } else if (yearMonth != null) {
             schedules = scheduleService.find(userId, yearMonth);
         }
 
@@ -55,20 +56,20 @@ public class ScheduleController {
                         .collect(Collectors.toList()))
                 .build();
 
-        return ResponseEntity.ok(responseList);
+        return ResponseDTO.from(ResponseType.SUCCESS, responseList);
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestParam(name = "userId") Long userId,
-                                         @RequestBody ScheduleDTO.Request request) {
+    public ResponseDTO<?> create(@UserId Long userId,
+                                 @RequestBody ScheduleDTO.Request request) {
         scheduleService.create(userId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("OK");
+        return ResponseDTO.from(ResponseType.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<ScheduleDTO.Response> update(@RequestParam(name = "userId") Long userId,
-                                                       @RequestParam(name = "id") Long scheduleId,
-                                                       @RequestBody ScheduleDTO.Request request) {
+    public ResponseDTO<ScheduleDTO.Response> update(@UserId Long userId,
+                                                    @RequestParam(name = "id") Long scheduleId,
+                                                    @RequestBody ScheduleDTO.Request request) {
         Schedule schedule = scheduleService.update(userId, scheduleId, request);
         ScheduleDTO.Response response = ScheduleDTO.Response.builder()
                 .id(schedule.getId())
@@ -79,14 +80,13 @@ public class ScheduleController {
                 .isSpecificTime(schedule.getIsSpecificTime())
                 .alert(schedule.getAlert())
                 .build();
-        return ResponseEntity.ok(response);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> delete(@RequestParam(name = "userId") Long userId,
-                                         @RequestParam(name = "id") Long scheduleId) {
+    public ResponseDTO<?> delete(@UserId Long userId,
+                                 @RequestParam(name = "id") Long scheduleId) {
         scheduleService.delete(userId, scheduleId);
-        return ResponseEntity.ok("OK");
+        return ResponseDTO.from(ResponseType.SUCCESS);
     }
-
 }

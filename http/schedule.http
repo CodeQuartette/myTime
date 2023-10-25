@@ -1,16 +1,22 @@
 ### 스케줄 단건 조회
 GET {{localhost}}/schedule?scheduleId=1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 ### 스케줄 일자별 조회
-GET {{localhost}}/schedule?userId=1&date=2023-09-24
+GET {{localhost}}/schedule?date=2023-09-24
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 ### 스케줄 월 별 조회
 GET {{localhost}}/schedule?userId=1&yearMonth=2023-09
-
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 ### 스케줄생성
-POST {{localhost}}/schedule?userId=1
+POST {{localhost}}/schedule?userId=2
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 {
   "title" : "과일 가게",
@@ -21,10 +27,10 @@ Content-Type: application/json
   "alert" : true
 }
 
-
 ### 스케줄수정
 PUT {{localhost}}/schedule?userId=1&id=1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
 
 {
   "title" : "과일 가게",
@@ -34,5 +40,8 @@ Content-Type: application/json
   "isSpecificTime" : true,
   "alert" : true
 }
+
 ### 스케줄 삭제
 DELETE {{localhost}}/schedule?userId=1&id=1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA

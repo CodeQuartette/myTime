@@ -11,9 +11,9 @@ public interface HabitService {
 
     void update(Long userId, Long id, HabitDTO.Request habitRequestDTO);
 
-    void delete(Long id);
+    void delete(Long userId, Long id);
 
-    Habit findHabit(Long id);
+    Habit findHabit(Long userId, Long id);
 
     List<String> getCategory();
 }

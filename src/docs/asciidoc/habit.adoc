@@ -1,0 +1,30 @@
+[[Habit-API]]
+== Habit API
+
+[[Habit-API-FIND]]
+=== 습관 단건 조회
+
+operation::find-habitId-habit[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-body,response-fields,response-headers']
+
+=== 습관 날짜별 조회
+
+operation::find-date-habit[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-body,response-fields,response-headers']
+
+=== 습관 연도월별 조회
+
+operation::find-yearMonth-habit[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-body,response-fields,response-headers']
+
+[[Habit-API-ADD]]
+=== 습관 등록
+
+operation::create-habit[snippets='curl-request,http-request,request-headers,request-fields']
+
+[[Habit-API-UPDATE]]
+=== 습관 수정
+
+operation::update-habit[snippets='curl-request,http-request,request-headers,query-parameters,request-fields,http-response,response-body,response-fields,response-headers']
+
+[[Habit-API-DELETE]]
+=== 습관 삭제
+
+operation::delete-habit[snippets='curl-request,http-request,request-headers,query-parameters']

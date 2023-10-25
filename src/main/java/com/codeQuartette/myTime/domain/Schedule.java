@@ -3,11 +3,10 @@ package com.codeQuartette.myTime.domain;
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
 import com.codeQuartette.myTime.domain.value.Color;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +16,19 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Schedule {
+public class Schedule implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5070641913231617118L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDateTime startDateTime;
+
     private LocalDateTime endDateTime;
+
     private String title;
 
     //유저에게 알림을 보내줄지 말지를 결정하는 여부
@@ -48,5 +53,4 @@ public class Schedule {
         this.alert = request.getAlert() == null ? this.getAlert() : request.getAlert();
         this.isSpecificTime = request.getIsSpecificTime() == null ? this.getIsSpecificTime() : request.getIsSpecificTime();
     }
-
 }

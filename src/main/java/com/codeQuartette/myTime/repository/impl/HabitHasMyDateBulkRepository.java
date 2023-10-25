@@ -36,6 +36,4 @@ public class HabitHasMyDateBulkRepository {
 
         jdbcTemplate.update(sql);
     }
-
-
 }

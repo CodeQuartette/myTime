@@ -12,6 +12,8 @@ import com.codeQuartette.myTime.service.ScheduleHasMyDateService;
 import com.codeQuartette.myTime.service.ScheduleService;
 import com.codeQuartette.myTime.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,22 +49,25 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Schedule> find(Long scheduleId) {
+    public List<Schedule> find(Long userId, Long scheduleId) {
         return List.of(findSchedule(scheduleId));
     }
 
     @Override
+    @Cacheable(cacheNames = "find-schedule", key = "#userId.toString() + ':' + #date")
     public List<Schedule> find(Long userId, LocalDate date) {
         return scheduleRepository.findByDate(userId, date);
     }
 
     @Override
+    @Cacheable(cacheNames = "find-schedule", key = "#userId.toString() + ':' + #yearMonth")
     public List<Schedule> find(Long userId, YearMonth yearMonth) {
         return scheduleRepository.findByYearMonth(userId, yearMonth);
     }
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "find-schedule", allEntries = true)
     public Schedule create(Long userId, ScheduleDTO.Request request) {
         // 1. user 찾기
         User user = userService.findUser(userId);
@@ -94,6 +99,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "find-schedule", allEntries = true)
     public void delete(Long userId, Long scheduleId) {
         User user = userService.findUser(userId);
 
@@ -101,8 +107,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.delete(schedule);
     }
 
-
     @Override
+    @CacheEvict(cacheNames = "find-schedule", allEntries = true)
     public Schedule update(Long userId, Long scheduleId, ScheduleDTO.Request request) {
         User user = userService.findUser(userId);
 
@@ -137,6 +143,5 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.update(request);
 
         return scheduleRepository.save(schedule);
-
     }
 }

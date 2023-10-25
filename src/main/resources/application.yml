@@ -1,13 +1,4 @@
 spring:
-  sql:
-    init:
-      mode: always
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/my_time?rewriteBatchedStatements=true
-    username: user
-    password: user123
 
   jpa:
     generate-ddl: true
@@ -16,7 +7,6 @@ spring:
 
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
         order_inserts: true
         order_updates: true
@@ -27,13 +17,6 @@ spring:
 
     open-in-view: false
     defer-datasource-initialization: true
-
-logging:
-  level:
-    org:
-      springframework:
-        jdbc:
-          core: TRACE
 
 jwt:
   secret: bXlUaW1lUHJvamVjdFNlY3JldEtleU9mQ29kZVF1YXJ0ZXR0ZTEyMzQ1Njc4OQ==

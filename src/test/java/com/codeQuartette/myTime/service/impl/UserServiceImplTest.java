@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +49,7 @@ class UserServiceImplTest {
                 .profileImage("http://testUserProfileImage.jpg")
                 .gender(false)
                 .build();
+
         userServiceImpl.signup(userDTO);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
 
@@ -71,6 +70,7 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
+
         UserDTO.Response responseUserDTO = userServiceImpl.login(userDTO);
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
 
@@ -85,9 +85,10 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        userServiceImpl.logout(authentication);
+
         User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        userServiceImpl.logout(user.getId());
+        user = userRepository.findById(user.getId()).get();
 
         softly.assertThat(user.getToken()).isNull();
     }
@@ -101,8 +102,9 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        TokenInfo tokenInfo = userServiceImpl.reissueToken(refreshToken, authentication);
+
+        User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        TokenInfo tokenInfo = userServiceImpl.reissueToken(user.getId(), refreshToken);
 
         softly.assertThat(tokenInfo.getGrantType()).isEqualTo(BEARER);
         softly.assertThat(tokenInfo.getRefreshToken()).isEqualTo(refreshToken);
@@ -117,9 +119,9 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        User user = userServiceImpl.getUser(authentication);
-        User targetUser = userRepository.findByEmail(authentication.getName()).get();
+
+        User targetUser = userRepository.findByEmail(userDTO.getEmail()).get();
+        User user = userServiceImpl.getUser(targetUser.getId());
 
         softly.assertThat(user.getName()).isEqualTo(targetUser.getName());
         softly.assertThat(user.getNickname()).isEqualTo(targetUser.getNickname());
@@ -140,9 +142,10 @@ class UserServiceImplTest {
                 .nickname("eno")
                 .name("정호인")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        userServiceImpl.updateUser(authentication, userDTO);
-        User user = userRepository.findByEmail(authentication.getName()).get();
+
+        User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        userServiceImpl.updateUser(user.getId(), userDTO);
+        user = userRepository.findById(user.getId()).get();
 
         softly.assertThat(user.getName()).isEqualTo(userDTO.getName());
         softly.assertThat(user.getNickname()).isEqualTo(userDTO.getNickname());
@@ -157,9 +160,11 @@ class UserServiceImplTest {
                 .email("enolj76@gmail.com")
                 .password("1234")
                 .build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-        userServiceImpl.deleteUser(authentication, userDTO);
-        User user = userRepository.findByEmail(authentication.getName()).orElse(null);
+
+        User user = userRepository.findByEmail(userDTO.getEmail()).get();
+        userServiceImpl.deleteUser(user.getId(), userDTO);
+        user = userRepository.findById(user.getId()).orElse(null);
+
 
         softly.assertThat(user).isNull();
     }

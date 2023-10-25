@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -47,14 +46,13 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String createAccessToken(Authentication authentication) {
-        String roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public String createAccessToken(User user) {
+        String roles = String.join(",", user.getRoles());
 
         return Jwts.builder()
                 .setIssuer(ISSURE)
-                .setSubject(authentication.getName())
+                .setId(user.getId().toString())
+                .setSubject(user.getEmail())
                 .claim(ROLES, roles)
                 .setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_TIME))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
@@ -78,6 +76,23 @@ public class JwtProvider {
         }
 
         return getAuthenticationByClaims(claims);
+    }
+
+    public Long getUserId(String token) {
+        Claims claims = getUserClaimsByToken(token);
+        return Long.parseLong(claims.getId());
+    }
+
+    public Long getUserIdByExpiredToken(String token) {
+        Claims claims;
+
+        try {
+            claims = getUserClaimsByToken(token);
+        } catch (ExpiredJwtException e) {
+            claims = e.getClaims();
+        }
+
+        return Long.parseLong(claims.getId());
     }
 
     private Claims getUserClaimsByToken(String token) {

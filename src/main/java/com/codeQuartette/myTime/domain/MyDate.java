@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,10 @@ import java.util.Objects;
 @Table(uniqueConstraints = @UniqueConstraint(name = "unique_date_user_id", columnNames = {"date", "user_id"}))
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyDate {
+public class MyDate implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7185577371366593650L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,7 +9,7 @@ public interface HabitService {
 
     void create(Long userId, HabitDTO.Request habitRequestDTO);
 
-    void update(Long userId, Long id, HabitDTO.Request habitRequestDTO);
+    Habit update(Long userId, Long id, HabitDTO.Request habitRequestDTO);
 
     void delete(Long userId, Long id);
 

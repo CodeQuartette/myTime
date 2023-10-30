@@ -62,13 +62,13 @@ public class HabitServiceImpl implements HabitService {
     @Override
     @Transactional
     @CacheEvict(cacheNames = "find-habit", allEntries = true)
-    public void update(Long userId, Long id, HabitDTO.Request habitRequestDTO) {
+    public Habit update(Long userId, Long id, HabitDTO.Request habitRequestDTO) {
         User user = userService.findUser(userId);
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new HabitNotFoundException("수정하려는 습관을 조회할 수 없습니다."));
 
         habit.update(habitRequestDTO);
-        habitRepository.save(habit);
+        Habit saveHabit = habitRepository.save(habit);
         habitHasMyDateService.deleteAllNotDone(habit.getId());
 
         List<LocalDate> allHabitDates =
@@ -81,6 +81,8 @@ public class HabitServiceImpl implements HabitService {
             habitHasMyDates.add(HabitHasMyDate.builder().myDate(saveMyDate).habit(habit).build());
         }
         habitHasMyDateService.saveAll(habitHasMyDates);
+
+        return saveHabit;
     }
 
     @Override

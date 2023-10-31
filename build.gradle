@@ -81,6 +81,10 @@ dependencies {
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    //test container
+    testImplementation "org.testcontainers:testcontainers:1.17.6"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+
 //    // cache하다가 localdatetime 직렬화 부분 에러남
 //    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
 //    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'

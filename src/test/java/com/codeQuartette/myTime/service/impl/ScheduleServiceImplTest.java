@@ -1,5 +1,6 @@
 package com.codeQuartette.myTime.service.impl;
 
+import com.codeQuartette.myTime.config.RedisConfig;
 import com.codeQuartette.myTime.controller.dto.ScheduleDTO;
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.Schedule;
@@ -13,6 +14,7 @@ import com.codeQuartette.myTime.repository.ScheduleRepository;
 import com.codeQuartette.myTime.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,7 +24,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-
+@ExtendWith(RedisConfig.class)
 @SpringBootTest
 class ScheduleServiceImplTest {
 

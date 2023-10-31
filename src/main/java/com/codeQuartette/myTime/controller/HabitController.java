@@ -31,9 +31,10 @@ public class HabitController {
     }
 
     @PatchMapping("/habit")
-    public ResponseDTO<String> update(@UserId Long userId, @RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
-        habitService.update(userId, id, habitRequestDTO);
-        return ResponseDTO.from(ResponseType.SUCCESS);
+    public ResponseDTO<HabitDTO.Response> update(@UserId Long userId, @RequestParam Long id, @RequestBody HabitDTO.Request habitRequestDTO) {
+        Habit habit = habitService.update(userId, id, habitRequestDTO);
+        HabitDTO.Response response = HabitDTO.Response.of(habit);
+        return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
     @DeleteMapping("/habit")
@@ -48,14 +49,14 @@ public class HabitController {
         return ResponseDTO.from(ResponseType.SUCCESS, HabitDTO.Response.of(habit));
     }
 
-    @GetMapping(value = "/habit", params = {"userId", "date"})
+    @GetMapping(value = "/habit", params = {"date"})
     public ResponseDTO<List<HabitHasMyDateDTO.Response>> getHabitByDate(@UserId Long userId, @RequestParam(name = "date") LocalDate date) {
         List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(userId, date);
         List<HabitHasMyDateDTO.Response> response = habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();
         return ResponseDTO.from(ResponseType.SUCCESS, response);
     }
 
-    @GetMapping(value = "/habit", params = {"userId", "yearMonth"})
+    @GetMapping(value = "/habit", params = {"yearMonth"})
     public ResponseDTO<List<HabitHasMyDateDTO.Response>> getHabitByMonth(@UserId Long userId, @RequestParam YearMonth yearMonth) {
         List<HabitHasMyDate> habitHasMyDates = habitHasMyDateService.findAllHabitHasMyDate(userId, yearMonth);
         List<HabitHasMyDateDTO.Response> response = habitHasMyDates.stream().map(habitHasMyDate -> HabitHasMyDateDTO.Response.of(habitHasMyDate)).toList();

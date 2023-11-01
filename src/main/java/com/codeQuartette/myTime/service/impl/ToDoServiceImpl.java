@@ -5,6 +5,7 @@ import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.ToDo;
 import com.codeQuartette.myTime.domain.User;
 import com.codeQuartette.myTime.exception.ToDoNotFoundException;
+import com.codeQuartette.myTime.exception.UserNotMatchException;
 import com.codeQuartette.myTime.repository.ToDoRepository;
 import com.codeQuartette.myTime.service.MyDateService;
 import com.codeQuartette.myTime.service.ToDoService;
@@ -29,9 +30,13 @@ public class ToDoServiceImpl implements ToDoService {
     private final MyDateService myDateService;
 
 
-    private ToDo findToDo(Long toDoId) {
-        return toDoRepository.findById(toDoId)
+    private ToDo findToDo(Long userId, Long id) {
+        ToDo toDo = toDoRepository.findById(id)
                 .orElseThrow(ToDoNotFoundException::new);
+        if(!toDo.getMyDate().matchUser(userId)) {
+            throw new UserNotMatchException();
+        }
+        return toDo;
     }
 
     @Override
@@ -39,7 +44,7 @@ public class ToDoServiceImpl implements ToDoService {
     @CacheEvict(cacheNames = "find-todo", allEntries = true)
     public void create(Long userId, ToDoDTO.Request toDoRequestDTO) {
         User user = userService.findUser(userId);
-        MyDate myDate = myDateService.findMyDate(user, toDoRequestDTO.getDate());
+        MyDate myDate = myDateService.findMyDateOrCreate(user, toDoRequestDTO.getDate());
         MyDate saveMyDate = myDateService.save(myDate);
         ToDo toDo = ToDo.create(toDoRequestDTO, saveMyDate);
         toDoRepository.save(toDo);
@@ -47,8 +52,8 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     @CacheEvict(cacheNames = "find-todo", allEntries = true)
-    public ToDo update(Long id, ToDoDTO.Request toDoRequestDTO) {
-        ToDo toDo = findToDo(id);
+    public ToDo update(Long userId, Long id, ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = findToDo(userId, id);
         toDo.update(toDoRequestDTO);
         return toDoRepository.save(toDo);
     }
@@ -56,22 +61,22 @@ public class ToDoServiceImpl implements ToDoService {
     //할 일 완료체크
     @Override
     @CacheEvict(cacheNames = "find-todo", allEntries = true)
-    public ToDo updateDone(Long id, ToDoDTO.Request toDoRequestDTO) {
-        ToDo toDo = findToDo(id);
+    public ToDo updateDone(Long userId, Long id, ToDoDTO.Request toDoRequestDTO) {
+        ToDo toDo = findToDo(userId, id);
         toDo.updateDone(toDoRequestDTO);
         return toDoRepository.save(toDo);
     }
 
     @Override
     @CacheEvict(cacheNames = "find-todo", allEntries = true)
-    public void delete(Long id) {
-        toDoRepository.delete(findToDo(id));
+    public void delete(Long userId, Long id) {
+        toDoRepository.delete(findToDo(userId, id));
     }
 
     //한건 조회
     @Override
-    public List<ToDo> find(Long id) {
-        return List.of(findToDo(id));
+    public List<ToDo> find(Long userId, Long id) {
+        return List.of(findToDo(userId, id));
     }
 
     //날짜 별 조회

@@ -10,13 +10,13 @@ public interface ToDoService {
 
     void create(Long userId, ToDoDTO.Request toDoRequestDTO);
 
-    ToDo update(Long id, ToDoDTO.Request toDoRequestDTO);
+    ToDo update(Long userId, Long id, ToDoDTO.Request toDoRequestDTO);
 
-    ToDo updateDone(Long id, ToDoDTO.Request isDone);
+    ToDo updateDone(Long userId, Long id, ToDoDTO.Request isDone);
 
-    void delete(Long id);
+    void delete(Long userId, Long id);
 
-    List<ToDo> find(Long id);
+    List<ToDo> find(Long userId, Long id);
 
     List<ToDo> find(Long userId, LocalDate date);
 }

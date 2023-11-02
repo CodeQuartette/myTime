@@ -33,6 +33,8 @@ public class HabitDTO {
 
     @Builder
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Response {
 
         private Long id;

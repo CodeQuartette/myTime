@@ -234,7 +234,6 @@ class ScheduleControllerTest {
                 .build();
 
         mvc.perform(RestDocumentationRequestBuilders.post("/schedule")
-                .param("userId", "1")
                 .with(csrf())
                 .header("Authorization", "Bearer accessToken")
                 .content(objectMapper.writeValueAsString(request))
@@ -338,7 +337,6 @@ class ScheduleControllerTest {
     void delete() throws Exception {
 
         mvc.perform(RestDocumentationRequestBuilders.delete("/schedule")
-                .param("userId", "1")
                 .param("id", "1")
                 .with(csrf().asHeader())
                 .header("Authorization", "Bearer accessToken")

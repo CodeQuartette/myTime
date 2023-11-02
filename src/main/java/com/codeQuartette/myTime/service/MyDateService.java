@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface MyDateService {
 
+    MyDate findMyDateOrCreate(User user, LocalDate date);
+
     MyDate findMyDate(User user, LocalDate date);
 
     MyDate save(MyDate myDate);

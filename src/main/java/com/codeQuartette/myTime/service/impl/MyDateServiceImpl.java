@@ -3,6 +3,7 @@ package com.codeQuartette.myTime.service.impl;
 
 import com.codeQuartette.myTime.domain.MyDate;
 import com.codeQuartette.myTime.domain.User;
+import com.codeQuartette.myTime.exception.ToDoNotFoundException;
 import com.codeQuartette.myTime.repository.MyDateRepository;
 import com.codeQuartette.myTime.repository.impl.MyDateBulkRepository;
 import com.codeQuartette.myTime.service.MyDateService;
@@ -24,12 +25,17 @@ public class MyDateServiceImpl implements MyDateService {
     private final UserService userService;
 
     @Override
-    public MyDate findMyDate(User user, LocalDate date) {
+    public MyDate findMyDateOrCreate(User user, LocalDate date) {
         return myDateRepository.findByUserAndDate(user, date)
                 .orElseGet(() -> MyDate.builder()
                         .user(user)
                         .date(date)
                         .build());
+    }
+
+    public MyDate findMyDate(User user, LocalDate date) {
+        return myDateRepository.findByUserAndDate(user, date)
+                .orElseThrow(ToDoNotFoundException::new);
     }
 
     public List<MyDate> findAllByUserId(Long userId) {

@@ -1,7 +1,4 @@
 spring:
-  profiles:
-    active: prod
-
   sql:
     init:
       mode: always

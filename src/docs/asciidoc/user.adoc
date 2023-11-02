@@ -4,7 +4,7 @@
 [[User-API-SIGNUP]]
 === 회원가입
 
-operation::signup-user[snippets='curl-request,http-request,request-headers,request-fields,http-response,response-headers,request-fields']
+operation::signup-user[snippets='curl-request,http-request,request-headers,request-fields,http-response,response-headers,response-fields']
 
 [[User-API-LOGIN]]
 === 로그인
@@ -14,7 +14,7 @@ operation::login-user[snippets='curl-request,http-request,request-headers,reques
 [[User-API-LOGOUT]]
 === 로그아웃
 
-operation::logout-user[snippets='curl-request,http-request,request-headers,http-response,response-headers,request-fields']
+operation::logout-user[snippets='curl-request,http-request,request-headers,http-response,response-headers']
 
 [[User-API-Reissue-Token]]
 === 토큰 재발급

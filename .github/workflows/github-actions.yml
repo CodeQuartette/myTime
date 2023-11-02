@@ -36,7 +36,9 @@ jobs:
 
       # gradle build
       - name: Build with Gradle
-        run: ./gradlew build
+        run: |
+            ./gradlew copyDocument 
+            ./gradlew jar
 
       # make zip file
       - name: Make zip file

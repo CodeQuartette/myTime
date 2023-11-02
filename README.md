@@ -25,7 +25,7 @@ myTime은 일정, 할일, 습관이 관리가 가능하도록 만든 캘린더 �
 |AWS|http://43.202.211.239:8080/docs/index.html||
 
 ### 프로젝트 환경 구성
-- 그림 첨부
+<img src="https://github.com/CodeQuartette/myTime/assets/63284310/9d8756b0-0aa8-4053-ba04-b5f98aeb8277" width="800" height="600">
 
 
 ### 배포 파이프라인(GITHUB ACTION)

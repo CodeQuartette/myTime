@@ -29,7 +29,9 @@ myTime은 일정, 할일, 습관이 관리가 가능하도록 만든 캘린더 �
 
 
 ### 배포 파이프라인(GITHUB ACTION)
-- 그림 첨부
+![image](https://github.com/CodeQuartette/myTime/assets/45054467/d1a441a0-c0ff-4833-9252-39d94ef68857)
+
+
 
 ### Local로 실행 방법
 #### Repository Clone

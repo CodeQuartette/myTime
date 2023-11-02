@@ -5,13 +5,15 @@ name: CI/CD using Github Actions & AWS CodeDeploy
 # main이나 develop 브랜치에 push가 되었을 때 실행
 on:
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  if_merged:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -33,10 +35,12 @@ jobs:
 #          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 #          restore-keys: |
 #            ${{ runner.os }}-gradle-
-
+            
       # gradle build
       - name: Build with Gradle
-        run: ./gradlew build --info
+        run: |
+          ./gradlew copyDocument
+          ./gradlew build --info
 
       # make zip file
       - name: Make zip file

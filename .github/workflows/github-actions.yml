@@ -33,10 +33,6 @@ jobs:
 #          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 #          restore-keys: |
 #            ${{ runner.os }}-gradle-
-
-      # adoc build
-      - name: build asciidoctor action
-        uses: tonynv/asciidoctor-action@v2
             
       # gradle build
       - name: Build with Gradle

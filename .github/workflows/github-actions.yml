@@ -5,13 +5,15 @@ name: CI/CD using Github Actions & AWS CodeDeploy
 # main이나 develop 브랜치에 push가 되었을 때 실행
 on:
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  if_merged:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:

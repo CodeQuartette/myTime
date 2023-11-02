@@ -1,7 +1,7 @@
 # myTime Repository
 
 ### 프로젝트 설명
-myTime은 일정, 할일, 습관이 관리가 가능하도록 만든 애플리케이션 입니다.   
+myTime은 일정, 할일, 습관이 관리가 가능하도록 만든 캘린더 애플리케이션 입니다.   
 프로젝트 인원구성이 오직 백엔드로만 이루어져 있어서, 애플리케이션의 프론트는 없는 상태입니다.
 
 ### 사용 기술
@@ -58,6 +58,15 @@ java -jar -Dspring.profiles.active=local ./build/libs/myTime-0.0.1-SNAPSHOP.jar
 
 ### 개발 방식
 - [Convention](https://github.com/CodeQuartette/myTime/wiki/Convention)
+
+### 프로젝트 팀원 소개
+|이름|GitHub URL|소개|
+|---|----------|---|
+|Robin(윤혜지)|https://github.com/malaheaven| 안녕하세요. 마라탕을 좋아하는 개발자 윤혜지입니다.|
+|이노(정인호)|https://github.com/eNoLJ| 안녕하세요. 햄버거를 좋아하는 개발자 정인호입니다.| 
+|Tree(최희윤)|https://github.com/choitree| 안녕하세요. 돈가스를 좋아하는 개발자 최희윤입니다.|
+|희건(이희건)|https://github.com/2heekeon|안녕하세요. 양꼬치를 좋아하는 개발자 이희건입니다.|
+
 
 
 

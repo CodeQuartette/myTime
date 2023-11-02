@@ -1,12 +1,12 @@
 ### 스케줄 단건 조회
 GET {{localhost}}/schedule?scheduleId=1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMSIsInN1YiI6ImVub2xqQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjk4ODk1Mzk0fQ.TH08Bo3aG7Dc-mS6gWWvTU85CUNaWcXTwLL--C3pvk4
 
 ### 스케줄 일자별 조회
 GET {{localhost}}/schedule?date=2023-09-24
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMSIsInN1YiI6ImVub2xqQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjk4ODk1Mzk0fQ.TH08Bo3aG7Dc-mS6gWWvTU85CUNaWcXTwLL--C3pvk4
 
 ### 스케줄 월 별 조회
 GET {{localhost}}/schedule?userId=1&yearMonth=2023-09
@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpI
 ### 스케줄생성
 POST {{localhost}}/schedule?userId=2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMiIsInN1YiI6ImVub2xqNzZAZ21haWwuY29tIiwicm9sZXMiOiJST0xFX1VTRVIifQ.SrcNoL4wkZePCrgMis_vn2E_HcmFpmC1W4N3521CjbA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlUXVhcnRldHRlIiwianRpIjoiMSIsInN1YiI6ImVub2xqQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjk4ODk1Mzk0fQ.TH08Bo3aG7Dc-mS6gWWvTU85CUNaWcXTwLL--C3pvk4
 
 {
   "title" : "과일 가게",

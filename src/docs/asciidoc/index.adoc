@@ -14,8 +14,6 @@
 
 |===
 | 환경 | HOST
-| DOCKER
-| http://localhost/
 
 | LOCAL
 | http://localhost:8080/

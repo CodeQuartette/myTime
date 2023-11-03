@@ -1,4 +1,6 @@
 [[Color-API]]
 == Color API
 
+[[Color-API-FIND]]
+=== 컬러 조회
 operation::find-color[snippets='curl-request,http-request,http-response,response-body,response-fields']

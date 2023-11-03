@@ -17,7 +17,7 @@ operation::find-yearMonth-schedule[snippets='curl-request,http-request,request-h
 [[Schdule-API-ADD]]
 === 스케줄 등록
 
-operation::create-schedule[snippets='curl-request,http-request,request-headers,request-fields']
+operation::create-schedule[snippets='curl-request,http-request,request-headers,request-fields,response-fields']
 
 [[Schdule-API-UPDATE]]
 === 스케줄 수정

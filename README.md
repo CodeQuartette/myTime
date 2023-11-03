@@ -67,7 +67,7 @@ java -jar -Dspring.profiles.active=local ./build/libs/myTime-0.0.1-SNAPSHOP.jar
 ### 프로젝트 팀원 소개
 |이름|GitHub URL|소개|
 |---|----------|---|
-|Robin(윤혜지)|https://github.com/malaheaven| 안녕하세요. 마라탕을 좋아하는 개발자 윤혜지입니다.|
+|malaheaven(윤혜지)|https://github.com/malaheaven| 안녕하세요. 마라탕을 좋아하는 개발자 윤혜지입니다.|
 |이노(정인호)|https://github.com/eNoLJ| 안녕하세요. 햄버거를 좋아하는 개발자 정인호입니다.| 
 |Tree(최희윤)|https://github.com/choitree| 안녕하세요. 돈가스를 좋아하는 개발자 최희윤입니다.|
 |희건(이희건)|https://github.com/2heekeon|안녕하세요. 양꼬치를 좋아하는 개발자 이희건입니다.|

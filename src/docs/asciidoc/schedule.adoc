@@ -1,7 +1,7 @@
-[[Schdule-API]]
+[[Schedule-API]]
 == Schedule API
 
-[[Schdule-API-FIND]]
+[[Schedule-API-FIND]]
 === 스케줄 단건 조회
 
 operation::find-scheduleId-schedule[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-body,response-fields,response-headers']
@@ -14,17 +14,17 @@ operation::find-date-schedule[snippets='curl-request,http-request,request-header
 
 operation::find-yearMonth-schedule[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-body,response-fields,response-headers']
 
-[[Schdule-API-ADD]]
+[[Schedule-API-ADD]]
 === 스케줄 등록
 
 operation::create-schedule[snippets='curl-request,http-request,request-headers,request-fields,response-fields']
 
-[[Schdule-API-UPDATE]]
+[[Schedule-API-UPDATE]]
 === 스케줄 수정
 
 operation::update-schedule[snippets='curl-request,http-request,request-headers,query-parameters,request-fields,http-response,response-body,response-fields,response-headers']
 
-[[Schdule-API-DELETE]]
+[[Schedule-API-DELETE]]
 === 스케줄 삭제
 
 operation::delete-schedule[snippets='curl-request,http-request,request-headers,query-parameters']

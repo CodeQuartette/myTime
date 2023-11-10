@@ -9,8 +9,11 @@ import java.util.List;
 
 public class ToDoDTO {
 
+    @Builder
     @Getter
     @ToString
+    @NoArgsConstructor
+    @AllArgsConstructor
      public static class Request{
 
         private String title;

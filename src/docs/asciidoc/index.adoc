@@ -52,3 +52,5 @@ include::color.adoc[]
 include::schedule.adoc[]
 
 include::habit.adoc[]
+
+include::todo.adoc[]

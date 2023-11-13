@@ -1,0 +1,28 @@
+[[ToDo-API]]
+== ToDo API
+
+[[ToDo-API-FIND]]
+=== 할일 단건 조회
+
+operation::find-todoId-todo[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-headers,response-fields']
+
+=== 할일 날짜별 조회
+
+operation::find-date-todo[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-headers,response-fields']
+
+[[ToDo-API-ADD]]
+=== 할일 등록
+
+operation::create-todo[snippets='curl-request,http-request,request-headers,request-fields,http-response,response-headers,response-fields']
+
+[[ToDo-API-UPDATE]]
+=== 할일 수정
+
+operation::update-todo[snippets='curl-request,http-request,request-headers,query-parameters,request-fields,http-response,response-headers,response-fields']
+
+[[ToDo-API-DELETE]]
+=== 할일 삭제
+
+operation::delete-todo[snippets='curl-request,http-request,request-headers,query-parameters,http-response,response-headers,response-fields']
+
+

@@ -33,7 +33,7 @@ public class SecurityConfig {
                     )
                     .authorizeHttpRequests(authorizeRequests ->
                             authorizeRequests
-                                    .requestMatchers("/user", "/reissueToken", "/schedule/*", "/habit", "/habit/**").hasRole("USER")
+                                    .requestMatchers("/user", "/reissueToken", "/schedule/*", "/habit", "/habit/**", "/todo/*").hasRole("USER")
                                     .anyRequest().permitAll()
                     )
                     .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);

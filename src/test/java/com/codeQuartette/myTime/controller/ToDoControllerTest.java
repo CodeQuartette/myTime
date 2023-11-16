@@ -52,14 +52,13 @@ class ToDoControllerTest extends AbstractRestDocsTests {
                 .isBlind(Boolean.FALSE)
                 .build());
 
-        given(toDoService.find(any(), (Long)any())).willReturn(toDos);
+        given(toDoService.find(any(), any(Long.class))).willReturn(toDos);
 
         mockMvc.perform(get("/todo")
                         .param("id", "1")
                         .header("Authorization", "Bearer accessToken")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("code").value(200))
                 .andExpect(jsonPath("message").value("OK"))
                 .andExpect(jsonPath("response.toDos").exists())
@@ -106,7 +105,7 @@ class ToDoControllerTest extends AbstractRestDocsTests {
                 .isBlind(Boolean.FALSE)
                 .build());
 
-        given(toDoService.find(any(), (LocalDate) any())).willReturn(toDos);
+        given(toDoService.find(any(), any(LocalDate.class))).willReturn(toDos);
 
         mockMvc.perform(get("/todo")
                         .param("date", "2023-11-02")

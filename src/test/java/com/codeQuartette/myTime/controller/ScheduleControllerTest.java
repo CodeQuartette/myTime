@@ -254,6 +254,10 @@ class ScheduleControllerTest {
                                 fieldWithPath("endDate").type(JsonFieldType.STRING).description("스케줄 끝 날짜 및 시간"),
                                 fieldWithPath("isSpecificTime").type(JsonFieldType.BOOLEAN).description("스케줄 시작 시간 여부"),
                                 fieldWithPath("alert").type(JsonFieldType.BOOLEAN).description("유저 알림 여부")
+                        ),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("상태 메세지")
                         )));
     }
 

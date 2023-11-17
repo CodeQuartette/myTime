@@ -3,16 +3,19 @@ package com.codeQuartette.myTime.service.impl;
 import com.codeQuartette.myTime.controller.dto.ToDoDTO;
 import com.codeQuartette.myTime.domain.ToDo;
 import com.codeQuartette.myTime.domain.value.Color;
-import com.codeQuartette.myTime.exception.ToDoNotFoundException;
 import com.codeQuartette.myTime.repository.ToDoRepository;
 import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@ExtendWith(SoftAssertionsExtension.class)
 @SpringBootTest
 class ToDoServiceImplTest {
 
@@ -21,11 +24,6 @@ class ToDoServiceImplTest {
 
     @Autowired
     private ToDoRepository toDoRepository;
-
-    ToDo findTodo(Long todoId) {
-        return toDoRepository.findById(todoId)
-                .orElseThrow(ToDoNotFoundException::new);
-    }
 
     @Test
     @DisplayName("할 일 등록")
@@ -36,16 +34,22 @@ class ToDoServiceImplTest {
                 .title("방 만들기")
                 .color(Color.FFADAD)
                 .date(LocalDate.of(2023, 11, 2))
-                .isDone(Boolean.TRUE)
-                .isBlind(Boolean.FALSE)
+                .isDone(Boolean.FALSE)
+                .isBlind(Boolean.TRUE)
                 .build();
 
-        ToDo toDo = toDoService.create(userId, request);
+        toDoService.create(userId, request);
 
         SoftAssertions softAssertions = new SoftAssertions();
 
-        softAssertions.assertThat(findTodo(toDo.getId()).getId()).isEqualTo(toDo.getId());
-        softAssertions.assertThat(findTodo(toDo.getId()).getTitle()).isEqualTo(request.getTitle());
+        ToDo toDo = toDoRepository.findById(userId).get();
+
+        softAssertions.assertThat(toDo.getTitle()).isEqualTo(request.getTitle());
+        softAssertions.assertThat(toDo.getColor()).isEqualTo(request.getColor());
+        softAssertions.assertThat(toDo.getDate()).isEqualTo(request.getDate());
+        softAssertions.assertThat(toDo.getIsDone()).isEqualTo(request.getIsDone());
+        softAssertions.assertThat(toDo.getIsBlind()).isEqualTo(request.getIsBlind());
+        softAssertions.assertAll();
     }
 
     @Test
@@ -57,28 +61,32 @@ class ToDoServiceImplTest {
                 .title("방 만들기")
                 .color(Color.FFADAD)
                 .date(LocalDate.of(2023, 11, 2))
-                .isDone(Boolean.TRUE)
-                .isBlind(Boolean.FALSE)
+                .isDone(Boolean.FALSE)
+                .isBlind(Boolean.TRUE)
                 .build();
 
         ToDo toDo = toDoService.create(userId, create);
-
-        SoftAssertions softAssertions = new SoftAssertions();
-
-        softAssertions.assertThat(findTodo(toDo.getId()).getId()).isEqualTo(toDo.getId());
-
 
         ToDoDTO.Request update = ToDoDTO.Request.builder()
                 .title("방 없애기")
                 .color(Color.FFADAD)
                 .date(LocalDate.of(2023, 11, 11))
-                .isDone(Boolean.TRUE)
-                .isBlind(Boolean.FALSE)
+                .isDone(Boolean.FALSE)
+                .isBlind(Boolean.TRUE)
                 .build();
 
         ToDo toDoUpdate = toDoService.update(userId, toDo.getId(), update);
+        toDo = toDoRepository.findById(toDo.getId()).get();
+
+        SoftAssertions softAssertions = new SoftAssertions();
 
         softAssertions.assertThat(toDo.getId()).isEqualTo(toDoUpdate.getId());
+        softAssertions.assertThat(toDo.getTitle()).isEqualTo(toDoUpdate.getTitle());
+        softAssertions.assertThat(toDo.getColor()).isEqualTo(toDoUpdate.getColor());
+        softAssertions.assertThat(toDo.getDate()).isEqualTo(toDoUpdate.getDate());
+        softAssertions.assertThat(toDo.getIsDone()).isEqualTo(toDoUpdate.getIsDone());
+        softAssertions.assertThat(toDo.getIsBlind()).isEqualTo(toDoUpdate.getIsBlind());
+        softAssertions.assertAll();
     }
 
     @Test
@@ -89,19 +97,43 @@ class ToDoServiceImplTest {
                 .title("방 만들기")
                 .color(Color.FFADAD)
                 .date(LocalDate.of(2023, 11, 2))
-                .isDone(Boolean.TRUE)
-                .isBlind(Boolean.FALSE)
+                .isDone(Boolean.FALSE)
+                .isBlind(Boolean.TRUE)
                 .build();
 
         ToDo toDo = toDoService.create(userId, create);
 
         SoftAssertions softAssertions = new SoftAssertions();
 
-        softAssertions.assertThat(findTodo(toDo.getId()).getId()).isEqualTo(toDo.getId());
-        softAssertions.assertThat(findTodo(toDo.getId()).getTitle()).isEqualTo(create.getTitle());
-
         toDoService.delete(userId, toDo.getId());
         toDo = toDoRepository.findById(toDo.getId()).orElse(null);
         softAssertions.assertThat(toDo).isNull();
+        softAssertions.assertAll();
+    }
+
+    @Test
+    @DisplayName("할 일 조회")
+    void find() {
+        Long userId = 1L;
+        ToDoDTO.Request create = ToDoDTO.Request.builder()
+                .title("방 만들기")
+                .color(Color.FFADAD)
+                .date(LocalDate.of(2023, 11, 2))
+                .isDone(Boolean.FALSE)
+                .isBlind(Boolean.TRUE)
+                .build();
+
+        toDoService.create(userId, create);
+        ToDo findToDo = toDoRepository.findById(userId).get();
+        List<ToDo> toDos = toDoService.find(userId, findToDo.getId());
+
+        SoftAssertions softAssertions = new SoftAssertions();
+
+        softAssertions.assertThat(toDos.get(0).getTitle()).isEqualTo(findToDo.getTitle());
+        softAssertions.assertThat(toDos.get(0).getColor()).isEqualTo(findToDo.getColor());
+        softAssertions.assertThat(toDos.get(0).getColor()).isEqualTo(findToDo.getColor());
+        softAssertions.assertThat(toDos.get(0).getIsDone()).isEqualTo(findToDo.getIsDone());
+        softAssertions.assertThat(toDos.get(0).getIsDone()).isEqualTo(findToDo.getIsDone());
+        softAssertions.assertAll();
     }
 }

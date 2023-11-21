@@ -42,12 +42,13 @@ public class ToDoServiceImpl implements ToDoService {
     @Override
     @Transactional
     @CacheEvict(cacheNames = "find-todo", allEntries = true)
-    public void create(Long userId, ToDoDTO.Request toDoRequestDTO) {
+    public ToDo create(Long userId, ToDoDTO.Request toDoRequestDTO) {
         User user = userService.findUser(userId);
         MyDate myDate = myDateService.findMyDateOrCreate(user, toDoRequestDTO.getDate());
         MyDate saveMyDate = myDateService.save(myDate);
         ToDo toDo = ToDo.create(toDoRequestDTO, saveMyDate);
         toDoRepository.save(toDo);
+        return toDo;
     }
 
     @Override

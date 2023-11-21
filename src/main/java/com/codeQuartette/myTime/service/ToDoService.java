@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ToDoService {
 
-    void create(Long userId, ToDoDTO.Request toDoRequestDTO);
+    ToDo create(Long userId, ToDoDTO.Request toDoRequestDTO);
 
     ToDo update(Long userId, Long id, ToDoDTO.Request toDoRequestDTO);
 

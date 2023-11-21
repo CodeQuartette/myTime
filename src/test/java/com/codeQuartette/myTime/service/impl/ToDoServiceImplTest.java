@@ -5,6 +5,7 @@ import com.codeQuartette.myTime.domain.ToDo;
 import com.codeQuartette.myTime.domain.value.Color;
 import com.codeQuartette.myTime.repository.ToDoRepository;
 import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,9 +26,42 @@ class ToDoServiceImplTest {
     @Autowired
     private ToDoRepository toDoRepository;
 
+    @InjectSoftAssertions
+    private SoftAssertions softly;
+
     @Test
-    @DisplayName("할 일 등록")
+    @DisplayName("할 일 조회 로직 테스트, 해당 할 일 정보를 조회해야 한다.")
+    void find() {
+
+        //given
+        Long userId = 1L;
+        ToDoDTO.Request create = ToDoDTO.Request.builder()
+                .title("방 만들기")
+                .color(Color.FFADAD)
+                .date(LocalDate.of(2023, 11, 2))
+                .isDone(Boolean.FALSE)
+                .isBlind(Boolean.TRUE)
+                .build();
+
+        toDoService.create(userId, create);
+
+        //when
+        ToDo findToDo = toDoRepository.findById(userId).get();
+        List<ToDo> toDos = toDoService.find(userId, findToDo.getId());
+
+        //then
+        softly.assertThat(toDos.get(0).getTitle()).isEqualTo(findToDo.getTitle());
+        softly.assertThat(toDos.get(0).getColor()).isEqualTo(findToDo.getColor());
+        softly.assertThat(toDos.get(0).getDate()).isEqualTo(findToDo.getDate());
+        softly.assertThat(toDos.get(0).getIsDone()).isEqualTo(findToDo.getIsDone());
+        softly.assertThat(toDos.get(0).getIsBlind()).isEqualTo(findToDo.getIsBlind());
+    }
+
+    @Test
+    @DisplayName("할 일 생성 로직 테스트, 할 일 정보가 DB에 저장되어야 한다.")
     void create() {
+
+        //given
         Long userId = 1L;
 
         ToDoDTO.Request request = ToDoDTO.Request.builder()
@@ -40,21 +74,22 @@ class ToDoServiceImplTest {
 
         toDoService.create(userId, request);
 
-        SoftAssertions softAssertions = new SoftAssertions();
-
+        // when
         ToDo toDo = toDoRepository.findById(userId).get();
 
-        softAssertions.assertThat(toDo.getTitle()).isEqualTo(request.getTitle());
-        softAssertions.assertThat(toDo.getColor()).isEqualTo(request.getColor());
-        softAssertions.assertThat(toDo.getDate()).isEqualTo(request.getDate());
-        softAssertions.assertThat(toDo.getIsDone()).isEqualTo(request.getIsDone());
-        softAssertions.assertThat(toDo.getIsBlind()).isEqualTo(request.getIsBlind());
-        softAssertions.assertAll();
+        // then
+        softly.assertThat(toDo.getTitle()).isEqualTo(request.getTitle());
+        softly.assertThat(toDo.getColor()).isEqualTo(request.getColor());
+        softly.assertThat(toDo.getDate()).isEqualTo(request.getDate());
+        softly.assertThat(toDo.getIsDone()).isEqualTo(request.getIsDone());
+        softly.assertThat(toDo.getIsBlind()).isEqualTo(request.getIsBlind());
     }
 
     @Test
-    @DisplayName("할 일 수정")
+    @DisplayName("할 일 수정 로직 테스트, 수정한 데이터를 DB에 반영해야 한다")
     void update() {
+
+        //given
         Long userId = 1L;
 
         ToDoDTO.Request create = ToDoDTO.Request.builder()
@@ -67,6 +102,7 @@ class ToDoServiceImplTest {
 
         ToDo toDo = toDoService.create(userId, create);
 
+        //when
         ToDoDTO.Request update = ToDoDTO.Request.builder()
                 .title("방 없애기")
                 .color(Color.FFADAD)
@@ -75,23 +111,22 @@ class ToDoServiceImplTest {
                 .isBlind(Boolean.TRUE)
                 .build();
 
-        ToDo toDoUpdate = toDoService.update(userId, toDo.getId(), update);
-        toDo = toDoRepository.findById(toDo.getId()).get();
+        ToDo toDoUpdated = toDoService.update(userId, toDo.getId(), update);
 
-        SoftAssertions softAssertions = new SoftAssertions();
-
-        softAssertions.assertThat(toDo.getId()).isEqualTo(toDoUpdate.getId());
-        softAssertions.assertThat(toDo.getTitle()).isEqualTo(toDoUpdate.getTitle());
-        softAssertions.assertThat(toDo.getColor()).isEqualTo(toDoUpdate.getColor());
-        softAssertions.assertThat(toDo.getDate()).isEqualTo(toDoUpdate.getDate());
-        softAssertions.assertThat(toDo.getIsDone()).isEqualTo(toDoUpdate.getIsDone());
-        softAssertions.assertThat(toDo.getIsBlind()).isEqualTo(toDoUpdate.getIsBlind());
-        softAssertions.assertAll();
+        //then
+        softly.assertThat(toDoUpdated.getId()).isEqualTo(toDo.getId());
+        softly.assertThat(toDoUpdated.getTitle()).isEqualTo(update.getTitle());
+        softly.assertThat(toDoUpdated.getColor()).isEqualTo(update.getColor());
+        softly.assertThat(toDoUpdated.getDate()).isEqualTo(update.getDate());
+        softly.assertThat(toDoUpdated.getIsDone()).isEqualTo(update.getIsDone());
+        softly.assertThat(toDoUpdated.getIsBlind()).isEqualTo(update.getIsBlind());
     }
 
     @Test
-    @DisplayName("할 일 삭제")
+    @DisplayName("할 일 삭제 로직 테스트, 할 일 정보를 DB에서 삭제해야 한다. ")
     void delete() {
+
+        //given
         Long userId = 1L;
         ToDoDTO.Request create = ToDoDTO.Request.builder()
                 .title("방 만들기")
@@ -103,37 +138,11 @@ class ToDoServiceImplTest {
 
         ToDo toDo = toDoService.create(userId, create);
 
-        SoftAssertions softAssertions = new SoftAssertions();
-
+        //when
         toDoService.delete(userId, toDo.getId());
+
+        //then
         toDo = toDoRepository.findById(toDo.getId()).orElse(null);
-        softAssertions.assertThat(toDo).isNull();
-        softAssertions.assertAll();
-    }
-
-    @Test
-    @DisplayName("할 일 조회")
-    void find() {
-        Long userId = 1L;
-        ToDoDTO.Request create = ToDoDTO.Request.builder()
-                .title("방 만들기")
-                .color(Color.FFADAD)
-                .date(LocalDate.of(2023, 11, 2))
-                .isDone(Boolean.FALSE)
-                .isBlind(Boolean.TRUE)
-                .build();
-
-        toDoService.create(userId, create);
-        ToDo findToDo = toDoRepository.findById(userId).get();
-        List<ToDo> toDos = toDoService.find(userId, findToDo.getId());
-
-        SoftAssertions softAssertions = new SoftAssertions();
-
-        softAssertions.assertThat(toDos.get(0).getTitle()).isEqualTo(findToDo.getTitle());
-        softAssertions.assertThat(toDos.get(0).getColor()).isEqualTo(findToDo.getColor());
-        softAssertions.assertThat(toDos.get(0).getColor()).isEqualTo(findToDo.getColor());
-        softAssertions.assertThat(toDos.get(0).getIsDone()).isEqualTo(findToDo.getIsDone());
-        softAssertions.assertThat(toDos.get(0).getIsDone()).isEqualTo(findToDo.getIsDone());
-        softAssertions.assertAll();
+        softly.assertThat(toDo).isNull();
     }
 }

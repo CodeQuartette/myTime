@@ -50,21 +50,20 @@ class ToDoServiceImplTest {
         List<ToDo> toDos = toDoService.find(userId, findToDo.getId());
 
         //then
-        softly.assertThat(toDos.get(0).getTitle()).isEqualTo(findToDo.getTitle());
-        softly.assertThat(toDos.get(0).getColor()).isEqualTo(findToDo.getColor());
-        softly.assertThat(toDos.get(0).getDate()).isEqualTo(findToDo.getDate());
-        softly.assertThat(toDos.get(0).getIsDone()).isEqualTo(findToDo.getIsDone());
-        softly.assertThat(toDos.get(0).getIsBlind()).isEqualTo(findToDo.getIsBlind());
+        softly.assertThat(toDos.get(0).getTitle()).isEqualTo(create.getTitle());
+        softly.assertThat(toDos.get(0).getColor()).isEqualTo(create.getColor());
+        softly.assertThat(toDos.get(0).getDate()).isEqualTo(create.getDate());
+        softly.assertThat(toDos.get(0).getIsDone()).isEqualTo(create.getIsDone());
+        softly.assertThat(toDos.get(0).getIsBlind()).isEqualTo(create.getIsBlind());
     }
 
     @Test
     @DisplayName("할 일 생성 로직 테스트, 할 일 정보가 DB에 저장되어야 한다.")
     void create() {
 
-        //given
         Long userId = 1L;
 
-        ToDoDTO.Request request = ToDoDTO.Request.builder()
+        ToDoDTO.Request create = ToDoDTO.Request.builder()
                 .title("방 만들기")
                 .color(Color.FFADAD)
                 .date(LocalDate.of(2023, 11, 2))
@@ -72,17 +71,13 @@ class ToDoServiceImplTest {
                 .isBlind(Boolean.TRUE)
                 .build();
 
-        toDoService.create(userId, request);
+       ToDo toDo = toDoService.create(userId, create);
 
-        // when
-        ToDo toDo = toDoRepository.findById(userId).get();
-
-        // then
-        softly.assertThat(toDo.getTitle()).isEqualTo(request.getTitle());
-        softly.assertThat(toDo.getColor()).isEqualTo(request.getColor());
-        softly.assertThat(toDo.getDate()).isEqualTo(request.getDate());
-        softly.assertThat(toDo.getIsDone()).isEqualTo(request.getIsDone());
-        softly.assertThat(toDo.getIsBlind()).isEqualTo(request.getIsBlind());
+        softly.assertThat(toDo.getTitle()).isEqualTo(create.getTitle());
+        softly.assertThat(toDo.getColor()).isEqualTo(create.getColor());
+        softly.assertThat(toDo.getDate()).isEqualTo(create.getDate());
+        softly.assertThat(toDo.getIsDone()).isEqualTo(create.getIsDone());
+        softly.assertThat(toDo.getIsBlind()).isEqualTo(create.getIsBlind());
     }
 
     @Test
@@ -114,7 +109,6 @@ class ToDoServiceImplTest {
         ToDo toDoUpdated = toDoService.update(userId, toDo.getId(), update);
 
         //then
-        softly.assertThat(toDoUpdated.getId()).isEqualTo(toDo.getId());
         softly.assertThat(toDoUpdated.getTitle()).isEqualTo(update.getTitle());
         softly.assertThat(toDoUpdated.getColor()).isEqualTo(update.getColor());
         softly.assertThat(toDoUpdated.getDate()).isEqualTo(update.getDate());

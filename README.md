@@ -58,7 +58,7 @@ docker-compose up -d
 ```
 ./gradlew copyDocument //spring-rest-docs의 정적리소스를 먼저 컴파일해야지만 프로젝트 실행할 때 docs가 정상동작
 ./gradlew build --info //build되는 내용을 자세히 검토하고 싶을 때 사용하는 명령어
-java -jar -Dspring.profiles.active=local ./build/libs/myTime-0.0.1-SNAPSHOP.jar
+java -jar -Dspring.profiles.active=local ./build/libs/myTime-0.0.1-SNAPSHOT.jar
 ```
 
 ### 개발 방식
